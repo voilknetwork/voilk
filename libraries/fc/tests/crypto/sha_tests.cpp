@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(sha224_test)
 BOOST_AUTO_TEST_CASE(sha256_test)
 {
     init_5();
-    test<fc::sha256>( TEST1, "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad" );
+    test<fc::sha256>( TEST1, "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f33315ad" );
     test<fc::sha256>( TEST2, "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" );
     test<fc::sha256>( TEST3, "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1" );
     test<fc::sha256>( TEST4, "cf5b16a778af8380036ce59e7b0492370b249b11e8f07a51afac45037afee9d1" );

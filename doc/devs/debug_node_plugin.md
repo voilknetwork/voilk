@@ -59,7 +59,7 @@ and won't receive any blocks except the ones we'll explicitly tell it to load la
 access to its API to anyone:
 
     # no seed-node in config file or command line
-    p2p-endpoint = 127.0.0.1:2001       # bind to localhost to prevent remote p2p nodes from connecting to us
+    p2p-endpoint = 127.0.0.1:3331       # bind to localhost to prevent remote p2p nodes from connecting to us
     rpc-endpoint = 127.0.0.1:6990       # bind to localhost to secure RPC API access
     enable-plugin = witness account_history debug_node
     public-api = database_api login_api debug_node_api

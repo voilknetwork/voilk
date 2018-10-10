@@ -150,7 +150,7 @@ exec chpst -ubearsd \
     $BEARSD \
         --webserver-ws-endpoint=127.0.0.1:6991 \
         --webserver-http-endpoint=127.0.0.1:6991 \
-        --p2p-endpoint=0.0.0.0:2001 \
+        --p2p-endpoint=0.0.0.0:3331 \
         --data-dir=$HOME \
         $ARGS \
         $BEARSD_EXTRA_OPTS \

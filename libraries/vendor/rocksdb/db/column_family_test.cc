@@ -2609,7 +2609,7 @@ TEST_F(ColumnFamilyTest, WriteStallSingleColumnFamily) {
   ASSERT_TRUE(dbfull()->TEST_write_controler().NeedsDelay());
   ASSERT_EQ(kBaseRate / 1.25, GetDbDelayedWriteRate());
 
-  vstorage->TEST_set_estimated_compaction_needed_bytes(2001);
+  vstorage->TEST_set_estimated_compaction_needed_bytes(3331);
   cfd->RecalculateWriteStallConditions(mutable_cf_options);
   ASSERT_TRUE(IsDbWriteStopped());
   ASSERT_TRUE(!dbfull()->TEST_write_controler().NeedsDelay());

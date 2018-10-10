@@ -77,7 +77,7 @@ mkdir bearswallet
 The below command will start a daemonized instance opening ports for p2p and RPC  while linking the directories we created for blockchain and wallet data inside the container. Fill in `TRACK_ACCOUNT` with the name of your exchange account that you want to follow. The `-v` flags are how you map directories outside of the container to the inside, you list the path to the directories you created earlier before the `:` for each `-v` flag. The restart policy ensures that the container will automatically restart even if your system is restarted.
 
 ```
-docker run -d --name bearsd-exchange --env TRACK_ACCOUNT=nameofaccount -p 2001:2001 -p 6990:6990 -v /path/to/bearswallet:/var/bearswallet -v /path/to/blockchain:/var/lib/bearsd/blockchain --restart always bearshares/bears
+docker run -d --name bearsd-exchange --env TRACK_ACCOUNT=nameofaccount -p 3331:3331 -p 6990:6990 -v /path/to/bearswallet:/var/bearswallet -v /path/to/blockchain:/var/lib/bearsd/blockchain --restart always bearshares/bears
 ```
 
 You can see that the container is running with the `docker ps` command.

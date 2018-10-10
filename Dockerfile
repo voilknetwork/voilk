@@ -238,7 +238,7 @@ VOLUME ["/var/lib/bearsd"]
 # rpc service:
 EXPOSE 6990
 # p2p service:
-EXPOSE 2001
+EXPOSE 3331
 
 # add seednodes from documentation to image
 ADD doc/seednodes.txt /etc/bearsd/seednodes.txt
