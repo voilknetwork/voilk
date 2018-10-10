@@ -4783,12 +4783,12 @@ void database::apply_hardfork( uint32_t hardfork )
                if( account == nullptr )
                   continue;
 
-               update_owner_authority( *account, authority( 1, public_key_type( "SHR7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 ) );
+               update_owner_authority( *account, authority( 1, public_key_type( "SHR5kvHiuWx2rkMx7efJuVdYUNSkoucrXuYRAJsacHWLxQLrJZAnJ" ), 1 ) );
 
                modify( get< account_authority_object, by_account >( account->name ), [&]( account_authority_object& auth )
                {
-                  auth.active  = authority( 1, public_key_type( "SHR7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 );
-                  auth.posting = authority( 1, public_key_type( "SHR7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 );
+                  auth.active  = authority( 1, public_key_type( "SHR5kvHiuWx2rkMx7efJuVdYUNSkoucrXuYRAJsacHWLxQLrJZAnJ" ), 1 );
+                  auth.posting = authority( 1, public_key_type( "SHR5kvHiuWx2rkMx7efJuVdYUNSkoucrXuYRAJsacHWLxQLrJZAnJ" ), 1 );
                });
             }
          }
@@ -4898,13 +4898,13 @@ void database::apply_hardfork( uint32_t hardfork )
             // As a shortcut in payout processing, we use the id as an array index.
             // The IDs must be assigned this way. The assertion is a dummy check to ensure this happens.
             FC_ASSERT( post_rf.id._id == 0 );
-
+#ifndef IS_TEST_NET
             modify( gpo, [&]( dynamic_global_property_object& g )
             {
                g.total_reward_fund_bears = asset( 0, BEARS_SYMBOL );
                g.total_reward_shares2 = 0;
             });
-
+#endif
             /*
             * For all current comments we will either keep their current cashout time, or extend it to 1 week
             * after creation.
