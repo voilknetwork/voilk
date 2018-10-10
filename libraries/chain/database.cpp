@@ -2883,6 +2883,10 @@ void database::init_genesis( uint64_t init_supply )
             a.name = BEARS_INIT_MINER_NAME + ( i ? fc::to_string( i ) : std::string() );
             a.memo_key = init_public_key;
             a.balance  = asset( i ? 0 : init_supply, BEARS_SYMBOL );
+            a.bsd_balance = asset( i ? 0 : 10000, BSD_SYMBOL );
+            a.reward_bears_balance = asset( i ? 0 : 10000, BEARS_SYMBOL );
+            a.reward_coining_balance = asset( i ? 0 : 10000, COINS_SYMBOL );
+            a.reward_coining_bears = asset( i ? 0 : 10000, BEARS_SYMBOL );
          } );
 
          create< account_authority_object >( [&]( account_authority_object& auth )
@@ -2909,7 +2913,11 @@ void database::init_genesis( uint64_t init_supply )
          p.recent_slots_filled = fc::uint128::max_value();
          p.participation_count = 128;
          p.current_supply = asset( init_supply, BEARS_SYMBOL );
-         p.virtual_supply = p.current_supply;
+         p.current_bsd_supply = asset( 10000, BSD_SYMBOL );
+         p.total_coining_fund_bears = asset( 10000, BEARS_SYMBOL );
+         p.total_coining_shares = asset( 10000, COINS_SYMBOL );
+         p.total_reward_fund_bears = asset( 10000, BEARS_SYMBOL );
+         p.virtual_supply = p.current_supply + p.total_coining_fund_bears + p.total_reward_fund_bears;
          p.maximum_block_size = BEARS_MAX_BLOCK_SIZE;
          p.reverse_auction_seconds = BEARS_REVERSE_AUCTION_WINDOW_SECONDS_HF6;
          p.bsd_stop_percent = BEARS_BSD_STOP_PERCENT_HF14;
