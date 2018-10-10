@@ -45,8 +45,8 @@
 
 #define BEARS_BLOCKCHAIN_VERSION              ( version(0, 20, 5) )
 
-#define BEARS_INIT_PUBLIC_KEY_STR             "SHR8GC13uCZbP44HzMLV6zPZGwVQ8Nt4Kji8PapsPiNq1BK153XTX"
-#define BEARS_CHAIN_ID fc::sha256()
+#define BEARS_INIT_PUBLIC_KEY_STR             "SHR7YDq7bh9EG3oufCAPRjf1ZESqCqjdjj55Xp2QXDTnYndVqxBom"
+#define BEARS_CHAIN_ID (fc::sha256::hash("I love Pakistan"))
 #define BEARS_ADDRESS_PREFIX                  "SHR"
 
 #define BEARS_GENESIS_TIME                    (fc::time_point_sec(1458835200))
@@ -66,9 +66,9 @@
 #define BEARS_OWNER_AUTH_RECOVERY_PERIOD                  fc::days(30)
 #define BEARS_ACCOUNT_RECOVERY_REQUEST_EXPIRATION_PERIOD  fc::days(1)
 #define BEARS_OWNER_UPDATE_LIMIT                          fc::minutes(60)
-#define BEARS_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 3186477
+#define BEARS_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 0
 
-#define BEARS_INIT_SUPPLY                     int64_t(0)
+#define BEARS_INIT_SUPPLY                     (int64_t( 500 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 
 #endif
 
@@ -144,7 +144,7 @@
 
 #define BEARS_MAX_RESERVE_RATIO               (20000)
 
-#define BEARS_CREATE_ACCOUNT_WITH_BEARS_MODIFIER 30
+#define BEARS_CREATE_ACCOUNT_WITH_BEARS_MODIFIER 1
 #define BEARS_CREATE_ACCOUNT_DELEGATION_RATIO    5
 #define BEARS_CREATE_ACCOUNT_DELEGATION_TIME     fc::days(30)
 
@@ -238,11 +238,11 @@
 #define BEARS_SOFT_MAX_BLOCK_SIZE             (2*1024*1024)
 #define BEARS_MIN_BLOCK_SIZE                  115
 #define BEARS_BLOCKS_PER_HOUR                 (60*60/BEARS_BLOCK_INTERVAL)
-#define BEARS_FEED_INTERVAL_BLOCKS            (BEARS_BLOCKS_PER_HOUR)
+#define BEARS_FEED_INTERVAL_BLOCKS            (10)//(BEARS_BLOCKS_PER_HOUR)
 #define BEARS_FEED_HISTORY_WINDOW_PRE_HF_16   (24*7) /// 7 days * 24 hours per day
 #define BEARS_FEED_HISTORY_WINDOW             (12*7) // 3.5 days
-#define BEARS_MAX_FEED_AGE_SECONDS            (60*60*24*7) // 7 days
-#define BEARS_MIN_FEEDS                       (BEARS_MAX_WITNESSES/3) /// protects the network from conversions before price has been established
+#define BEARS_MAX_FEED_AGE_SECONDS            (60)//(60*60*24*7) // 7 days
+#define BEARS_MIN_FEEDS                       (1)//(BEARS_MAX_WITNESSES/3) /// protects the network from conversions before price has been established
 #define BEARS_CONVERSION_DELAY_PRE_HF_16      (fc::days(7))
 #define BEARS_CONVERSION_DELAY                (fc::hours(BEARS_FEED_HISTORY_WINDOW)) //3.5 day conversion
 
