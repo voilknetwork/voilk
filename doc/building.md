@@ -82,7 +82,6 @@ will build out of the box without further effort:
 
     git clone https://github.com/bearshares/bears
     cd bears
-    git checkout stable
     git submodule update --init --recursive
     mkdir build
     cd build
