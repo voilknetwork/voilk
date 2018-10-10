@@ -3800,7 +3800,7 @@ void VerifyDBFromDB(std::string& truth_db_name) {
           break;
         }
       }
-      // TODO(shuzhang1989): Investigate why CompactFiles not working
+      // TODO(shuzhang1989): Incoinigate why CompactFiles not working
       // auto compactionOptions = CompactionOptions();
       // db->CompactFiles(compactionOptions, file_names, 0);
       auto compactionOptions = CompactRangeOptions();

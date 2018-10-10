@@ -1,4 +1,4 @@
-#include <steem/utilities/logging_config.hpp>
+#include <bears/utilities/logging_config.hpp>
 
 #include <fc/exception/exception.hpp>
 
@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace steem { namespace utilities {
+namespace bears { namespace utilities {
 
 using std::string;
 using std::vector;

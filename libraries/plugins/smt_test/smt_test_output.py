@@ -7,20 +7,20 @@ import sys
 
 argv = list(sys.argv)
 
-steemd = None
-i_steemd = -1
+bearsd = None
+i_bearsd = -1
 for i, a in enumerate(argv):
-    if a.startswith("--steemd="):
-        _, steemd = a.split("=", 1)
-        i_steemd = i
+    if a.startswith("--bearsd="):
+        _, bearsd = a.split("=", 1)
+        i_bearsd = i
 
-if steemd is None:
-    sys.stderr.write("missing --steemd argument\n")
+if bearsd is None:
+    sys.stderr.write("missing --bearsd argument\n")
     sys.exit(1)
 
-del argv[i_steemd]
+del argv[i_bearsd]
 
-with subprocess.Popen( [steemd] + argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT ) as outproc:
+with subprocess.Popen( [bearsd] + argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT ) as outproc:
     while True:
         line = outproc.stdout.readline()
         line = line.decode("utf-8")

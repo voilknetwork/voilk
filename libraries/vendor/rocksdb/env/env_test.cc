@@ -826,7 +826,7 @@ TEST_P(EnvPosixTestWithParam, AllocateTest) {
     // we only require that number of allocated blocks is at least what we
     // expect.
     // It looks like some FS give us more blocks that we asked for. That's fine.
-    // It might be worth investigating further.
+    // It might be worth incoinigating further.
     ASSERT_LE((unsigned int)(kPreallocateSize / kBlockSize), f_stat.st_blocks);
 
     // close the file, should deallocate the blocks

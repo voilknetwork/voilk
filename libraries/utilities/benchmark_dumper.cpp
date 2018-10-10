@@ -1,7 +1,7 @@
 
-#include <steem/utilities/benchmark_dumper.hpp>
+#include <bears/utilities/benchmark_dumper.hpp>
 
-namespace steem { namespace utilities {
+namespace bears { namespace utilities {
 
 #define PROC_STATUS_LINE_LENGTH 1028
 

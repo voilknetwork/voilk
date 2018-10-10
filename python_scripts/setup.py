@@ -1,12 +1,12 @@
 from setuptools import setup
 
-setup( name='steemdebugnode',
+setup( name='bearsdebugnode',
        version='0.1',
-       description='A wrapper for launching and interacting with a Steem Debug Node',
-       url='http://github.com/steemit/steem',
-       author='Steemit, Inc.',
-       author_email='vandeberg@steemit.com',
+       description='A wrapper for launching and interacting with a Bears Debug Node',
+       url='http://github.com/bearshares/bears',
+       author='Bearshares, Inc.',
+       author_email='vandeberg@bearshares.com',
        license='See LICENSE.md',
-       packages=['steemdebugnode'],
-       #install_requires=['steemapi'],
+       packages=['bearsdebugnode'],
+       #install_requires=['bearsapi'],
        zip_safe=False )

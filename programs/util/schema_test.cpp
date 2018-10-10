@@ -1,27 +1,27 @@
 
-namespace steem { namespace protocol {
+namespace bears { namespace protocol {
 struct votable_asset_info_v1;
 } }
 
-#include <steem/protocol/types_fwd.hpp>
+#include <bears/protocol/types_fwd.hpp>
 
-#include <steem/schema/schema.hpp>
-#include <steem/schema/schema_impl.hpp>
-#include <steem/schema/schema_types.hpp>
+#include <bears/schema/schema.hpp>
+#include <bears/schema/schema_impl.hpp>
+#include <bears/schema/schema_types.hpp>
 
-#include <steem/chain/schema_types/oid.hpp>
-#include <steem/protocol/schema_types/account_name_type.hpp>
-#include <steem/protocol/schema_types/asset_symbol_type.hpp>
+#include <bears/chain/schema_types/oid.hpp>
+#include <bears/protocol/schema_types/account_name_type.hpp>
+#include <bears/protocol/schema_types/asset_symbol_type.hpp>
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/steem_objects.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/bears_objects.hpp>
 
-using namespace steem::schema;
+using namespace bears::schema;
 
 struct mystruct
 {
@@ -60,8 +60,8 @@ int main( int argc, char** argv, char** envp )
    std::vector< std::shared_ptr< abstract_schema > > schemas;
 
    schemas.push_back( get_schema_for_type< mystruct >() );
-   schemas.push_back( get_schema_for_type< steem::chain::account_object >() );
-   schemas.push_back( get_schema_for_type< steem::chain::comment_object >() );
+   schemas.push_back( get_schema_for_type< bears::chain::account_object >() );
+   schemas.push_back( get_schema_for_type< bears::chain::comment_object >() );
    add_dependent_schemas( schemas );
 
    for( const std::shared_ptr< abstract_schema >& s : schemas )

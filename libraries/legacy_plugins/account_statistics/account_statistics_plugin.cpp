@@ -1,11 +1,11 @@
-#include <steem/account_statistics/account_statistics_api.hpp>
+#include <bears/account_statistics/account_statistics_api.hpp>
 
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/comment_object.hpp>
 
-#include <steem/chain/database.hpp>
+#include <bears/chain/database.hpp>
 
-namespace steem { namespace account_statistics {
+namespace bears { namespace account_statistics {
 
 namespace detail
 {
@@ -105,6 +105,6 @@ const flat_set< std::string >& account_statistics_plugin::get_tracked_accounts()
    return _my->_tracked_accounts;
 }
 
-} } // steem::account_statistics
+} } // bears::account_statistics
 
-STEEM_DEFINE_PLUGIN( account_statistics, steem::account_statistics::account_statistics_plugin );
+BEARS_DEFINE_PLUGIN( account_statistics, bears::account_statistics::account_statistics_plugin );

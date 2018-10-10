@@ -1,13 +1,13 @@
-#include <steem/protocol/authority.hpp>
+#include <bears/protocol/authority.hpp>
 
-#include <steem/chain/util/impacted.hpp>
+#include <bears/chain/util/impacted.hpp>
 
 #include <fc/utility.hpp>
 
-namespace steem { namespace app {
+namespace bears { namespace app {
 
 using namespace fc;
-using namespace steem::protocol;
+using namespace bears::protocol;
 
 // TODO:  Review all of these, especially no-ops
 struct get_impacted_account_visitor
@@ -84,7 +84,7 @@ struct get_impacted_account_visitor
       _impacted.insert( op.agent );
    }
 
-   void operator()( const transfer_to_vesting_operation& op )
+   void operator()( const transfer_to_coining_operation& op )
    {
       _impacted.insert( op.from );
 
@@ -94,7 +94,7 @@ struct get_impacted_account_visitor
       }
    }
 
-   void operator()( const set_withdraw_vesting_route_operation& op )
+   void operator()( const set_withdraw_coining_route_operation& op )
    {
       _impacted.insert( op.from_account );
       _impacted.insert( op.to_account );
@@ -168,7 +168,7 @@ struct get_impacted_account_visitor
       _impacted.insert( op.to );
    }
 
-   void operator()( const delegate_vesting_shares_operation& op )
+   void operator()( const delegate_coining_shares_operation& op )
    {
       _impacted.insert( op.delegator );
       _impacted.insert( op.delegatee );
@@ -213,7 +213,7 @@ struct get_impacted_account_visitor
       _impacted.insert( op.owner );
    }
 
-   void operator()( const fill_vesting_withdraw_operation& op )
+   void operator()( const fill_coining_withdraw_operation& op )
    {
       _impacted.insert( op.from_account );
       _impacted.insert( op.to_account );
@@ -236,7 +236,7 @@ struct get_impacted_account_visitor
       _impacted.insert( op.to );
    }
 
-   void operator()( const return_vesting_delegation_operation& op )
+   void operator()( const return_coining_delegation_operation& op )
    {
       _impacted.insert( op.account );
    }
@@ -254,7 +254,7 @@ struct get_impacted_account_visitor
 
    void operator()( const hardfork_operation& op )
    {
-      _impacted.insert( STEEM_INIT_MINER_NAME );
+      _impacted.insert( BEARS_INIT_MINER_NAME );
    }
 
    //void operator()( const operation& op ){}

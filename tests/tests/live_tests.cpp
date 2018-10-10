@@ -1,10 +1,10 @@
 #include <boost/test/unit_test.hpp>
 
-#include <steem/protocol/exceptions.hpp>
-#include <steem/protocol/hardfork.hpp>
+#include <bears/protocol/exceptions.hpp>
+#include <bears/protocol/hardfork.hpp>
 
-#include <steem/chain/database.hpp>
-#include <steem/chain/steem_objects.hpp>
+#include <bears/chain/database.hpp>
+#include <bears/chain/bears_objects.hpp>
 
 #include <fc/crypto/digest.hpp>
 
@@ -12,16 +12,16 @@
 
 #include <iostream>
 
-using namespace steem;
-using namespace steem::chain;
-using namespace steem::protocol;
+using namespace bears;
+using namespace bears::chain;
+using namespace bears::protocol;
 
 #ifndef IS_TEST_NET
 
 BOOST_FIXTURE_TEST_SUITE( live_tests, live_database_fixture )
 
 /*
-BOOST_AUTO_TEST_CASE( vests_stock_split )
+BOOST_AUTO_TEST_CASE( coins_stock_split )
 {
    try
    {
@@ -29,26 +29,26 @@ BOOST_AUTO_TEST_CASE( vests_stock_split )
 
       uint32_t magnitude = 1000000;
 
-      flat_map< string, share_type > account_vests;
+      flat_map< string, share_type > account_coins;
       flat_map< string, share_type > account_vsf_votes;
       const auto& acnt_idx = db->get_index< account_index >().indices().get< by_name >();
       auto acnt_itr = acnt_idx.begin();
 
-      BOOST_TEST_MESSAGE( "Saving account vesting shares" );
+      BOOST_TEST_MESSAGE( "Saving account coining shares" );
 
       while( acnt_itr != acnt_idx.end() )
       {
-         account_vests[acnt_itr->name] = acnt_itr->vesting_shares.amount;
+         account_coins[acnt_itr->name] = acnt_itr->coining_shares.amount;
          account_vsf_votes[acnt_itr->name] = acnt_itr->proxied_vsf_votes_total().value;
          acnt_itr++;
       }
 
       auto old_virtual_supply = db->get_dynamic_global_properties().virtual_supply;
       auto old_current_supply = db->get_dynamic_global_properties().current_supply;
-      auto old_vesting_fund = db->get_dynamic_global_properties().total_vesting_fund_steem;
-      auto old_vesting_shares = db->get_dynamic_global_properties().total_vesting_shares;
+      auto old_coining_fund = db->get_dynamic_global_properties().total_coining_fund_bears;
+      auto old_coining_shares = db->get_dynamic_global_properties().total_coining_shares;
       auto old_rshares2 = db->get_dynamic_global_properties().total_reward_shares2;
-      auto old_reward_fund = db->get_dynamic_global_properties().total_reward_fund_steem;
+      auto old_reward_fund = db->get_dynamic_global_properties().total_reward_fund_bears;
 
       flat_map< std::tuple< account_name_type, string >, share_type > comment_net_rshares;
       flat_map< std::tuple< account_name_type, string >, share_type > comment_abs_rshares;
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( vests_stock_split )
          {
             total_rshares2 += com_itr->net_rshares.value > 0 ? fc::uint128_t( com_itr->net_rshares.value ) * com_itr->net_rshares.value * magnitude * magnitude : 0;
             u256 rs( com_itr->net_rshares.value );
-            u256 rf( gpo.total_reward_fund_steem.amount.value );
+            u256 rf( gpo.total_reward_fund_bears.amount.value );
             auto rs2 = rs * rs;
             u256 rshares2 = old_rshares2.hi;
             rshares2 = rshares2 << 64;
@@ -95,24 +95,24 @@ BOOST_AUTO_TEST_CASE( vests_stock_split )
 
       BOOST_TEST_MESSAGE( "Perform split" );
       fc::time_point start = fc::time_point::now();
-      db->perform_vesting_share_split( magnitude );
+      db->perform_coining_share_split( magnitude );
       fc::time_point end = fc::time_point::now();
-      ilog( "Vesting split execution time: ${t} us", ("t",end - start) );
+      ilog( "Coining split execution time: ${t} us", ("t",end - start) );
 
       BOOST_TEST_MESSAGE( "Verify split took place correctly" );
 
       BOOST_REQUIRE( db->get_dynamic_global_properties().current_supply == old_current_supply );
       BOOST_REQUIRE( db->get_dynamic_global_properties().virtual_supply == old_virtual_supply );
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_vesting_fund_steem == old_vesting_fund );
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_vesting_shares.amount == old_vesting_shares.amount * magnitude );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_coining_fund_bears == old_coining_fund );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_coining_shares.amount == old_coining_shares.amount * magnitude );
       BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_shares2 == total_rshares2 );
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_steem == old_reward_fund );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_bears == old_reward_fund );
 
       BOOST_TEST_MESSAGE( "Check accounts were updated" );
       acnt_itr = acnt_idx.begin();
       while( acnt_itr != acnt_idx.end() )
       {
-         BOOST_REQUIRE( acnt_itr->vesting_shares.amount == account_vests[ acnt_itr->name ] * magnitude );
+         BOOST_REQUIRE( acnt_itr->coining_shares.amount == account_coins[ acnt_itr->name ] * magnitude );
          BOOST_REQUIRE( acnt_itr->proxied_vsf_votes_total().value == account_vsf_votes[ acnt_itr->name ] * magnitude );
          acnt_itr++;
       }
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE( vests_stock_split )
          if( com_itr->net_rshares.value > 0 )
          {
             u256 rs( com_itr->net_rshares.value );
-            u256 rf( gpo.total_reward_fund_steem.amount.value );
+            u256 rf( gpo.total_reward_fund_bears.amount.value );
             u256 rshares2 = total_rshares2.hi;
             rshares2 = ( rshares2 << 64 ) + total_rshares2.lo;
             auto rs2 = rs * rs;

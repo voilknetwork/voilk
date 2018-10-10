@@ -22,18 +22,18 @@
  * THE SOFTWARE.
  */
 
-#include <steem/utilities/tempdir.hpp>
+#include <bears/utilities/tempdir.hpp>
 
 #include <cstdlib>
 
-namespace steem { namespace utilities {
+namespace bears { namespace utilities {
 
 fc::path temp_directory_path()
 {
-   const char* steemit_tempdir = getenv("STEEM_TEMPDIR");
-   if( steemit_tempdir != nullptr )
-      return fc::path( steemit_tempdir );
-   return fc::temp_directory_path() / "steem-tmp";
+   const char* bearshares_tempdir = getenv("BEARS_TEMPDIR");
+   if( bearshares_tempdir != nullptr )
+      return fc::path( bearshares_tempdir );
+   return fc::temp_directory_path() / "bears-tmp";
 }
 
-} } // steem::utilities
+} } // bears::utilities

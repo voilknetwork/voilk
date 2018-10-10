@@ -24,11 +24,11 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <steem/chain/steem_objects.hpp>
-#include <steem/chain/database.hpp>
+#include <bears/chain/bears_objects.hpp>
+#include <bears/chain/database.hpp>
 
-#include <steem/plugins/condenser_api/condenser_api_legacy_asset.hpp>
-#include <steem/plugins/condenser_api/condenser_api_legacy_objects.hpp>
+#include <bears/plugins/condenser_api/condenser_api_legacy_asset.hpp>
+#include <bears/plugins/condenser_api/condenser_api_legacy_objects.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/crypto/elliptic.hpp>
@@ -38,9 +38,9 @@
 
 #include <cmath>
 
-using namespace steem;
-using namespace steem::chain;
-using namespace steem::protocol;
+using namespace bears;
+using namespace bears::chain;
+using namespace bears::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( serialization_tests, clean_database_fixture )
 
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( serialization_raw_test )
       transfer_operation op;
       op.from = "alice";
       op.to = "bob";
-      op.amount = asset(100,STEEM_SYMBOL);
+      op.amount = asset(100,BEARS_SYMBOL);
 
       trx.operations.push_back( op );
       auto packed = fc::raw::pack_to_vector( trx );
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE( serialization_json_test )
       transfer_operation op;
       op.from = "alice";
       op.to = "bob";
-      op.amount = asset(100,STEEM_SYMBOL);
+      op.amount = asset(100,BEARS_SYMBOL);
 
       fc::variant test(op.amount);
       auto tmp = test.as<asset>();
@@ -117,32 +117,32 @@ BOOST_AUTO_TEST_CASE( legacy_asset_test )
 {
    try
    {
-      using steem::plugins::condenser_api::legacy_asset;
+      using bears::plugins::condenser_api::legacy_asset;
 
       BOOST_CHECK_EQUAL( legacy_asset().symbol.decimals(), 3 );
       BOOST_CHECK_EQUAL( legacy_asset().to_string(), "0.000 TESTS" );
 
       BOOST_TEST_MESSAGE( "Asset Test" );
-      legacy_asset steem = legacy_asset::from_string( "123.456 TESTS" );
-      legacy_asset sbd = legacy_asset::from_string( "654.321 TBD" );
+      legacy_asset bears = legacy_asset::from_string( "123.456 TESTS" );
+      legacy_asset bsd = legacy_asset::from_string( "654.321 TBD" );
       legacy_asset tmp = legacy_asset::from_string( "0.456 TESTS" );
       BOOST_CHECK_EQUAL( tmp.amount.value, 456 );
       tmp = legacy_asset::from_string( "0.056 TESTS" );
       BOOST_CHECK_EQUAL( tmp.amount.value, 56 );
 
-      BOOST_CHECK_EQUAL( steem.amount.value, 123456 );
-      BOOST_CHECK_EQUAL( steem.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( steem.to_string(), "123.456 TESTS" );
-      BOOST_CHECK( steem.symbol == STEEM_SYMBOL );
-      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset( 50, STEEM_SYMBOL ) ).to_string(), "0.050 TESTS" );
-      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, STEEM_SYMBOL ) ) .to_string(), "50.000 TESTS" );
+      BOOST_CHECK_EQUAL( bears.amount.value, 123456 );
+      BOOST_CHECK_EQUAL( bears.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( bears.to_string(), "123.456 TESTS" );
+      BOOST_CHECK( bears.symbol == BEARS_SYMBOL );
+      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset( 50, BEARS_SYMBOL ) ).to_string(), "0.050 TESTS" );
+      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, BEARS_SYMBOL ) ) .to_string(), "50.000 TESTS" );
 
-      BOOST_CHECK_EQUAL( sbd.amount.value, 654321 );
-      BOOST_CHECK_EQUAL( sbd.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( sbd.to_string(), "654.321 TBD" );
-      BOOST_CHECK( sbd.symbol == SBD_SYMBOL );
-      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50, SBD_SYMBOL ) ).to_string(), "0.050 TBD" );
-      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, SBD_SYMBOL ) ).to_string(), "50.000 TBD" );
+      BOOST_CHECK_EQUAL( bsd.amount.value, 654321 );
+      BOOST_CHECK_EQUAL( bsd.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( bsd.to_string(), "654.321 TBD" );
+      BOOST_CHECK( bsd.symbol == BSD_SYMBOL );
+      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50, BSD_SYMBOL ) ).to_string(), "0.050 TBD" );
+      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, BSD_SYMBOL ) ).to_string(), "50.000 TBD" );
 
       BOOST_CHECK_THROW( legacy_asset::from_string( "1.00000000000000000000 TESTS" ), fc::exception );
       BOOST_CHECK_THROW( legacy_asset::from_string( "1.000TESTS" ), fc::exception );
@@ -176,34 +176,34 @@ BOOST_AUTO_TEST_CASE( asset_test )
       BOOST_CHECK_EQUAL( asset().symbol.decimals(), 3 );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset() ), "{\"amount\":\"0\",\"precision\":3,\"nai\":\"@@000000021\"}" );
 
-      asset steem = fc::json::from_string( "{\"amount\":\"123456\",    \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
-      asset sbd =   fc::json::from_string( "{\"amount\":\"654321\",    \"precision\":3, \"nai\":\"@@000000013\"}" ).as< asset >();
-      asset vests = fc::json::from_string( "{\"amount\":\"123456789\", \"precision\":6, \"nai\":\"@@000000037\"}" ).as< asset >();
+      asset bears = fc::json::from_string( "{\"amount\":\"123456\",    \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
+      asset bsd =   fc::json::from_string( "{\"amount\":\"654321\",    \"precision\":3, \"nai\":\"@@000000013\"}" ).as< asset >();
+      asset coins = fc::json::from_string( "{\"amount\":\"123456789\", \"precision\":6, \"nai\":\"@@000000037\"}" ).as< asset >();
       asset tmp =   fc::json::from_string( "{\"amount\":\"456\",       \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
       BOOST_CHECK_EQUAL( tmp.amount.value, 456 );
       tmp = fc::json::from_string( "{\"amount\":\"56\", \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
       BOOST_CHECK_EQUAL( tmp.amount.value, 56 );
 
-      BOOST_CHECK_EQUAL( steem.amount.value, 123456 );
-      BOOST_CHECK_EQUAL( steem.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( fc::json::to_string( steem ), "{\"amount\":\"123456\",\"precision\":3,\"nai\":\"@@000000021\"}" );
-      BOOST_CHECK( steem.symbol.asset_num == STEEM_ASSET_NUM_STEEM );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, STEEM_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000021\"}" );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, STEEM_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000021\"}" );
+      BOOST_CHECK_EQUAL( bears.amount.value, 123456 );
+      BOOST_CHECK_EQUAL( bears.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( fc::json::to_string( bears ), "{\"amount\":\"123456\",\"precision\":3,\"nai\":\"@@000000021\"}" );
+      BOOST_CHECK( bears.symbol.asset_num == BEARS_ASSET_NUM_BEARS );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, BEARS_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000021\"}" );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, BEARS_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000021\"}" );
 
-      BOOST_CHECK_EQUAL( sbd.amount.value, 654321 );
-      BOOST_CHECK_EQUAL( sbd.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( fc::json::to_string( sbd ), "{\"amount\":\"654321\",\"precision\":3,\"nai\":\"@@000000013\"}" );
-      BOOST_CHECK( sbd.symbol.asset_num == STEEM_ASSET_NUM_SBD );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, SBD_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000013\"}" );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, SBD_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000013\"}" );
+      BOOST_CHECK_EQUAL( bsd.amount.value, 654321 );
+      BOOST_CHECK_EQUAL( bsd.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( fc::json::to_string( bsd ), "{\"amount\":\"654321\",\"precision\":3,\"nai\":\"@@000000013\"}" );
+      BOOST_CHECK( bsd.symbol.asset_num == BEARS_ASSET_NUM_BSD );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, BSD_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000013\"}" );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, BSD_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000013\"}" );
 
-      BOOST_CHECK_EQUAL( vests.amount.value, 123456789 );
-      BOOST_CHECK_EQUAL( vests.symbol.decimals(), 6 );
-      BOOST_CHECK_EQUAL( fc::json::to_string( vests ), "{\"amount\":\"123456789\",\"precision\":6,\"nai\":\"@@000000037\"}" );
-      BOOST_CHECK( vests.symbol.asset_num == STEEM_ASSET_NUM_VESTS );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, VESTS_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":6,\"nai\":\"@@000000037\"}" );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, VESTS_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":6,\"nai\":\"@@000000037\"}" );
+      BOOST_CHECK_EQUAL( coins.amount.value, 123456789 );
+      BOOST_CHECK_EQUAL( coins.symbol.decimals(), 6 );
+      BOOST_CHECK_EQUAL( fc::json::to_string( coins ), "{\"amount\":\"123456789\",\"precision\":6,\"nai\":\"@@000000037\"}" );
+      BOOST_CHECK( coins.symbol.asset_num == BEARS_ASSET_NUM_COINS );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, COINS_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":6,\"nai\":\"@@000000037\"}" );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, COINS_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":6,\"nai\":\"@@000000037\"}" );
 
       // amount overflow
       BOOST_CHECK_THROW( fc::json::from_string( "{\"amount\":\"9223372036854775808\",\"precision\":3,\"nai\":\"@@000000021\"}" ).as< asset >(), fc::exception );
@@ -249,19 +249,19 @@ std::string hex_bytes( const T& obj )
 
 void old_pack_symbol(vector<char>& v, asset_symbol_type sym)
 {
-   if( sym == STEEM_SYMBOL )
+   if( sym == BEARS_SYMBOL )
    {
       v.push_back('\x03'); v.push_back('T' ); v.push_back('E' ); v.push_back('S' );
       v.push_back('T'   ); v.push_back('S' ); v.push_back('\0'); v.push_back('\0');
       // 03 54 45 53 54 53 00 00
    }
-   else if( sym == SBD_SYMBOL )
+   else if( sym == BSD_SYMBOL )
    {
       v.push_back('\x03'); v.push_back('T' ); v.push_back('B' ); v.push_back('D' );
       v.push_back('\0'  ); v.push_back('\0'); v.push_back('\0'); v.push_back('\0');
       // 03 54 42 44 00 00 00 00
    }
-   else if( sym == VESTS_SYMBOL )
+   else if( sym == COINS_SYMBOL )
    {
       v.push_back('\x06'); v.push_back('V' ); v.push_back('E' ); v.push_back('S' );
       v.push_back('T'   ); v.push_back('S' ); v.push_back('\0'); v.push_back('\0');
@@ -292,20 +292,20 @@ void old_pack_asset( vector<char>& v, const asset& a )
 std::string old_json_asset( const asset& a )
 {
    size_t decimal_places = 0;
-   if( (a.symbol == STEEM_SYMBOL) || (a.symbol == SBD_SYMBOL) )
+   if( (a.symbol == BEARS_SYMBOL) || (a.symbol == BSD_SYMBOL) )
       decimal_places = 3;
-   else if( a.symbol == VESTS_SYMBOL )
+   else if( a.symbol == COINS_SYMBOL )
       decimal_places = 6;
    std::ostringstream ss;
    ss << std::setfill('0') << std::setw(decimal_places+1) << a.amount.value;
    std::string result = ss.str();
    result.insert( result.length() - decimal_places, 1, '.' );
-   if( a.symbol == STEEM_SYMBOL )
+   if( a.symbol == BEARS_SYMBOL )
       result += " TESTS";
-   else if( a.symbol == SBD_SYMBOL )
+   else if( a.symbol == BSD_SYMBOL )
       result += " TBD";
-   else if( a.symbol == VESTS_SYMBOL )
-      result += " VESTS";
+   else if( a.symbol == COINS_SYMBOL )
+      result += " COINS";
    result.insert(0, 1, '"');
    result += '"';
    return result;
@@ -315,8 +315,8 @@ BOOST_AUTO_TEST_CASE( asset_raw_test )
 {
    try
    {
-      BOOST_CHECK( SBD_SYMBOL < STEEM_SYMBOL );
-      BOOST_CHECK( STEEM_SYMBOL < VESTS_SYMBOL );
+      BOOST_CHECK( BSD_SYMBOL < BEARS_SYMBOL );
+      BOOST_CHECK( BEARS_SYMBOL < COINS_SYMBOL );
 
       // get a bunch of random bits
       fc::sha256 h = fc::sha256::hash("");
@@ -327,22 +327,22 @@ BOOST_AUTO_TEST_CASE( asset_raw_test )
       {
          uint64_t s = (uint64_t(1) << i);
          uint64_t x = (h._hash[0] & (s-1)) | s;
-         if( x >= STEEM_MAX_SHARE_SUPPLY )
+         if( x >= BEARS_MAX_SHARE_SUPPLY )
             break;
          amounts.push_back( share_type( x ) );
       }
       // ilog( "h0:${h0}", ("h0", h._hash[0]) );
 
-/*      asset steem = asset::from_string( "0.001 TESTS" );
-#define VESTS_SYMBOL  (uint64_t(6) | (uint64_t('V') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< VESTS with 6 digits of precision
-#define STEEM_SYMBOL  (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< STEEM with 3 digits of precision
-#define SBD_SYMBOL    (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('B') << 16) | (uint64_t('D') << 24) ) ///< Test Backed Dollars with 3 digits of precision
+/*      asset bears = asset::from_string( "0.001 TESTS" );
+#define COINS_SYMBOL  (uint64_t(6) | (uint64_t('V') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< COINS with 6 digits of precision
+#define BEARS_SYMBOL  (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< BEARS with 3 digits of precision
+#define BSD_SYMBOL    (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('B') << 16) | (uint64_t('D') << 24) ) ///< Test Backed Dollars with 3 digits of precision
 */
       std::vector< asset_symbol_type > symbols;
 
-      symbols.push_back( STEEM_SYMBOL );
-      symbols.push_back( SBD_SYMBOL   );
-      symbols.push_back( VESTS_SYMBOL );
+      symbols.push_back( BEARS_SYMBOL );
+      symbols.push_back( BSD_SYMBOL   );
+      symbols.push_back( COINS_SYMBOL );
 
       for( const share_type& amount : amounts )
       {
@@ -456,19 +456,19 @@ BOOST_AUTO_TEST_CASE( version_test )
       BOOST_REQUIRE( ver == version( 12, 34, 56 ) );
 
       ver_str = fc::variant( "256.0.0" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "0.256.0" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "0.0.65536" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "1.0" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "1.0.0.1" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
    }
    FC_LOG_AND_RETHROW();
 }
@@ -501,20 +501,20 @@ BOOST_AUTO_TEST_CASE( hardfork_version_test )
       BOOST_REQUIRE( ver == hardfork_version( 12, 34 ) );
 
       ver_str = fc::variant( "256.0.0" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "0.256.0" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "0.0.1" );
       fc::from_variant( ver_str, ver );
       BOOST_REQUIRE( ver == hardfork_version( 0, 0 ) );
 
       ver_str = fc::variant( "1.0" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
 
       ver_str = fc::variant( "1.0.0.1" );
-      STEEM_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
+      BEARS_REQUIRE_THROW( fc::from_variant( ver_str, ver ), fc::exception );
    }
    FC_LOG_AND_RETHROW();
 }
@@ -522,22 +522,22 @@ BOOST_AUTO_TEST_CASE( hardfork_version_test )
 BOOST_AUTO_TEST_CASE( min_block_size )
 {
    signed_block b;
-   while( b.witness.length() < STEEM_MIN_ACCOUNT_NAME_LENGTH )
+   while( b.witness.length() < BEARS_MIN_ACCOUNT_NAME_LENGTH )
       b.witness += 'a';
    size_t min_size = fc::raw::pack_size( b );
-   BOOST_CHECK( min_size == STEEM_MIN_BLOCK_SIZE );
+   BOOST_CHECK( min_size == BEARS_MIN_BLOCK_SIZE );
 }
 
 BOOST_AUTO_TEST_CASE( legacy_signed_transaction )
 {
-   using steem::plugins::condenser_api::legacy_signed_transaction;
+   using bears::plugins::condenser_api::legacy_signed_transaction;
 
    signed_transaction tx;
    vote_operation op;
    op.voter = "alice";
    op.author = "bob";
    op.permlink = "foobar";
-   op.weight = STEEM_100_PERCENT;
+   op.weight = BEARS_100_PERCENT;
    tx.ref_block_num = 4000;
    tx.ref_block_prefix = 4000000000;
    tx.expiration = fc::time_point_sec( 1514764800 );
@@ -570,7 +570,7 @@ BOOST_AUTO_TEST_CASE( static_variant_json_test )
       transfer_operation t = op.get< transfer_operation >();
       BOOST_CHECK( t.from == "foo" );
       BOOST_CHECK( t.to == "bar" );
-      BOOST_CHECK( t.amount == asset( 1000, STEEM_SYMBOL ) );
+      BOOST_CHECK( t.amount == asset( 1000, BEARS_SYMBOL ) );
       BOOST_CHECK( t.memo == "" );
 
       json_str = "{\"type\":1,\"value\":{\"parent_author\":\"foo\",\"parent_permlink\":\"bar\",\"author\":\"foo1\",\"permlink\":\"bar1\",\"title\":\"\",\"body\":\"\",\"json_metadata\":\"\"}}";
@@ -588,7 +588,7 @@ BOOST_AUTO_TEST_CASE( static_variant_json_test )
       BOOST_CHECK( c.json_metadata == "" );
 
       json_str = "{\"type\":\"not_a_type\",\"value\":{\"from\":\"foo\",\"to\":\"bar\",\"amount\":{\"amount\":\"1000\",\"precision\":3,\"nai\":\"@@000000021\"},\"memo\":\"\"}}";
-      STEEM_REQUIRE_THROW( from_variant( fc::json::from_string( json_str ), op ), fc::assert_exception );
+      BEARS_REQUIRE_THROW( from_variant( fc::json::from_string( json_str ), op ), fc::assert_exception );
    }
    FC_LOG_AND_RETHROW();
 }
@@ -597,8 +597,8 @@ BOOST_AUTO_TEST_CASE( legacy_operation_test )
 {
    try
    {
-      auto v = fc::json::from_string( "{\"ref_block_num\": 41047, \"ref_block_prefix\": 4089157749, \"expiration\": \"2018-03-28T19:05:47\", \"operations\": [[\"witness_update\", {\"owner\": \"test\", \"url\": \"foo\", \"block_signing_key\": \"TST1111111111111111111111111111111114T1Anm\", \"props\": {\"account_creation_fee\": \"0.500 TESTS\", \"maximum_block_size\": 65536, \"sbd_interest_rate\": 0}, \"fee\": \"0.000 TESTS\"}]], \"extensions\": [], \"signatures\": [\"1f1b2d47427a46513777ae9ed032b761b504423b18350e673beb991a1b52d2381c26c36368f9cc4a72c9de3cc16bca83b269c2ea1960e28647caf151e17c35bf3f\"]}" );
-      auto ls = v.as< steem::plugins::condenser_api::legacy_signed_transaction >();
+      auto v = fc::json::from_string( "{\"ref_block_num\": 41047, \"ref_block_prefix\": 4089157749, \"expiration\": \"2018-03-28T19:05:47\", \"operations\": [[\"witness_update\", {\"owner\": \"test\", \"url\": \"foo\", \"block_signing_key\": \"TST1111111111111111111111111111111114T1Anm\", \"props\": {\"account_creation_fee\": \"0.500 TESTS\", \"maximum_block_size\": 65536, \"bsd_interest_rate\": 0}, \"fee\": \"0.000 TESTS\"}]], \"extensions\": [], \"signatures\": [\"1f1b2d47427a46513777ae9ed032b761b504423b18350e673beb991a1b52d2381c26c36368f9cc4a72c9de3cc16bca83b269c2ea1960e28647caf151e17c35bf3f\"]}" );
+      auto ls = v.as< bears::plugins::condenser_api::legacy_signed_transaction >();
       // not throwing an error here is success
    }
    FC_LOG_AND_RETHROW()

@@ -1,11 +1,11 @@
 
-#include <steem/protocol/operations.hpp>
+#include <bears/protocol/operations.hpp>
 
 #include <fc/io/json.hpp>
 
 #include <boost/algorithm/string.hpp>
 
-using namespace steem::protocol;
+using namespace bears::protocol;
 using boost::container::flat_map;
 using std::string;
 using std::vector;
@@ -15,27 +15,27 @@ struct witness_properties
    // Chain properties
    fc::optional< asset >               account_creation_fee;
    fc::optional< uint32_t >            maximum_block_size;
-   fc::optional< uint16_t >            sbd_interest_rate;
+   fc::optional< uint16_t >            bsd_interest_rate;
    fc::optional< int32_t >             account_subsidy_budget;
    fc::optional< uint32_t >            account_subsidy_decay;
 
    // Per-witness fields
    fc::optional< public_key_type >     key;
    fc::optional< public_key_type >     new_signing_key;
-   fc::optional< price >               sbd_exchange_rate;
+   fc::optional< price >               bsd_exchange_rate;
    fc::optional< std::string >         url;
 };
 
 FC_REFLECT( witness_properties,
    (account_creation_fee)
    (maximum_block_size)
-   (sbd_interest_rate)
+   (bsd_interest_rate)
    (account_subsidy_budget)
    (account_subsidy_decay)
 
    (key)
    (new_signing_key)
-   (sbd_exchange_rate)
+   (bsd_exchange_rate)
    (url)
    );
 

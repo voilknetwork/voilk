@@ -1,23 +1,23 @@
-#include <steem/plugins/reputation/reputation_plugin.hpp>
-#include <steem/plugins/reputation/reputation_objects.hpp>
+#include <bears/plugins/reputation/reputation_plugin.hpp>
+#include <bears/plugins/reputation/reputation_objects.hpp>
 
-#include <steem/chain/util/impacted.hpp>
+#include <bears/chain/util/impacted.hpp>
 
-#include <steem/protocol/config.hpp>
+#include <bears/protocol/config.hpp>
 
-#include <steem/chain/database.hpp>
-#include <steem/chain/index.hpp>
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
+#include <bears/chain/database.hpp>
+#include <bears/chain/index.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
 #include <memory>
 
-namespace steem { namespace plugins { namespace reputation {
+namespace bears { namespace plugins { namespace reputation {
 
-using namespace steem::protocol;
+using namespace bears::protocol;
 
 namespace detail {
 
@@ -25,7 +25,7 @@ class reputation_plugin_impl
 {
    public:
       reputation_plugin_impl( reputation_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
       ~reputation_plugin_impl() {}
 
@@ -86,7 +86,7 @@ struct pre_operation_visitor
                {
                   db.modify( *author_rep, [&]( reputation_object& r )
                   {
-                     r.reputation -= ( cv->rshares >> 6 ); // Shift away precision from vests. It is noise
+                     r.reputation -= ( cv->rshares >> 6 ); // Shift away precision from coins. It is noise
                   });
                }
             }
@@ -138,7 +138,7 @@ struct post_operation_visitor
             db.create< reputation_object >( [&]( reputation_object& r )
             {
                r.account = op.author;
-               r.reputation = ( cv->rshares >> 6 ); // Shift away precision from vests. It is noise
+               r.reputation = ( cv->rshares >> 6 ); // Shift away precision from coins. It is noise
             });
          }
          else
@@ -148,7 +148,7 @@ struct post_operation_visitor
 
             db.modify( *author_rep, [&]( reputation_object& r )
             {
-               r.reputation += ( cv->rshares >> 6 ); // Shift away precision from vests. It is noise
+               r.reputation += ( cv->rshares >> 6 ); // Shift away precision from coins. It is noise
             });
          }
       }
@@ -215,4 +215,4 @@ void reputation_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // steem::plugins::reputation
+} } } // bears::plugins::reputation

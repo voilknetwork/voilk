@@ -1,12 +1,12 @@
-#include <steem/plugins/follow/follow_plugin.hpp>
-#include <steem/plugins/follow/follow_operations.hpp>
-#include <steem/plugins/follow/follow_objects.hpp>
-#include <steem/plugins/follow/inc_performance.hpp>
+#include <bears/plugins/follow/follow_plugin.hpp>
+#include <bears/plugins/follow/follow_operations.hpp>
+#include <bears/plugins/follow/follow_objects.hpp>
+#include <bears/plugins/follow/inc_performance.hpp>
 
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/comment_object.hpp>
 
-namespace steem { namespace plugins { namespace follow {
+namespace bears { namespace plugins { namespace follow {
 
 void follow_evaluator::do_apply( const follow_operation& o )
 {
@@ -216,4 +216,4 @@ void reblog_evaluator::do_apply( const reblog_operation& o )
    FC_CAPTURE_AND_RETHROW( (o) )
 }
 
-} } } // steem::follow
+} } } // bears::follow

@@ -1,20 +1,20 @@
-#include <steem/blockchain_statistics/blockchain_statistics_api.hpp>
+#include <bears/blockchain_statistics/blockchain_statistics_api.hpp>
 
-#include <steem/app/impacted.hpp>
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
-#include <steem/chain/history_object.hpp>
+#include <bears/app/impacted.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/comment_object.hpp>
+#include <bears/chain/history_object.hpp>
 
-#include <steem/chain/database.hpp>
-#include <steem/chain/index.hpp>
-#include <steem/chain/operation_notification.hpp>
+#include <bears/chain/database.hpp>
+#include <bears/chain/index.hpp>
+#include <bears/chain/operation_notification.hpp>
 
-namespace steem { namespace blockchain_statistics {
+namespace bears { namespace blockchain_statistics {
 
 namespace detail
 {
 
-using namespace steem::protocol;
+using namespace bears::protocol;
 
 class blockchain_statistics_plugin_impl
 {
@@ -53,10 +53,10 @@ struct operation_process
       {
          b.transfers++;
 
-         if( op.amount.symbol == STEEM_SYMBOL )
-            b.steem_transferred += op.amount.amount;
+         if( op.amount.symbol == BEARS_SYMBOL )
+            b.bears_transferred += op.amount.amount;
          else
-            b.sbd_transferred += op.amount.amount;
+            b.bsd_transferred += op.amount.amount;
       });
    }
 
@@ -64,7 +64,7 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.sbd_paid_as_interest += op.interest.amount;
+         b.bsd_paid_as_interest += op.interest.amount;
       });
    }
 
@@ -154,8 +154,8 @@ struct operation_process
       _db.modify( _bucket, [&]( bucket_object& b )
       {
          b.payouts++;
-         b.sbd_paid_to_authors += op.sbd_payout.amount;
-         b.vests_paid_to_authors += op.vesting_payout.amount;
+         b.bsd_paid_to_authors += op.bsd_payout.amount;
+         b.coins_paid_to_authors += op.coining_payout.amount;
       });
    }
 
@@ -163,7 +163,7 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.vests_paid_to_curators += op.reward.amount;
+         b.coins_paid_to_curators += op.reward.amount;
       });
    }
 
@@ -175,29 +175,29 @@ struct operation_process
       });
    }
 
-   void operator()( const transfer_to_vesting_operation& op )const
+   void operator()( const transfer_to_coining_operation& op )const
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.transfers_to_vesting++;
-         b.steem_vested += op.amount.amount;
+         b.transfers_to_coining++;
+         b.bears_coined += op.amount.amount;
       });
    }
 
-   void operator()( const fill_vesting_withdraw_operation& op )const
+   void operator()( const fill_coining_withdraw_operation& op )const
    {
       auto& account = _db.get_account( op.from_account );
 
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.vesting_withdrawals_processed++;
-         if( op.deposited.symbol == STEEM_SYMBOL )
-            b.vests_withdrawn += op.withdrawn.amount;
+         b.coining_withdrawals_processed++;
+         if( op.deposited.symbol == BEARS_SYMBOL )
+            b.coins_withdrawn += op.withdrawn.amount;
          else
-            b.vests_transferred += op.withdrawn.amount;
+            b.coins_transferred += op.withdrawn.amount;
 
-         if( account.vesting_withdraw_rate.amount == 0 )
-            b.finished_vesting_withdrawals++;
+         if( account.coining_withdraw_rate.amount == 0 )
+            b.finished_coining_withdrawals++;
       });
    }
 
@@ -229,8 +229,8 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.sbd_conversion_requests_created++;
-         b.sbd_to_be_converted += op.amount.amount;
+         b.bsd_conversion_requests_created++;
+         b.bsd_to_be_converted += op.amount.amount;
       });
    }
 
@@ -238,8 +238,8 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.sbd_conversion_requests_filled++;
-         b.steem_converted += op.amount_out.amount;
+         b.bsd_conversion_requests_filled++;
+         b.bears_converted += op.amount_out.amount;
       });
    }
 };
@@ -351,28 +351,28 @@ void blockchain_statistics_plugin_impl::pre_operation( const operation_notificat
                b.root_comments_deleted++;
          });
       }
-      else if( o.op.which() == operation::tag< withdraw_vesting_operation >::value )
+      else if( o.op.which() == operation::tag< withdraw_coining_operation >::value )
       {
-         withdraw_vesting_operation op = o.op.get< withdraw_vesting_operation >();
+         withdraw_coining_operation op = o.op.get< withdraw_coining_operation >();
          auto& account = db.get_account( op.account );
          const auto& bucket = db.get(bucket_id);
 
-         auto new_vesting_withdrawal_rate = op.vesting_shares.amount / STEEM_VESTING_WITHDRAW_INTERVALS;
-         if( op.vesting_shares.amount > 0 && new_vesting_withdrawal_rate == 0 )
-            new_vesting_withdrawal_rate = 1;
+         auto new_coining_withdrawal_rate = op.coining_shares.amount / BEARS_COINING_WITHDRAW_INTERVALS;
+         if( op.coining_shares.amount > 0 && new_coining_withdrawal_rate == 0 )
+            new_coining_withdrawal_rate = 1;
 
-         if( !db.has_hardfork( STEEM_HARDFORK_0_1 ) )
-            new_vesting_withdrawal_rate *= 1000000;
+         if( !db.has_hardfork( BEARS_HARDFORK_0_1 ) )
+            new_coining_withdrawal_rate *= 1000000;
 
          db.modify( bucket, [&]( bucket_object& b )
          {
-            if( account.vesting_withdraw_rate.amount > 0 )
-               b.modified_vesting_withdrawal_requests++;
+            if( account.coining_withdraw_rate.amount > 0 )
+               b.modified_coining_withdrawal_requests++;
             else
-               b.new_vesting_withdrawal_requests++;
+               b.new_coining_withdrawal_requests++;
 
-            // TODO: Figure out how to change delta when a vesting withdraw finishes. Have until March 24th 2018 to figure that out...
-            b.vesting_withdraw_rate_delta += new_vesting_withdrawal_rate - account.vesting_withdraw_rate.amount;
+            // TODO: Figure out how to change delta when a coining withdraw finishes. Have until March 24th 2018 to figure that out...
+            b.coining_withdraw_rate_delta += new_coining_withdrawal_rate - account.coining_withdraw_rate.amount;
          });
       }
    }
@@ -468,6 +468,6 @@ uint32_t blockchain_statistics_plugin::get_max_history_per_bucket() const
    return _my->_maximum_history_per_bucket_size;
 }
 
-} } // steem::blockchain_statistics
+} } // bears::blockchain_statistics
 
-STEEM_DEFINE_PLUGIN( blockchain_statistics, steem::blockchain_statistics::blockchain_statistics_plugin );
+BEARS_DEFINE_PLUGIN( blockchain_statistics, bears::blockchain_statistics::blockchain_statistics_plugin );

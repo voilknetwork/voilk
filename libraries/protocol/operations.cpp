@@ -1,8 +1,8 @@
-#include <steem/protocol/operations.hpp>
+#include <bears/protocol/operations.hpp>
 
-#include <steem/protocol/operation_util_impl.hpp>
+#include <bears/protocol/operation_util_impl.hpp>
 
-namespace steem { namespace protocol {
+namespace bears { namespace protocol {
 
 struct is_market_op_visitor {
    typedef bool result_type;
@@ -12,7 +12,7 @@ struct is_market_op_visitor {
    bool operator()( const limit_order_create_operation& )const { return true; }
    bool operator()( const limit_order_cancel_operation& )const { return true; }
    bool operator()( const transfer_operation& )const { return true; }
-   bool operator()( const transfer_to_vesting_operation& )const { return true; }
+   bool operator()( const transfer_to_coining_operation& )const { return true; }
 };
 
 bool is_market_operation( const operation& op ) {
@@ -32,6 +32,6 @@ bool is_virtual_operation( const operation& op )
    return op.visit( is_vop_visitor() );
 }
 
-} } // steem::protocol
+} } // bears::protocol
 
-STEEM_DEFINE_OPERATION_TYPE( steem::protocol::operation )
+BEARS_DEFINE_OPERATION_TYPE( bears::protocol::operation )

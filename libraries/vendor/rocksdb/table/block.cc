@@ -254,7 +254,7 @@ bool BlockIter::ParseNextKey() {
              value_type == ValueType::kTypeDeletion);
 
       if (key_pinned_) {
-        // TODO(tec): Investigate updating the seqno in the loaded block
+        // TODO(tec): Incoinigate updating the seqno in the loaded block
         // directly instead of doing a copy and update.
 
         // We cannot use the key address in the block directly because

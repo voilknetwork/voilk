@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 #include <stdint.h>
-#include <steem/utilities/words.hpp>
+#include <bears/utilities/words.hpp>
 
-namespace steem { namespace words {
+namespace bears { namespace words {
 
 const const_char_ptr word_list[] = {
 "a",
@@ -11704,7 +11704,7 @@ const const_char_ptr word_list[] = {
 "devata",
 "develin",
 "develop",
-"devest",
+"decoin",
 "deviant",
 "deviate",
 "device",
@@ -12269,7 +12269,7 @@ const const_char_ptr word_list[] = {
 "divers",
 "diverse",
 "divert",
-"divest",
+"dicoin",
 "divide",
 "divided",
 "divider",
@@ -14362,7 +14362,7 @@ const const_char_ptr word_list[] = {
 "estado",
 "estamp",
 "estate",
-"esteem",
+"ebears",
 "ester",
 "estevin",
 "estival",
@@ -14510,7 +14510,7 @@ const const_char_ptr word_list[] = {
 "evertor",
 "everwho",
 "every",
-"evestar",
+"ecoinar",
 "evetide",
 "eveweed",
 "evict",
@@ -19130,7 +19130,7 @@ const const_char_ptr word_list[] = {
 "hartal",
 "hartin",
 "hartite",
-"harvest",
+"harcoin",
 "hasan",
 "hash",
 "hashab",
@@ -21159,7 +21159,7 @@ const const_char_ptr word_list[] = {
 "invent",
 "inverse",
 "invert",
-"invest",
+"incoin",
 "invigor",
 "invised",
 "invital",
@@ -29357,7 +29357,7 @@ const const_char_ptr word_list[] = {
 "overweb",
 "overwet",
 "overwin",
-"ovest",
+"ocoin",
 "ovey",
 "ovicell",
 "ovicide",
@@ -34864,7 +34864,7 @@ const const_char_ptr word_list[] = {
 "reverso",
 "revert",
 "revery",
-"revest",
+"recoin",
 "revet",
 "revete",
 "revie",
@@ -46117,7 +46117,7 @@ const const_char_ptr word_list[] = {
 "unvalue",
 "unveil",
 "unvenom",
-"unvest",
+"uncoin",
 "unvexed",
 "unvicar",
 "unvisor",
@@ -47175,16 +47175,16 @@ const const_char_ptr word_list[] = {
 "vespine",
 "vespoid",
 "vessel",
-"vest",
-"vestal",
-"vestee",
-"vester",
-"vestige",
-"vesting",
-"vestlet",
-"vestral",
-"vestry",
-"vesture",
+"coin",
+"coinal",
+"coinee",
+"coiner",
+"coinige",
+"coining",
+"coinlet",
+"coinral",
+"coinry",
+"coinure",
 "vet",
 "veta",
 "vetanda",
@@ -49780,4 +49780,4 @@ void hide_unused_warning() {
   (void)word_list;
 }
 
-} } // steem::words
+} } // bears::words

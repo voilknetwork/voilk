@@ -8,7 +8,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.640938 VESTS"
+                        "coining_shares": "4587.640938 COINS"
                     }
                 ],
                 "op_in_trx": 0,
@@ -26,7 +26,7 @@
                     "vote",
                     {
                         "author": "blocktrades",
-                        "permlink": "steem-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
                         "voter": "dilzeem",
                         "weight": 10000
                     }
@@ -47,10 +47,10 @@
                     {
                         "author": "mikegold10",
                         "body": "Just use the market on this site and forget about OpenLedger and its fees.",
-                        "json_metadata": "{\"tags\":[\"steem\"]}",
+                        "json_metadata": "{\"tags\":[\"bears\"]}",
                         "parent_author": "blocktrades",
-                        "parent_permlink": "steem-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
-                        "permlink": "re-blocktrades-steem-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading-20160715t165115443z",
+                        "parent_permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "re-blocktrades-bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading-20160715t165115443z",
                         "title": ""
                     }
                 ],
@@ -69,7 +69,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.597804 VESTS"
+                        "coining_shares": "4587.597804 COINS"
                     }
                 ],
                 "op_in_trx": 0,
@@ -87,7 +87,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.567667 VESTS"
+                        "coining_shares": "4587.567667 COINS"
                     }
                 ],
                 "op_in_trx": 0,
@@ -105,7 +105,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.552598 VESTS"
+                        "coining_shares": "4587.552598 COINS"
                     }
                 ],
                 "op_in_trx": 0,
@@ -123,7 +123,7 @@
                     "vote",
                     {
                         "author": "blocktrades",
-                        "permlink": "steem-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
                         "voter": "rufai",
                         "weight": 10000
                     }
@@ -143,7 +143,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.519070 VESTS"
+                        "coining_shares": "4587.519070 COINS"
                     }
                 ],
                 "op_in_trx": 0,
@@ -161,7 +161,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.487614 VESTS"
+                        "coining_shares": "4587.487614 COINS"
                     }
                 ],
                 "op_in_trx": 0,
@@ -179,7 +179,7 @@
                     "vote",
                     {
                         "author": "blocktrades",
-                        "permlink": "steem-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
                         "voter": "george-goya",
                         "weight": 10000
                     }
@@ -199,7 +199,7 @@
                     "producer_reward",
                     {
                         "producer": "blocktrades",
-                        "vesting_shares": "4587.459550 VESTS"
+                        "coining_shares": "4587.459550 COINS"
                     }
                 ],
                 "op_in_trx": 0,

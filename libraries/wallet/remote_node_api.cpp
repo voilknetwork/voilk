@@ -1,6 +1,6 @@
-#include<steem/wallet/remote_node_api.hpp>
+#include<bears/wallet/remote_node_api.hpp>
 
-namespace steem { namespace wallet{
+namespace bears { namespace wallet{
 
 // This class exists only to provide method signature information to fc::api, not to execute calls.
 
@@ -129,7 +129,7 @@ optional< condenser_api::api_escrow_object > remote_node_api::get_escrow( accoun
    FC_ASSERT( false );
 }
 
-vector< database_api::api_withdraw_vesting_route_object > remote_node_api::get_withdraw_routes( account_name_type, condenser_api::withdraw_route_type )
+vector< database_api::api_withdraw_coining_route_object > remote_node_api::get_withdraw_routes( account_name_type, condenser_api::withdraw_route_type )
 {
    FC_ASSERT( false );
 }
@@ -149,12 +149,12 @@ vector< condenser_api::api_savings_withdraw_object > remote_node_api::get_saving
    FC_ASSERT( false );
 }
 
-vector< condenser_api::api_vesting_delegation_object > remote_node_api::get_vesting_delegations( account_name_type, account_name_type, uint32_t )
+vector< condenser_api::api_coining_delegation_object > remote_node_api::get_coining_delegations( account_name_type, account_name_type, uint32_t )
 {
    FC_ASSERT( false );
 }
 
-vector< condenser_api::api_vesting_delegation_expiration_object > remote_node_api::get_expiring_vesting_delegations( account_name_type, time_point_sec, uint32_t )
+vector< condenser_api::api_coining_delegation_expiration_object > remote_node_api::get_expiring_coining_delegations( account_name_type, time_point_sec, uint32_t )
 {
    FC_ASSERT( false );
 }

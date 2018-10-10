@@ -49,7 +49,7 @@ SuperFastHash   1.2 GB/s      1       Paul Hsieh
 CityHash64      1.05 GB/s    10       Pike & Alakuijala
 FNV             0.55 GB/s     5       Fowler, Noll, Vo
 CRC32           0.43 GB/s     9
-MD5-32          0.33 GB/s    10       Ronald L. Rivest
+MD5-32          0.33 GB/s    10       Ronald L. Ricoin
 SHA1-32         0.28 GB/s    10
 
 Q.Score is a measure of quality of the hash function.

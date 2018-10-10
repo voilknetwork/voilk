@@ -1,11 +1,11 @@
 
 
-#include <steem/plugins/auth_util/auth_util_api.hpp>
-#include <steem/plugins/auth_util/auth_util_plugin.hpp>
+#include <bears/plugins/auth_util/auth_util_api.hpp>
+#include <bears/plugins/auth_util/auth_util_plugin.hpp>
 
 #include <string>
 
-namespace steem { namespace plugin { namespace auth_util {
+namespace bears { namespace plugin { namespace auth_util {
 
 auth_util_plugin::auth_util_plugin( application* app ) : plugin( app ) {}
 auth_util_plugin::~auth_util_plugin() {}
@@ -28,6 +28,6 @@ void auth_util_plugin::plugin_shutdown()
 {
 }
 
-} } } // steem::plugin::auth_util
+} } } // bears::plugin::auth_util
 
-STEEM_DEFINE_PLUGIN( auth_util, steem::plugin::auth_util::auth_util_plugin )
+BEARS_DEFINE_PLUGIN( auth_util, bears::plugin::auth_util::auth_util_plugin )

@@ -1,6 +1,6 @@
-#include <steem/plugins/webserver/webserver_plugin.hpp>
+#include <bears/plugins/webserver/webserver_plugin.hpp>
 
-#include <steem/plugins/chain/chain_plugin.hpp>
+#include <bears/plugins/chain/chain_plugin.hpp>
 
 #include <fc/network/ip.hpp>
 #include <fc/log/logger_config.hpp>
@@ -24,7 +24,7 @@
 #include <memory>
 #include <iostream>
 
-namespace steem { namespace plugins { namespace webserver {
+namespace bears { namespace plugins { namespace webserver {
 
 namespace asio = boost::asio;
 
@@ -376,4 +376,4 @@ void webserver_plugin::plugin_shutdown()
    my->stop_webserver();
 }
 
-} } } // steem::plugins::webserver
+} } } // bears::plugins::webserver

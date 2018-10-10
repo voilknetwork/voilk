@@ -1,40 +1,40 @@
 
-#include <steem/plugins/block_data_export/block_data_export_plugin.hpp>
+#include <bears/plugins/block_data_export/block_data_export_plugin.hpp>
 
-#include <steem/plugins/rc/rc_curve.hpp>
-#include <steem/plugins/rc/rc_export_objects.hpp>
-#include <steem/plugins/rc/rc_plugin.hpp>
-#include <steem/plugins/rc/rc_objects.hpp>
+#include <bears/plugins/rc/rc_curve.hpp>
+#include <bears/plugins/rc/rc_export_objects.hpp>
+#include <bears/plugins/rc/rc_plugin.hpp>
+#include <bears/plugins/rc/rc_objects.hpp>
 
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/database.hpp>
-#include <steem/chain/database_exceptions.hpp>
-#include <steem/chain/index.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/database.hpp>
+#include <bears/chain/database_exceptions.hpp>
+#include <bears/chain/index.hpp>
 
-#include <steem/jsonball/jsonball.hpp>
+#include <bears/jsonball/jsonball.hpp>
 
-#define STEEM_RC_REGEN_TIME   (60*60*24*5)
+#define BEARS_RC_REGEN_TIME   (60*60*24*5)
 
-namespace steem { namespace plugins { namespace rc {
+namespace bears { namespace plugins { namespace rc {
 
-using steem::plugins::block_data_export::block_data_export_plugin;
+using bears::plugins::block_data_export::block_data_export_plugin;
 
 namespace detail {
 
 using chain::plugin_exception;
-using steem::chain::util::manabar_params;
+using bears::chain::util::manabar_params;
 
 class rc_plugin_impl
 {
    public:
       rc_plugin_impl( rc_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
          _self( _plugin )
       {
          _skip.skip_reject_not_enough_rc = 0;
          _skip.skip_deduct_rc = 0;
          _skip.skip_negative_rc_balance = 0;
-         _skip.skip_reject_unknown_delta_vests = 1;
+         _skip.skip_reject_unknown_delta_coins = 1;
       }
 
       void on_post_apply_block( const block_notification& note );
@@ -83,12 +83,12 @@ class rc_plugin_impl
       boost::signals2::connection   _post_apply_operation_conn;
 };
 
-inline int64_t get_next_vesting_withdrawal( const account_object& account )
+inline int64_t get_next_coining_withdrawal( const account_object& account )
 {
    int64_t total_left = account.to_withdraw.value - account.withdrawn.value;
-   int64_t withdraw_per_period = account.vesting_withdraw_rate.amount.value;
+   int64_t withdraw_per_period = account.coining_withdraw_rate.amount.value;
    int64_t next_withdrawal = (withdraw_per_period <= total_left) ? withdraw_per_period : total_left;
-   bool is_done = (account.next_vesting_withdrawal == fc::time_point_sec::maximum());
+   bool is_done = (account.next_coining_withdrawal == fc::time_point_sec::maximum());
    return is_done ? 0 : next_withdrawal;
 }
 
@@ -103,19 +103,19 @@ void create_rc_account( database& db, uint32_t now, const account_object& accoun
          return;
    }
 
-   if( max_rc_creation_adjustment.symbol == STEEM_SYMBOL )
+   if( max_rc_creation_adjustment.symbol == BEARS_SYMBOL )
    {
       const dynamic_global_property_object& gpo = db.get_dynamic_global_properties();
-      max_rc_creation_adjustment = max_rc_creation_adjustment * gpo.get_vesting_share_price();
+      max_rc_creation_adjustment = max_rc_creation_adjustment * gpo.get_coining_share_price();
    }
-   else if( max_rc_creation_adjustment.symbol == VESTS_SYMBOL )
+   else if( max_rc_creation_adjustment.symbol == COINS_SYMBOL )
    {
-      wlog( "Encountered max_rc_creation_adjustment.symbol == VESTS_SYMBOL creating account ${acct}", ("acct", account.name) );
+      wlog( "Encountered max_rc_creation_adjustment.symbol == COINS_SYMBOL creating account ${acct}", ("acct", account.name) );
    }
    else
    {
       elog( "Encountered unknown max_rc_creation_adjustment creating account ${acct}", ("acct", account.name) );
-      max_rc_creation_adjustment = asset( 0, VESTS_SYMBOL );
+      max_rc_creation_adjustment = asset( 0, COINS_SYMBOL );
    }
 
    db.create< rc_account_object >( [&]( rc_account_object& rca )
@@ -221,7 +221,7 @@ void use_account_rcs(
    {
       if( db.is_producing() )
       {
-         STEEM_ASSERT( false, plugin_exception,
+         BEARS_ASSERT( false, plugin_exception,
             "Tried to execute transaction with no resource user",
             );
       }
@@ -234,7 +234,7 @@ void use_account_rcs(
 
    manabar_params mbparams;
    mbparams.max_mana = get_maximum_rc( account, rc_account );
-   mbparams.regen_time = STEEM_RC_REGEN_TIME;
+   mbparams.regen_time = BEARS_RC_REGEN_TIME;
 
    db.modify( rc_account, [&]( rc_account_object& rca )
    {
@@ -242,12 +242,12 @@ void use_account_rcs(
 
       bool has_mana = rc_account.rc_manabar.has_mana( rc );
 
-      if( (!skip.skip_reject_not_enough_rc) && db.has_hardfork( STEEM_HARDFORK_0_20 ) )
+      if( (!skip.skip_reject_not_enough_rc) && db.has_hardfork( BEARS_HARDFORK_0_20 ) )
       {
          if( db.is_producing() )
          {
-            STEEM_ASSERT( has_mana, plugin_exception,
-               "Account: ${account} has ${rc_current} RC, needs ${rc_needed} RC. Please wait to transact, or power up STEEM.",
+            BEARS_ASSERT( has_mana, plugin_exception,
+               "Account: ${account} has ${rc_current} RC, needs ${rc_needed} RC. Please wait to transact, or power up BEARS.",
                ("account", account_name)
                ("rc_needed", rc)
                ("rc_current", rca.rc_manabar.current_mana)
@@ -286,7 +286,7 @@ void rc_plugin_impl::on_post_apply_transaction( const transaction_notification& 
    {
       dlog( "processing tx: ${txid} ${tx}", ("txid", note.transaction_id)("tx", note.transaction) );
    }
-   int64_t rc_regen = (gpo.total_vesting_shares.amount.value / (STEEM_RC_REGEN_TIME / STEEM_BLOCK_INTERVAL));
+   int64_t rc_regen = (gpo.total_coining_shares.amount.value / (BEARS_RC_REGEN_TIME / BEARS_BLOCK_INTERVAL));
 
    rc_transaction_info tx_info;
 
@@ -302,7 +302,7 @@ void rc_plugin_impl::on_post_apply_transaction( const transaction_notification& 
    // When rc_regen is 0, everything is free
    if( rc_regen > 0 )
    {
-      for( size_t i=0; i<STEEM_NUM_RESOURCE_TYPES; i++ )
+      for( size_t i=0; i<BEARS_NUM_RESOURCE_TYPES; i++ )
       {
          const rc_resource_params& params = params_obj.resource_param_array[i];
          int64_t pool = pool_obj.pool_array[i];
@@ -318,7 +318,7 @@ void rc_plugin_impl::on_post_apply_transaction( const transaction_notification& 
    use_account_rcs( _db, gpo, tx_info.resource_user, total_cost, _skip );
 
    std::shared_ptr< exp_rc_data > export_data =
-      steem::plugins::block_data_export::find_export_data< exp_rc_data >( STEEM_RC_PLUGIN_NAME );
+      bears::plugins::block_data_export::find_export_data< exp_rc_data >( BEARS_RC_PLUGIN_NAME );
    if( (gpo.head_block_number % 10000) == 0 )
    {
       dlog( "${t} : ${i}", ("t", gpo.time)("i", tx_info) );
@@ -363,7 +363,7 @@ void rc_plugin_impl::on_post_apply_block( const block_notification& note )
    }
    */
 
-   if( gpo.total_vesting_shares.amount <= 0 )
+   if( gpo.total_coining_shares.amount <= 0 )
    {
       return;
    }
@@ -400,7 +400,7 @@ void rc_plugin_impl::on_post_apply_block( const block_notification& note )
       {
          bool debug_print = ((gpo.head_block_number % 10000) == 0);
 
-         for( size_t i=0; i<STEEM_NUM_RESOURCE_TYPES; i++ )
+         for( size_t i=0; i<BEARS_NUM_RESOURCE_TYPES; i++ )
          {
             const rd_dynamics_params& params = params_obj.resource_param_array[i].resource_dynamics_params;
             int64_t& pool = pool_obj.pool_array[i];
@@ -436,7 +436,7 @@ void rc_plugin_impl::on_post_apply_block( const block_notification& note )
                double k = 27.027027027027028;
                double a = double(params.pool_eq - pool);
                a /= k*double(pool);
-               dlog( "a=${a}   aR=${aR}", ("a", a)("aR", a*gpo.total_vesting_shares.amount.value/STEEM_RC_REGEN_TIME) );
+               dlog( "a=${a}   aR=${aR}", ("a", a)("aR", a*gpo.total_coining_shares.amount.value/BEARS_RC_REGEN_TIME) );
             }
          }
          if( debug_print )
@@ -446,7 +446,7 @@ void rc_plugin_impl::on_post_apply_block( const block_notification& note )
       } );
 
    std::shared_ptr< exp_rc_data > export_data =
-      steem::plugins::block_data_export::find_export_data< exp_rc_data >( STEEM_RC_PLUGIN_NAME );
+      bears::plugins::block_data_export::find_export_data< exp_rc_data >( BEARS_RC_PLUGIN_NAME );
    if( export_data )
       export_data->block_info = block_info;
 }
@@ -454,7 +454,7 @@ void rc_plugin_impl::on_post_apply_block( const block_notification& note )
 void rc_plugin_impl::on_first_block()
 {
    // Initial values are located at `libraries/jsonball/data/resource_parameters.json`
-   std::string resource_params_json = steem::jsonball::get_resource_parameters();
+   std::string resource_params_json = bears::jsonball::get_resource_parameters();
    fc::variant resource_params_var = fc::json::from_string( resource_params_json, fc::json::strict_parser );
    std::vector< std::pair< fc::variant, std::pair< fc::variant_object, fc::variant_object > > > resource_params_pairs;
    fc::from_variant( resource_params_var, resource_params_pairs );
@@ -479,7 +479,7 @@ void rc_plugin_impl::on_first_block()
    _db.create< rc_pool_object >(
       [&]( rc_pool_object& pool_obj )
       {
-         for( size_t i=0; i<STEEM_NUM_RESOURCE_TYPES; i++ )
+         for( size_t i=0; i<BEARS_NUM_RESOURCE_TYPES; i++ )
          {
             const rc_resource_params& params = params_obj.resource_param_array[i];
             pool_obj.pool_array[i] = params.resource_dynamics_params.pool_eq;
@@ -491,7 +491,7 @@ void rc_plugin_impl::on_first_block()
    const auto& idx = _db.get_index< account_index >().indices().get< by_id >();
    for( auto it=idx.begin(); it!=idx.end(); ++it )
    {
-      create_rc_account( _db, now.sec_since_epoch(), *it, asset(0, VESTS_SYMBOL ) );
+      create_rc_account( _db, now.sec_since_epoch(), *it, asset(0, COINS_SYMBOL ) );
    }
 
    return;
@@ -517,7 +517,7 @@ account_name_type get_worker_name( const pow2_work& work )
 //
 // This visitor performs the following functions:
 //
-// - Call regenerate() when an account's vesting shares are about to change
+// - Call regenerate() when an account's coining shares are about to change
 // - Save regenerated account names in a local array for further (post-operation) processing
 //
 struct pre_apply_operation_visitor
@@ -528,7 +528,7 @@ struct pre_apply_operation_visitor
    uint32_t                                 _current_time = 0;
    uint32_t                                 _current_block_number = 0;
    account_name_type                        _current_witness;
-   fc::optional< price >                    _vesting_share_price;
+   fc::optional< price >                    _coining_share_price;
    rc_plugin_skip_flags                     _skip;
 
    pre_apply_operation_visitor( database& db ) : _db(db)
@@ -538,23 +538,23 @@ struct pre_apply_operation_visitor
    {
       //
       // Since RC tracking is non-consensus, we must rely on consensus to forbid
-      // transferring / delegating VESTS that haven't regenerated voting power.
+      // transferring / delegating COINS that haven't regenerated voting power.
       //
       // TODO:  Issue number
       //
-      static_assert( STEEM_RC_REGEN_TIME <= STEEM_VOTING_MANA_REGENERATION_SECONDS, "RC regen time must be smaller than vote regen time" );
+      static_assert( BEARS_RC_REGEN_TIME <= BEARS_VOTING_MANA_REGENERATION_SECONDS, "RC regen time must be smaller than vote regen time" );
 
       // ilog( "regenerate(${a})", ("a", account.name) );
 
       manabar_params mbparams;
       mbparams.max_mana = get_maximum_rc( account, rc_account );
-      mbparams.regen_time = STEEM_RC_REGEN_TIME;
+      mbparams.regen_time = BEARS_RC_REGEN_TIME;
 
       if( mbparams.max_mana != rc_account.last_max_rc )
       {
-         if( !_skip.skip_reject_unknown_delta_vests )
+         if( !_skip.skip_reject_unknown_delta_coins )
          {
-            STEEM_ASSERT( false, plugin_exception,
+            BEARS_ASSERT( false, plugin_exception,
                "Account ${a} max RC changed from ${old} to ${new} without triggering an op, noticed on block ${b}",
                ("a", account.name)("old", rc_account.last_max_rc)("new", mbparams.max_mana)("b", _db.head_block_num()) );
          }
@@ -596,23 +596,23 @@ struct pre_apply_operation_visitor
       regenerate( op.creator );
    }
 
-   void operator()( const transfer_to_vesting_operation& op )const
+   void operator()( const transfer_to_coining_operation& op )const
    {
       account_name_type target = op.to.size() ? op.to : op.from;
       regenerate( target );
    }
 
-   void operator()( const withdraw_vesting_operation& op )const
+   void operator()( const withdraw_coining_operation& op )const
    {
       regenerate( op.account );
    }
 
-   void operator()( const set_withdraw_vesting_route_operation& op )const
+   void operator()( const set_withdraw_coining_route_operation& op )const
    {
       regenerate( op.from_account );
    }
 
-   void operator()( const delegate_vesting_shares_operation& op )const
+   void operator()( const delegate_coining_shares_operation& op )const
    {
       regenerate( op.delegator );
       regenerate( op.delegatee );
@@ -634,7 +634,7 @@ struct pre_apply_operation_visitor
       regenerate( op.author );
    }
 
-   void operator()( const fill_vesting_withdraw_operation& op )const
+   void operator()( const fill_coining_withdraw_operation& op )const
    {
       regenerate( op.from_account );
       regenerate( op.to_account );
@@ -645,7 +645,7 @@ struct pre_apply_operation_visitor
       regenerate( op.account );
    }
 
-#ifdef STEEM_ENABLE_SMT
+#ifdef BEARS_ENABLE_SMT
    void operator()( const claim_reward_balance2_operation& op )const
    {
       regenerate( op.account );
@@ -654,7 +654,7 @@ struct pre_apply_operation_visitor
 
    void operator()( const hardfork_operation& op )const
    {
-      if( op.hardfork_id == STEEM_HARDFORK_0_1 )
+      if( op.hardfork_id == BEARS_HARDFORK_0_1 )
       {
          const auto& idx = _db.get_index< account_index >().indices().get< by_id >();
          for( auto it=idx.begin(); it!=idx.end(); ++it )
@@ -664,7 +664,7 @@ struct pre_apply_operation_visitor
       }
    }
 
-   void operator()( const return_vesting_delegation_operation& op )const
+   void operator()( const return_coining_delegation_operation& op )const
    {
       regenerate( op.account );
    }
@@ -685,7 +685,7 @@ struct pre_apply_operation_visitor
 
    void operator()( const clear_null_account_balance_operation& op )const
    {
-      regenerate( STEEM_NULL_ACCOUNT );
+      regenerate( BEARS_NULL_ACCOUNT );
    }
 
    void operator()( const pow_operation& op )const
@@ -742,7 +742,7 @@ struct post_apply_operation_visitor
    void operator()( const pow_operation& op )const
    {
       // ilog( "handling post-apply pow_operation" );
-      create_rc_account< true >( _db, _current_time, op.worker_account, asset( 0, STEEM_SYMBOL ) );
+      create_rc_account< true >( _db, _current_time, op.worker_account, asset( 0, BEARS_SYMBOL ) );
       _mod_accounts.push_back( op.worker_account );
       _mod_accounts.push_back( _current_witness );
    }
@@ -750,23 +750,23 @@ struct post_apply_operation_visitor
    void operator()( const pow2_operation& op )const
    {
       auto worker_name = get_worker_name( op.work );
-      create_rc_account< true >( _db, _current_time, worker_name, asset( 0, STEEM_SYMBOL ) );
+      create_rc_account< true >( _db, _current_time, worker_name, asset( 0, BEARS_SYMBOL ) );
       _mod_accounts.push_back( worker_name );
       _mod_accounts.push_back( _current_witness );
    }
 
-   void operator()( const transfer_to_vesting_operation& op )
+   void operator()( const transfer_to_coining_operation& op )
    {
       account_name_type target = op.to.size() ? op.to : op.from;
       _mod_accounts.push_back( target );
    }
 
-   void operator()( const withdraw_vesting_operation& op )const
+   void operator()( const withdraw_coining_operation& op )const
    {
       _mod_accounts.push_back( op.account );
    }
 
-   void operator()( const delegate_vesting_shares_operation& op )const
+   void operator()( const delegate_coining_shares_operation& op )const
    {
       _mod_accounts.push_back( op.delegator );
       _mod_accounts.push_back( op.delegatee );
@@ -788,7 +788,7 @@ struct post_apply_operation_visitor
       _mod_accounts.push_back( op.author );
    }
 
-   void operator()( const fill_vesting_withdraw_operation& op )const
+   void operator()( const fill_coining_withdraw_operation& op )const
    {
       _mod_accounts.push_back( op.from_account );
       _mod_accounts.push_back( op.to_account );
@@ -799,7 +799,7 @@ struct post_apply_operation_visitor
       _mod_accounts.push_back( op.account );
    }
 
-#ifdef STEEM_ENABLE_SMT
+#ifdef BEARS_ENABLE_SMT
    void operator()( const claim_reward_balance2_operation& op )const
    {
       _mod_accounts.push_back( op.account );
@@ -808,7 +808,7 @@ struct post_apply_operation_visitor
 
    void operator()( const hardfork_operation& op )const
    {
-      if( op.hardfork_id == STEEM_HARDFORK_0_1 )
+      if( op.hardfork_id == BEARS_HARDFORK_0_1 )
       {
          const auto& idx = _db.get_index< account_index >().indices().get< by_id >();
          for( auto it=idx.begin(); it!=idx.end(); ++it )
@@ -817,17 +817,17 @@ struct post_apply_operation_visitor
          }
       }
 
-      if( op.hardfork_id == STEEM_HARDFORK_0_20 )
+      if( op.hardfork_id == BEARS_HARDFORK_0_20 )
       {
          const auto& params = _db.get< rc_resource_param_object, by_id >( rc_resource_param_object::id_type() );
 
          _db.modify( _db.get< rc_pool_object, by_id >( rc_pool_object::id_type() ), [&]( rc_pool_object& p )
          {
-            for( size_t i = 0; i < STEEM_NUM_RESOURCE_TYPES; i++ )
+            for( size_t i = 0; i < BEARS_NUM_RESOURCE_TYPES; i++ )
             {
                p.pool_array[ i ] =
-                  ( ( uint128_t( params.resource_param_array[ i ].resource_dynamics_params.pool_eq ) * 90 * STEEM_1_PERCENT )
-                  / STEEM_100_PERCENT ).to_uint64();
+                  ( ( uint128_t( params.resource_param_array[ i ].resource_dynamics_params.pool_eq ) * 90 * BEARS_1_PERCENT )
+                  / BEARS_100_PERCENT ).to_uint64();
             }
 
             p.pool_array[ resource_new_accounts ] = 0;
@@ -835,7 +835,7 @@ struct post_apply_operation_visitor
       }
    }
 
-   void operator()( const return_vesting_delegation_operation& op )const
+   void operator()( const return_coining_delegation_operation& op )const
    {
       _mod_accounts.push_back( op.account );
    }
@@ -856,7 +856,7 @@ struct post_apply_operation_visitor
 
    void operator()( const clear_null_account_balance_operation& op )const
    {
-      _mod_accounts.push_back( STEEM_NULL_ACCOUNT );
+      _mod_accounts.push_back( BEARS_NULL_ACCOUNT );
    }
 
    template< typename Op >
@@ -877,8 +877,8 @@ void rc_plugin_impl::on_pre_apply_operation( const operation_notification& note 
    pre_apply_operation_visitor vtor( _db );
 
    // TODO: Add issue number to HF constant
-   if( _db.has_hardfork( STEEM_HARDFORK_0_20 ) )
-      vtor._vesting_share_price = gpo.get_vesting_share_price();
+   if( _db.has_hardfork( BEARS_HARDFORK_0_20 ) )
+      vtor._coining_share_price = gpo.get_coining_share_price();
 
    vtor._current_time = gpo.time.sec_since_epoch();
    vtor._current_block_number = gpo.head_block_number;
@@ -963,11 +963,11 @@ void rc_plugin::plugin_initialize( const boost::program_options::variables_map& 
       if( export_plugin != nullptr )
       {
          ilog( "Registering RC export data factory" );
-         export_plugin->register_export_data_factory( STEEM_RC_PLUGIN_NAME,
+         export_plugin->register_export_data_factory( BEARS_RC_PLUGIN_NAME,
             []() -> std::shared_ptr< exportable_block_data > { return std::make_shared< exp_rc_data >(); } );
       }
 
-      chain::database& db = appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db();
+      chain::database& db = appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
 
       my->_post_apply_block_conn = db.add_post_apply_block_handler( [&]( const block_notification& note )
          { try { my->on_post_apply_block( note ); } FC_LOG_AND_RETHROW() }, *this, 0 );
@@ -1025,12 +1025,12 @@ void exp_rc_data::to_variant( fc::variant& v )const
 
 int64_t get_maximum_rc( const account_object& account, const rc_account_object& rc_account )
 {
-   int64_t result = account.vesting_shares.amount.value;
-   result = fc::signed_sat_sub( result, account.delegated_vesting_shares.amount.value );
-   result = fc::signed_sat_add( result, account.received_vesting_shares.amount.value );
+   int64_t result = account.coining_shares.amount.value;
+   result = fc::signed_sat_sub( result, account.delegated_coining_shares.amount.value );
+   result = fc::signed_sat_add( result, account.received_coining_shares.amount.value );
    result = fc::signed_sat_add( result, rc_account.max_rc_creation_adjustment.amount.value );
-   result = fc::signed_sat_sub( result, detail::get_next_vesting_withdrawal( account ) );
+   result = fc::signed_sat_sub( result, detail::get_next_coining_withdrawal( account ) );
    return result;
 }
 
-} } } // steem::plugins::rc
+} } } // bears::plugins::rc

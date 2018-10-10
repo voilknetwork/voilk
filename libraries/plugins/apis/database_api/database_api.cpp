@@ -1,17 +1,17 @@
 #include <appbase/application.hpp>
 
-#include <steem/plugins/database_api/database_api.hpp>
-#include <steem/plugins/database_api/database_api_plugin.hpp>
+#include <bears/plugins/database_api/database_api.hpp>
+#include <bears/plugins/database_api/database_api_plugin.hpp>
 
-#include <steem/protocol/get_config.hpp>
-#include <steem/protocol/exceptions.hpp>
-#include <steem/protocol/transaction_util.hpp>
+#include <bears/protocol/get_config.hpp>
+#include <bears/protocol/exceptions.hpp>
+#include <bears/protocol/transaction_util.hpp>
 
-#include <steem/utilities/git_revision.hpp>
+#include <bears/utilities/git_revision.hpp>
 
 #include <fc/git_revision.hpp>
 
-namespace steem { namespace plugins { namespace database_api {
+namespace bears { namespace plugins { namespace database_api {
 
 class database_api_impl
 {
@@ -43,16 +43,16 @@ class database_api_impl
          (find_change_recovery_account_requests)
          (list_escrows)
          (find_escrows)
-         (list_withdraw_vesting_routes)
-         (find_withdraw_vesting_routes)
+         (list_withdraw_coining_routes)
+         (find_withdraw_coining_routes)
          (list_savings_withdrawals)
          (find_savings_withdrawals)
-         (list_vesting_delegations)
-         (find_vesting_delegations)
-         (list_vesting_delegation_expirations)
-         (find_vesting_delegation_expirations)
-         (list_sbd_conversion_requests)
-         (find_sbd_conversion_requests)
+         (list_coining_delegations)
+         (find_coining_delegations)
+         (list_coining_delegation_expirations)
+         (find_coining_delegation_expirations)
+         (list_bsd_conversion_requests)
+         (find_bsd_conversion_requests)
          (list_decline_voting_rights_requests)
          (find_decline_voting_rights_requests)
          (list_comments)
@@ -68,7 +68,7 @@ class database_api_impl
          (verify_authority)
          (verify_account_authority)
          (verify_signatures)
-#ifdef STEEM_ENABLE_SMT
+#ifdef BEARS_ENABLE_SMT
          (get_smt_next_identifier)
 #endif
       )
@@ -102,13 +102,13 @@ class database_api_impl
 database_api::database_api()
    : my( new database_api_impl() )
 {
-   JSON_RPC_REGISTER_API( STEEM_DATABASE_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( BEARS_DATABASE_API_PLUGIN_NAME );
 }
 
 database_api::~database_api() {}
 
 database_api_impl::database_api_impl()
-   : _db( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db() ) {}
+   : _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ) {}
 
 database_api_impl::~database_api_impl() {}
 
@@ -121,15 +121,15 @@ database_api_impl::~database_api_impl() {}
 
 DEFINE_API_IMPL( database_api_impl, get_config )
 {
-   return steem::protocol::get_config();
+   return bears::protocol::get_config();
 }
 
 DEFINE_API_IMPL( database_api_impl, get_version )
 {
    return get_version_return
    (
-      fc::string( STEEM_BLOCKCHAIN_VERSION ),
-      fc::string( steem::utilities::git_revision_sha ),
+      fc::string( BEARS_BLOCKCHAIN_VERSION ),
+      fc::string( bears::utilities::git_revision_sha ),
       fc::string( fc::git_revision_sha ),
       _db.get_chain_id()
    );
@@ -330,10 +330,10 @@ DEFINE_API_IMPL( database_api_impl, list_accounts )
             [&]( const account_object& a ){ return api_account_object( a, _db ); } );
          break;
       }
-      case( by_next_vesting_withdrawal ):
+      case( by_next_coining_withdrawal ):
       {
          auto key = args.start.as< std::pair< fc::time_point_sec, account_name_type > >();
-         iterate_results< chain::account_index, chain::by_next_vesting_withdrawal >(
+         iterate_results< chain::account_index, chain::by_next_coining_withdrawal >(
             boost::make_tuple( key.first, key.second ),
             result.accounts,
             args.limit,
@@ -563,13 +563,13 @@ DEFINE_API_IMPL( database_api_impl, find_escrows )
 }
 
 
-/* Withdraw Vesting Routes */
+/* Withdraw Coining Routes */
 
-DEFINE_API_IMPL( database_api_impl, list_withdraw_vesting_routes )
+DEFINE_API_IMPL( database_api_impl, list_withdraw_coining_routes )
 {
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
 
-   list_withdraw_vesting_routes_return result;
+   list_withdraw_coining_routes_return result;
    result.routes.reserve( args.limit );
 
    switch( args.order )
@@ -577,21 +577,21 @@ DEFINE_API_IMPL( database_api_impl, list_withdraw_vesting_routes )
       case( by_withdraw_route ):
       {
          auto key = args.start.as< std::pair< account_name_type, account_name_type > >();
-         iterate_results< chain::withdraw_vesting_route_index, chain::by_withdraw_route >(
+         iterate_results< chain::withdraw_coining_route_index, chain::by_withdraw_route >(
             boost::make_tuple( key.first, key.second ),
             result.routes,
             args.limit,
-            &database_api_impl::on_push_default< withdraw_vesting_route_object > );
+            &database_api_impl::on_push_default< withdraw_coining_route_object > );
          break;
       }
       case( by_destination ):
       {
-         auto key = args.start.as< std::pair< account_name_type, withdraw_vesting_route_id_type > >();
-         iterate_results< chain::withdraw_vesting_route_index, chain::by_destination >(
+         auto key = args.start.as< std::pair< account_name_type, withdraw_coining_route_id_type > >();
+         iterate_results< chain::withdraw_coining_route_index, chain::by_destination >(
             boost::make_tuple( key.first, key.second ),
             result.routes,
             args.limit,
-            &database_api_impl::on_push_default< withdraw_vesting_route_object > );
+            &database_api_impl::on_push_default< withdraw_coining_route_object > );
          break;
       }
       default:
@@ -601,15 +601,15 @@ DEFINE_API_IMPL( database_api_impl, list_withdraw_vesting_routes )
    return result;
 }
 
-DEFINE_API_IMPL( database_api_impl, find_withdraw_vesting_routes )
+DEFINE_API_IMPL( database_api_impl, find_withdraw_coining_routes )
 {
-   find_withdraw_vesting_routes_return result;
+   find_withdraw_coining_routes_return result;
 
    switch( args.order )
    {
       case( by_withdraw_route ):
       {
-         const auto& route_idx = _db.get_index< chain::withdraw_vesting_route_index, chain::by_withdraw_route >();
+         const auto& route_idx = _db.get_index< chain::withdraw_coining_route_index, chain::by_withdraw_route >();
          auto itr = route_idx.lower_bound( args.account );
 
          while( itr != route_idx.end() && itr->from_account == args.account && result.routes.size() <= DATABASE_API_SINGLE_QUERY_LIMIT )
@@ -622,7 +622,7 @@ DEFINE_API_IMPL( database_api_impl, find_withdraw_vesting_routes )
       }
       case( by_destination ):
       {
-         const auto& route_idx = _db.get_index< chain::withdraw_vesting_route_index, chain::by_destination >();
+         const auto& route_idx = _db.get_index< chain::withdraw_coining_route_index, chain::by_destination >();
          auto itr = route_idx.lower_bound( args.account );
 
          while( itr != route_idx.end() && itr->to_account == args.account && result.routes.size() <= DATABASE_API_SINGLE_QUERY_LIMIT )
@@ -707,13 +707,13 @@ DEFINE_API_IMPL( database_api_impl, find_savings_withdrawals )
 }
 
 
-/* Vesting Delegations */
+/* Coining Delegations */
 
-DEFINE_API_IMPL( database_api_impl, list_vesting_delegations )
+DEFINE_API_IMPL( database_api_impl, list_coining_delegations )
 {
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
 
-   list_vesting_delegations_return result;
+   list_coining_delegations_return result;
    result.delegations.reserve( args.limit );
 
    switch( args.order )
@@ -721,11 +721,11 @@ DEFINE_API_IMPL( database_api_impl, list_vesting_delegations )
       case( by_delegation ):
       {
          auto key = args.start.as< std::pair< account_name_type, account_name_type > >();
-         iterate_results< chain::vesting_delegation_index, chain::by_delegation >(
+         iterate_results< chain::coining_delegation_index, chain::by_delegation >(
             boost::make_tuple( key.first, key.second ),
             result.delegations,
             args.limit,
-            &database_api_impl::on_push_default< api_vesting_delegation_object > );
+            &database_api_impl::on_push_default< api_coining_delegation_object > );
          break;
       }
       default:
@@ -735,15 +735,15 @@ DEFINE_API_IMPL( database_api_impl, list_vesting_delegations )
    return result;
 }
 
-DEFINE_API_IMPL( database_api_impl, find_vesting_delegations )
+DEFINE_API_IMPL( database_api_impl, find_coining_delegations )
 {
-   find_vesting_delegations_return result;
-   const auto& delegation_idx = _db.get_index< chain::vesting_delegation_index, chain::by_delegation >();
+   find_coining_delegations_return result;
+   const auto& delegation_idx = _db.get_index< chain::coining_delegation_index, chain::by_delegation >();
    auto itr = delegation_idx.lower_bound( args.account );
 
    while( itr != delegation_idx.end() && itr->delegator == args.account && result.delegations.size() <= DATABASE_API_SINGLE_QUERY_LIMIT )
    {
-      result.delegations.push_back( api_vesting_delegation_object( *itr ) );
+      result.delegations.push_back( api_coining_delegation_object( *itr ) );
       ++itr;
    }
 
@@ -751,36 +751,36 @@ DEFINE_API_IMPL( database_api_impl, find_vesting_delegations )
 }
 
 
-/* Vesting Delegation Expirations */
+/* Coining Delegation Expirations */
 
-DEFINE_API_IMPL( database_api_impl, list_vesting_delegation_expirations )
+DEFINE_API_IMPL( database_api_impl, list_coining_delegation_expirations )
 {
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
 
-   list_vesting_delegation_expirations_return result;
+   list_coining_delegation_expirations_return result;
    result.delegations.reserve( args.limit );
 
    switch( args.order )
    {
       case( by_expiration ):
       {
-         auto key = args.start.as< std::pair< time_point_sec, vesting_delegation_expiration_id_type > >();
-         iterate_results< chain::vesting_delegation_expiration_index, chain::by_expiration >(
+         auto key = args.start.as< std::pair< time_point_sec, coining_delegation_expiration_id_type > >();
+         iterate_results< chain::coining_delegation_expiration_index, chain::by_expiration >(
             boost::make_tuple( key.first, key.second ),
             result.delegations,
             args.limit,
-            &database_api_impl::on_push_default< api_vesting_delegation_expiration_object > );
+            &database_api_impl::on_push_default< api_coining_delegation_expiration_object > );
          break;
       }
       case( by_account_expiration ):
       {
          auto key = args.start.as< std::vector< fc::variant > >();
-         FC_ASSERT( key.size() == 3, "by_account_expiration start requires 3 values. (account_name_type, time_point_sec, vesting_delegation_expiration_id_type" );
-         iterate_results< chain::vesting_delegation_expiration_index, chain::by_account_expiration >(
-            boost::make_tuple( key[0].as< account_name_type >(), key[1].as< time_point_sec >(), key[2].as< vesting_delegation_expiration_id_type >() ),
+         FC_ASSERT( key.size() == 3, "by_account_expiration start requires 3 values. (account_name_type, time_point_sec, coining_delegation_expiration_id_type" );
+         iterate_results< chain::coining_delegation_expiration_index, chain::by_account_expiration >(
+            boost::make_tuple( key[0].as< account_name_type >(), key[1].as< time_point_sec >(), key[2].as< coining_delegation_expiration_id_type >() ),
             result.delegations,
             args.limit,
-            &database_api_impl::on_push_default< api_vesting_delegation_expiration_object > );
+            &database_api_impl::on_push_default< api_coining_delegation_expiration_object > );
          break;
       }
       default:
@@ -790,10 +790,10 @@ DEFINE_API_IMPL( database_api_impl, list_vesting_delegation_expirations )
    return result;
 }
 
-DEFINE_API_IMPL( database_api_impl, find_vesting_delegation_expirations )
+DEFINE_API_IMPL( database_api_impl, find_coining_delegation_expirations )
 {
-   find_vesting_delegation_expirations_return result;
-   const auto& del_exp_idx = _db.get_index< chain::vesting_delegation_expiration_index, chain::by_account_expiration >();
+   find_coining_delegation_expirations_return result;
+   const auto& del_exp_idx = _db.get_index< chain::coining_delegation_expiration_index, chain::by_account_expiration >();
    auto itr = del_exp_idx.lower_bound( args.account );
 
    while( itr != del_exp_idx.end() && itr->delegator == args.account && result.delegations.size() <= DATABASE_API_SINGLE_QUERY_LIMIT )
@@ -806,13 +806,13 @@ DEFINE_API_IMPL( database_api_impl, find_vesting_delegation_expirations )
 }
 
 
-/* SBD Conversion Requests */
+/* BSD Conversion Requests */
 
-DEFINE_API_IMPL( database_api_impl, list_sbd_conversion_requests )
+DEFINE_API_IMPL( database_api_impl, list_bsd_conversion_requests )
 {
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
 
-   list_sbd_conversion_requests_return result;
+   list_bsd_conversion_requests_return result;
    result.requests.reserve( args.limit );
 
    switch( args.order )
@@ -844,9 +844,9 @@ DEFINE_API_IMPL( database_api_impl, list_sbd_conversion_requests )
    return result;
 }
 
-DEFINE_API_IMPL( database_api_impl, find_sbd_conversion_requests )
+DEFINE_API_IMPL( database_api_impl, find_bsd_conversion_requests )
 {
-   find_sbd_conversion_requests_return result;
+   find_bsd_conversion_requests_return result;
    const auto& convert_idx = _db.get_index< chain::convert_request_index, chain::by_owner >();
    auto itr = convert_idx.lower_bound( args.account );
 
@@ -1282,36 +1282,36 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
    get_order_book_return result;
 
-   auto max_sell = price::max( SBD_SYMBOL, STEEM_SYMBOL );
-   auto max_buy = price::max( STEEM_SYMBOL, SBD_SYMBOL );
+   auto max_sell = price::max( BSD_SYMBOL, BEARS_SYMBOL );
+   auto max_buy = price::max( BEARS_SYMBOL, BSD_SYMBOL );
 
    const auto& limit_price_idx = _db.get_index< chain::limit_order_index >().indices().get< chain::by_price >();
    auto sell_itr = limit_price_idx.lower_bound( max_sell );
    auto buy_itr  = limit_price_idx.lower_bound( max_buy );
    auto end = limit_price_idx.end();
 
-   while( sell_itr != end && sell_itr->sell_price.base.symbol == SBD_SYMBOL && result.bids.size() < args.limit )
+   while( sell_itr != end && sell_itr->sell_price.base.symbol == BSD_SYMBOL && result.bids.size() < args.limit )
    {
       auto itr = sell_itr;
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price  = 0.0;
       // cur.real_price  = (cur.order_price).to_real();
-      cur.sbd = itr->for_sale;
-      cur.steem = ( asset( itr->for_sale, SBD_SYMBOL ) * cur.order_price ).amount;
+      cur.bsd = itr->for_sale;
+      cur.bears = ( asset( itr->for_sale, BSD_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.bids.push_back( cur );
       ++sell_itr;
    }
-   while( buy_itr != end && buy_itr->sell_price.base.symbol == STEEM_SYMBOL && result.asks.size() < args.limit )
+   while( buy_itr != end && buy_itr->sell_price.base.symbol == BEARS_SYMBOL && result.asks.size() < args.limit )
    {
       auto itr = buy_itr;
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price = 0.0;
       // cur.real_price  = (~cur.order_price).to_real();
-      cur.steem   = itr->for_sale;
-      cur.sbd     = ( asset( itr->for_sale, STEEM_SYMBOL ) * cur.order_price ).amount;
+      cur.bears   = itr->for_sale;
+      cur.bsd     = ( asset( itr->for_sale, BEARS_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.asks.push_back( cur );
       ++buy_itr;
@@ -1340,8 +1340,8 @@ DEFINE_API_IMPL( database_api_impl, get_required_signatures )
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).active  ); },
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).owner   ); },
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).posting ); },
-                                                   STEEM_MAX_SIG_CHECK_DEPTH,
-                                                   _db.has_hardfork( STEEM_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
+                                                   BEARS_MAX_SIG_CHECK_DEPTH,
+                                                   _db.has_hardfork( BEARS_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
 
    return result;
 }
@@ -1373,8 +1373,8 @@ DEFINE_API_IMPL( database_api_impl, get_potential_signatures )
             result.keys.insert( k );
          return authority( auth );
       },
-      STEEM_MAX_SIG_CHECK_DEPTH,
-      _db.has_hardfork( STEEM_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical
+      BEARS_MAX_SIG_CHECK_DEPTH,
+      _db.has_hardfork( BEARS_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical
    );
 
    return result;
@@ -1386,10 +1386,10 @@ DEFINE_API_IMPL( database_api_impl, verify_authority )
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).active  ); },
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).owner   ); },
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).posting ); },
-                           STEEM_MAX_SIG_CHECK_DEPTH,
-                           STEEM_MAX_AUTHORITY_MEMBERSHIP,
-                           STEEM_MAX_SIG_CHECK_ACCOUNTS,
-                           _db.has_hardfork( STEEM_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
+                           BEARS_MAX_SIG_CHECK_DEPTH,
+                           BEARS_MAX_AUTHORITY_MEMBERSHIP,
+                           BEARS_MAX_SIG_CHECK_ACCOUNTS,
+                           _db.has_hardfork( BEARS_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
    return verify_authority_return( { true } );
 }
 
@@ -1415,7 +1415,7 @@ DEFINE_API_IMPL( database_api_impl, verify_signatures )
    flat_set< public_key_type > sig_keys;
    for( const auto&  sig : args.signatures )
    {
-      STEEM_ASSERT(
+      BEARS_ASSERT(
          sig_keys.insert( fc::ecc::public_key( sig, args.hash ) ).second,
          protocol::tx_duplicate_sig,
          "Duplicate Signature detected" );
@@ -1427,20 +1427,20 @@ DEFINE_API_IMPL( database_api_impl, verify_signatures )
    // verify authority throws on failure, catch and return false
    try
    {
-      steem::protocol::verify_authority< verify_signatures_args >(
+      bears::protocol::verify_authority< verify_signatures_args >(
          { args },
          sig_keys,
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).owner ); },
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).active ); },
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).posting ); },
-         STEEM_MAX_SIG_CHECK_DEPTH );
+         BEARS_MAX_SIG_CHECK_DEPTH );
    }
    catch( fc::exception& ) { result.valid = false; }
 
    return result;
 }
 
-#ifdef STEEM_ENABLE_SMT
+#ifdef BEARS_ENABLE_SMT
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 // SMT                                                              //
@@ -1478,16 +1478,16 @@ DEFINE_READ_APIS( database_api,
    (find_change_recovery_account_requests)
    (list_escrows)
    (find_escrows)
-   (list_withdraw_vesting_routes)
-   (find_withdraw_vesting_routes)
+   (list_withdraw_coining_routes)
+   (find_withdraw_coining_routes)
    (list_savings_withdrawals)
    (find_savings_withdrawals)
-   (list_vesting_delegations)
-   (find_vesting_delegations)
-   (list_vesting_delegation_expirations)
-   (find_vesting_delegation_expirations)
-   (list_sbd_conversion_requests)
-   (find_sbd_conversion_requests)
+   (list_coining_delegations)
+   (find_coining_delegations)
+   (list_coining_delegation_expirations)
+   (find_coining_delegation_expirations)
+   (list_bsd_conversion_requests)
+   (find_bsd_conversion_requests)
    (list_decline_voting_rights_requests)
    (find_decline_voting_rights_requests)
    (list_comments)
@@ -1503,9 +1503,9 @@ DEFINE_READ_APIS( database_api,
    (verify_authority)
    (verify_account_authority)
    (verify_signatures)
-#ifdef STEEM_ENABLE_SMT
+#ifdef BEARS_ENABLE_SMT
    (get_smt_next_identifier)
 #endif
 )
 
-} } } // steem::plugins::database_api
+} } } // bears::plugins::database_api

@@ -1,9 +1,9 @@
 
-#include <steem/schema/schema.hpp>
+#include <bears/schema/schema.hpp>
 
 #include <set>
 
-namespace steem { namespace schema {
+namespace bears { namespace schema {
 
 namespace detail {
 

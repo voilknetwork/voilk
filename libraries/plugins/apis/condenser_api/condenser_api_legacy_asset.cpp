@@ -1,6 +1,6 @@
-#include <steem/plugins/condenser_api/condenser_api_legacy_asset.hpp>
+#include <bears/plugins/condenser_api/condenser_api_legacy_asset.hpp>
 
-namespace steem { namespace plugins { namespace condenser_api {
+namespace bears { namespace plugins { namespace condenser_api {
 
 uint32_t string_to_asset_num( const char* p, uint8_t decimals )
 {
@@ -42,17 +42,17 @@ uint32_t string_to_asset_num( const char* p, uint8_t decimals )
          }
          switch( name_u64 )
          {
-            case STEEM_SYMBOL_U64:
+            case BEARS_SYMBOL_U64:
                FC_ASSERT( decimals == 3, "Incorrect decimal places" );
-               asset_num = STEEM_ASSET_NUM_STEEM;
+               asset_num = BEARS_ASSET_NUM_BEARS;
                break;
-            case SBD_SYMBOL_U64:
+            case BSD_SYMBOL_U64:
                FC_ASSERT( decimals == 3, "Incorrect decimal places" );
-               asset_num = STEEM_ASSET_NUM_SBD;
+               asset_num = BEARS_ASSET_NUM_BSD;
                break;
-            case VESTS_SYMBOL_U64:
+            case COINS_SYMBOL_U64:
                FC_ASSERT( decimals == 6, "Incorrect decimal places" );
-               asset_num = STEEM_ASSET_NUM_VESTS;
+               asset_num = BEARS_ASSET_NUM_COINS;
                break;
             default:
                FC_ASSERT( false, "Cannot parse asset symbol" );
@@ -87,18 +87,18 @@ std::string asset_num_to_string( uint32_t asset_num )
    switch( asset_num )
    {
 #ifdef IS_TEST_NET
-      case STEEM_ASSET_NUM_STEEM:
+      case BEARS_ASSET_NUM_BEARS:
          return "TESTS";
-      case STEEM_ASSET_NUM_SBD:
+      case BEARS_ASSET_NUM_BSD:
          return "TBD";
 #else
-      case STEEM_ASSET_NUM_STEEM:
-         return "STEEM";
-      case STEEM_ASSET_NUM_SBD:
-         return "SBD";
+      case BEARS_ASSET_NUM_BEARS:
+         return "BEARS";
+      case BEARS_ASSET_NUM_BSD:
+         return "BSD";
 #endif
-      case STEEM_ASSET_NUM_VESTS:
-         return "VESTS";
+      case BEARS_ASSET_NUM_COINS:
+         return "COINS";
       default:
          return "UNKN"; // SMTs will return this symbol if returned as a legacy asset
    }

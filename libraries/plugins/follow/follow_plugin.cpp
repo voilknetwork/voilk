@@ -1,25 +1,25 @@
-#include <steem/plugins/follow/follow_plugin.hpp>
-#include <steem/plugins/follow/follow_objects.hpp>
-#include <steem/plugins/follow/follow_operations.hpp>
-#include <steem/plugins/follow/inc_performance.hpp>
+#include <bears/plugins/follow/follow_plugin.hpp>
+#include <bears/plugins/follow/follow_objects.hpp>
+#include <bears/plugins/follow/follow_operations.hpp>
+#include <bears/plugins/follow/inc_performance.hpp>
 
-#include <steem/chain/util/impacted.hpp>
+#include <bears/chain/util/impacted.hpp>
 
-#include <steem/protocol/config.hpp>
+#include <bears/protocol/config.hpp>
 
-#include <steem/chain/database.hpp>
-#include <steem/chain/index.hpp>
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
+#include <bears/chain/database.hpp>
+#include <bears/chain/index.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
 #include <memory>
 
-namespace steem { namespace plugins { namespace follow {
+namespace bears { namespace plugins { namespace follow {
 
-using namespace steem::protocol;
+using namespace bears::protocol;
 
 namespace detail {
 
@@ -27,7 +27,7 @@ class follow_plugin_impl
 {
    public:
       follow_plugin_impl( follow_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
       ~follow_plugin_impl() {}
 
@@ -88,7 +88,7 @@ struct pre_operation_visitor
                {
                   db.modify( *author_rep, [&]( reputation_object& r )
                   {
-                     r.reputation -= ( cv->rshares >> 6 ); // Shift away precision from vests. It is noise
+                     r.reputation -= ( cv->rshares >> 6 ); // Shift away precision from coins. It is noise
                   });
                }
             }
@@ -149,7 +149,7 @@ struct post_operation_visitor
    {
       try
       {
-         if( op.id == STEEM_FOLLOW_PLUGIN_NAME )
+         if( op.id == BEARS_FOLLOW_PLUGIN_NAME )
          {
             custom_json_operation new_cop;
 
@@ -271,7 +271,7 @@ struct post_operation_visitor
             db.create< reputation_object >( [&]( reputation_object& r )
             {
                r.account = op.author;
-               r.reputation = ( cv->rshares >> 6 ); // Shift away precision from vests. It is noise
+               r.reputation = ( cv->rshares >> 6 ); // Shift away precision from coins. It is noise
             });
          }
          else
@@ -281,7 +281,7 @@ struct post_operation_visitor
 
             db.modify( *author_rep, [&]( reputation_object& r )
             {
-               r.reputation += ( cv->rshares >> 6 ); // Shift away precision from vests. It is noise
+               r.reputation += ( cv->rshares >> 6 ); // Shift away precision from coins. It is noise
             });
          }
       }
@@ -339,7 +339,7 @@ void follow_plugin::plugin_initialize( const boost::program_options::variables_m
       my = std::make_unique< detail::follow_plugin_impl >( *this );
 
       // Each plugin needs its own evaluator registry.
-      _custom_operation_interpreter = std::make_shared< generic_custom_operation_interpreter< steem::plugins::follow::follow_plugin_operation > >( my->_db );
+      _custom_operation_interpreter = std::make_shared< generic_custom_operation_interpreter< bears::plugins::follow::follow_plugin_operation > >( my->_db );
 
       // Add each operation evaluator to the registry
       _custom_operation_interpreter->register_evaluator< follow_evaluator >( this );
@@ -380,4 +380,4 @@ void follow_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // steem::plugins::follow
+} } } // bears::plugins::follow

@@ -6,7 +6,7 @@
                 "producer_reward",
                 {
                     "producer": "abit",
-                    "vesting_shares": "14403.626449 VESTS"
+                    "coining_shares": "14403.626449 COINS"
                 }
             ],
             "op_in_trx": 0,

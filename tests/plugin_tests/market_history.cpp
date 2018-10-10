@@ -1,22 +1,22 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
-#include <steem/protocol/steem_operations.hpp>
+#include <bears/chain/account_object.hpp>
+#include <bears/chain/comment_object.hpp>
+#include <bears/protocol/bears_operations.hpp>
 
-#include <steem/plugins/market_history/market_history_plugin.hpp>
+#include <bears/plugins/market_history/market_history_plugin.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace steem::chain;
-using namespace steem::protocol;
+using namespace bears::chain;
+using namespace bears::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( market_history, database_fixture )
 
 BOOST_AUTO_TEST_CASE( mh_test )
 {
-   using namespace steem::plugins::market_history;
+   using namespace bears::plugins::market_history;
 
    try
    {
@@ -32,32 +32,32 @@ BOOST_AUTO_TEST_CASE( mh_test )
       }
 
       appbase::app().register_plugin< market_history_plugin >();
-      db_plugin = &appbase::app().register_plugin< steem::plugins::debug_node::debug_node_plugin >();
+      db_plugin = &appbase::app().register_plugin< bears::plugins::debug_node::debug_node_plugin >();
       init_account_pub_key = init_account_priv_key.get_public_key();
 
       db_plugin->logging = false;
       appbase::app().initialize<
-         steem::plugins::market_history::market_history_plugin,
-         steem::plugins::debug_node::debug_node_plugin
+         bears::plugins::market_history::market_history_plugin,
+         bears::plugins::debug_node::debug_node_plugin
       >( argc, argv );
 
-      db = &appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db();
+      db = &appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
       BOOST_REQUIRE( db );
 
       open_database();
 
       generate_block();
-      db->set_hardfork( STEEM_NUM_HARDFORKS );
+      db->set_hardfork( BEARS_NUM_HARDFORKS );
       generate_block();
 
-      vest( "initminer", 10000 );
+      coin( "bearshare", 10000 );
 
       // Fill up the rest of the required miners
-      for( int i = STEEM_NUM_INIT_MINERS; i < STEEM_MAX_WITNESSES; i++ )
+      for( int i = BEARS_NUM_INIT_MINERS; i < BEARS_MAX_WITNESSES; i++ )
       {
-         account_create( STEEM_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
-         fund( STEEM_INIT_MINER_NAME + fc::to_string( i ), STEEM_MIN_PRODUCER_REWARD.amount.value );
-         witness_create( STEEM_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, STEEM_MIN_PRODUCER_REWARD.amount );
+         account_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
+         fund( BEARS_INIT_MINER_NAME + fc::to_string( i ), BEARS_MIN_PRODUCER_REWARD.amount.value );
+         witness_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, BEARS_MIN_PRODUCER_REWARD.amount );
       }
 
       validate_database();
@@ -86,9 +86,9 @@ BOOST_AUTO_TEST_CASE( mh_test )
       op.owner = "alice";
       op.amount_to_sell = ASSET( "1.000 TBD" );
       op.min_to_receive = ASSET( "2.000 TESTS" );
-      op.expiration = db->head_block_time() + fc::seconds( STEEM_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx,  0 );
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( mh_test )
       op.amount_to_sell = ASSET( "1.000 TESTS" );
       op.min_to_receive = ASSET( "0.500 TBD" );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE( mh_test )
       op.amount_to_sell = ASSET( "0.500 TBD" );
       op.min_to_receive = ASSET( "0.900 TESTS" );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE( mh_test )
       op.amount_to_sell = ASSET( "0.450 TESTS" );
       op.min_to_receive = ASSET( "0.250 TBD" );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
       validate_database();
@@ -148,158 +148,158 @@ BOOST_AUTO_TEST_CASE( mh_test )
 
       BOOST_REQUIRE( bucket->seconds == 15 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.750 TBD" ).amount );
 
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 15 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.250 TBD" ).amount );
 
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 15 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) + 60 );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "0.950 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.500 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "0.950 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.500 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 60 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.750 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 60 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.250 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 60 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) + 60 );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "0.950 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.500 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "0.950 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.500 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 300 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.750 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 300 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "1.450 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "1.450 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.750 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 3600 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.750 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 3600 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 60 ) );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "1.450 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "1.450 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "0.750 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 86400 );
-      BOOST_REQUIRE( bucket->open == STEEM_GENESIS_TIME );
-      BOOST_REQUIRE( bucket->steem.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->steem.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->steem.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->steem.volume == ASSET( "2.950 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.high == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.low == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.open == ASSET( "0.750 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.close == ASSET( "0.250 TBD" ).amount );
-      BOOST_REQUIRE( bucket->non_steem.volume == ASSET( "1.500 TBD" ).amount );
+      BOOST_REQUIRE( bucket->open == BEARS_GENESIS_TIME );
+      BOOST_REQUIRE( bucket->bears.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->bears.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->bears.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->bears.volume == ASSET( "2.950 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.high == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.low == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.open == ASSET( "0.750 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.close == ASSET( "0.250 TBD" ).amount );
+      BOOST_REQUIRE( bucket->non_bears.volume == ASSET( "1.500 TBD" ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket == bucket_idx.end() );
