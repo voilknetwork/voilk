@@ -236,7 +236,7 @@ RUN chown bearsd:bearsd -R /var/lib/bearsd
 VOLUME ["/var/lib/bearsd"]
 
 # rpc service:
-EXPOSE 8090
+EXPOSE 6990
 # p2p service:
 EXPOSE 2001
 

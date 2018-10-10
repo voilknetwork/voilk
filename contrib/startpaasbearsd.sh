@@ -140,7 +140,7 @@ chown -R bearsd:bearsd $HOME/*
 
 # let's get going
 cp /etc/nginx/healthcheck.conf.template /etc/nginx/healthcheck.conf
-echo server 127.0.0.1:8091\; >> /etc/nginx/healthcheck.conf
+echo server 127.0.0.1:6991\; >> /etc/nginx/healthcheck.conf
 echo } >> /etc/nginx/healthcheck.conf
 rm /etc/nginx/sites-enabled/default
 cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
@@ -148,8 +148,8 @@ cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
 service nginx restart
 exec chpst -ubearsd \
     $BEARSD \
-        --webserver-ws-endpoint=127.0.0.1:8091 \
-        --webserver-http-endpoint=127.0.0.1:8091 \
+        --webserver-ws-endpoint=127.0.0.1:6991 \
+        --webserver-http-endpoint=127.0.0.1:6991 \
         --p2p-endpoint=0.0.0.0:2001 \
         --data-dir=$HOME \
         $ARGS \

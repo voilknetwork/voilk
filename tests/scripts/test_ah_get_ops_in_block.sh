@@ -6,7 +6,7 @@ then
    echo        if jobs == 0 script detect processor count and use it
    echo        if last_block not passed or 0 will be read from bearsd
    echo        if first_block not passed will be 0
-   echo Example: 127.0.0.1 8090 ec2-34-235-166-184.compute-1.amazonaws.com 8090
+   echo Example: 127.0.0.1 6990 ec2-34-235-166-184.compute-1.amazonaws.com 6990
    exit -1
 fi
 

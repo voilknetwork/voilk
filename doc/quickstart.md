@@ -5,7 +5,7 @@ Quickstart
 Use docker:
 ```
 docker run \
-    -d -p 2001:2001 -p 8090:8090 --name bearsd-default \
+    -d -p 2001:2001 -p 6990:6990 --name bearsd-default \
     --restart unless-stopped bearshares/bears
 ```
 #### Low memory node?
@@ -18,7 +18,7 @@ For full api node use:
 ```
 docker run \
     --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
-    -d -p 2001:2001 -p 8090:8090 --name bearsd-full \
+    -d -p 2001:2001 -p 6990:6990 --name bearsd-full \
     --restart unless-stopped \
     bearshares/bears
 ```

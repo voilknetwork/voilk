@@ -43,7 +43,7 @@ If you would still like to build from source, we do have [build instructions](ht
 To run a p2p node (ca. 2GB of memory is required at the moment):
 
     docker run \
-        -d -p 2001:2001 -p 8090:8090 --name bearsd-default \
+        -d -p 2001:2001 -p 6990:6990 --name bearsd-default \
         bearshares/bears
 
     docker logs -f bearsd-default  # follow along
@@ -55,7 +55,7 @@ that uses ca. 14GB of memory and growing:
 
     docker run \
         --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
-        -d -p 2001:2001 -p 8090:8090 --name bearsd-full \
+        -d -p 2001:2001 -p 6990:6990 --name bearsd-full \
         bearshares/bears
 
     docker logs -f bearsd-full

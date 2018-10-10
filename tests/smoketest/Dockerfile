@@ -26,8 +26,8 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #logs_dir: location where non-empty logs will be copied
 VOLUME ["reference", "tested", "ref_blockchain", "tested_blockchain", "logs_dir", "run"]
 
-EXPOSE 8090
-EXPOSE 8091
+EXPOSE 6990
+EXPOSE 6991
 
 #CMD pyresttest
 CMD cd $SMOKETEST && \
