@@ -29,15 +29,15 @@
 
 #ifdef IS_TEST_NET
 
-#define COINS_SYMBOL_U64  (uint64_t('V') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
+#define COINS_SYMBOL_U64  (uint64_t('C') | (uint64_t('O') << 8) | (uint64_t('I') << 16) | (uint64_t('N') << 24) | (uint64_t('S') << 32))
 #define BEARS_SYMBOL_U64  (uint64_t('T') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
 #define BSD_SYMBOL_U64    (uint64_t('T') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
 
 #else
 
-#define COINS_SYMBOL_U64  (uint64_t('V') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
-#define BEARS_SYMBOL_U64  (uint64_t('S') | (uint64_t('T') << 8) | (uint64_t('E') << 16) | (uint64_t('E') << 24) | (uint64_t('M') << 32))
-#define BSD_SYMBOL_U64    (uint64_t('S') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
+#define COINS_SYMBOL_U64  (uint64_t('C') | (uint64_t('O') << 8) | (uint64_t('I') << 16) | (uint64_t('N') << 24) | (uint64_t('S') << 32))
+#define BEARS_SYMBOL_U64  (uint64_t('B') | (uint64_t('E') << 8) | (uint64_t('A') << 16) | (uint64_t('R') << 24) | (uint64_t('S') << 32))
+#define BSD_SYMBOL_U64    (uint64_t('B') | (uint64_t('S') << 8) | (uint64_t('D') << 16))
 
 #endif
 
