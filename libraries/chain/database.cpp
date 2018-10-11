@@ -498,15 +498,15 @@ const comment_object* database::find_comment( const account_name_type& author, c
 }
 
 #ifndef ENABLE_STD_ALLOCATOR
-const comment_object& database::get_comment( const account_name_type& author, const string& permlink )const
-{ try {
-   return get< comment_object, by_permlink >( boost::make_tuple( author, permlink) );
-} FC_CAPTURE_AND_RETHROW( (author)(permlink) ) }
+      const comment_object& database::get_comment( const account_name_type& author, const string& permlink )const
+      { try {
+      return get< comment_object, by_permlink >( boost::make_tuple( author, permlink) );
+      } FC_CAPTURE_AND_RETHROW( (author)(permlink) ) }
 
-const comment_object* database::find_comment( const account_name_type& author, const string& permlink )const
-{
-   return find< comment_object, by_permlink >( boost::make_tuple( author, permlink ) );
-}
+      const comment_object* database::find_comment( const account_name_type& author, const string& permlink )const
+      {
+      return find< comment_object, by_permlink >( boost::make_tuple( author, permlink ) );
+      }
 #endif
 
 const escrow_object& database::get_escrow( const account_name_type& name, uint32_t escrow_id )const
@@ -2915,7 +2915,7 @@ void database::init_genesis( uint64_t init_supply )
          p.current_supply = asset( init_supply, BEARS_SYMBOL );
          p.current_bsd_supply = asset( 10000, BSD_SYMBOL );
          p.total_coining_fund_bears = asset( 10000, BEARS_SYMBOL );
-         p.total_coining_shares = asset( 10000, COINS_SYMBOL );
+         p.total_coining_shares = asset( 10000000, COINS_SYMBOL );
          p.total_reward_fund_bears = asset( 10000, BEARS_SYMBOL );
          p.virtual_supply = p.current_supply + p.total_coining_fund_bears + p.total_reward_fund_bears;
          p.maximum_block_size = BEARS_MAX_BLOCK_SIZE;
@@ -4906,13 +4906,15 @@ void database::apply_hardfork( uint32_t hardfork )
             // As a shortcut in payout processing, we use the id as an array index.
             // The IDs must be assigned this way. The assertion is a dummy check to ensure this happens.
             FC_ASSERT( post_rf.id._id == 0 );
-#ifndef IS_TEST_NET
+            // bilalQureshi = modify
             modify( gpo, [&]( dynamic_global_property_object& g )
             {
-               g.total_reward_fund_bears = asset( 0, BEARS_SYMBOL );
-               g.total_reward_shares2 = 0;
+               g.pending_rewarded_coining_shares += asset( 10000000, COINS_SYMBOL );
+               g.pending_rewarded_coining_bears += asset( 10000, BEARS_SYMBOL );
+               //g.total_reward_fund_bears = asset( 0, BEARS_SYMBOL );
+               //g.total_reward_shares2 = 0;
             });
-#endif
+
             /*
             * For all current comments we will either keep their current cashout time, or extend it to 1 week
             * after creation.
