@@ -238,11 +238,11 @@
 #define BEARS_SOFT_MAX_BLOCK_SIZE             (2*1024*1024)
 #define BEARS_MIN_BLOCK_SIZE                  115
 #define BEARS_BLOCKS_PER_HOUR                 (60*60/BEARS_BLOCK_INTERVAL)
-#define BEARS_FEED_INTERVAL_BLOCKS            (10)//(BEARS_BLOCKS_PER_HOUR)
+#define BEARS_FEED_INTERVAL_BLOCKS            (BEARS_BLOCKS_PER_HOUR)
 #define BEARS_FEED_HISTORY_WINDOW_PRE_HF_16   (24*7) /// 7 days * 24 hours per day
 #define BEARS_FEED_HISTORY_WINDOW             (12*7) // 3.5 days
-#define BEARS_MAX_FEED_AGE_SECONDS            (60)//(60*60*24*7) // 7 days
-#define BEARS_MIN_FEEDS                       (1)//(BEARS_MAX_WITNESSES/3) /// protects the network from conversions before price has been established
+#define BEARS_MAX_FEED_AGE_SECONDS            (60*60*24*7) // 7 days
+#define BEARS_MIN_FEEDS                       (BEARS_MAX_WITNESSES/3) /// protects the network from conversions before price has been established
 #define BEARS_CONVERSION_DELAY_PRE_HF_16      (fc::days(7))
 #define BEARS_CONVERSION_DELAY                (fc::hours(BEARS_FEED_HISTORY_WINDOW)) //3.5 day conversion
 
