@@ -4663,10 +4663,11 @@ void database::init_hardforks()
    FC_ASSERT( BEARS_HARDFORK_0_19 == 19, "Invalid hardfork configuration" );
    _hardfork_times[ BEARS_HARDFORK_0_19 ] = fc::time_point_sec( BEARS_HARDFORK_0_19_TIME );
    _hardfork_versions[ BEARS_HARDFORK_0_19 ] = BEARS_HARDFORK_0_19_VERSION;
+#ifdef IS_TEST_NET  
    FC_ASSERT( BEARS_HARDFORK_0_20 == 20, "Invalid hardfork configuration" );
    _hardfork_times[ BEARS_HARDFORK_0_20 ] = fc::time_point_sec( BEARS_HARDFORK_0_20_TIME );
    _hardfork_versions[ BEARS_HARDFORK_0_20 ] = BEARS_HARDFORK_0_20_VERSION;
-#ifdef IS_TEST_NET
+
    FC_ASSERT( BEARS_HARDFORK_0_21 == 21, "Invalid hardfork configuration" );
    _hardfork_times[ BEARS_HARDFORK_0_21 ] = fc::time_point_sec( BEARS_HARDFORK_0_21_TIME );
    _hardfork_versions[ BEARS_HARDFORK_0_21 ] = BEARS_HARDFORK_0_21_VERSION;
