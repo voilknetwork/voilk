@@ -16,4 +16,5 @@
 #define BEARS_NUM_HARDFORKS 21
 #else
 #define BEARS_NUM_HARDFORKS 20
+#define LATEST_HARD_FORK 20
 #endif
