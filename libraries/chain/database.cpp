@@ -3717,8 +3717,8 @@ void database::update_global_dynamic_data( const signed_block& b )
             modify( witness_missed, [&]( witness_object& w )
             {
                w.total_missed++;
-FC_TODO( "#ifndef not needed after HF 20 is live" );
-#ifndef IS_TEST_NET
+               FC_TODO( "#ifndef not needed after HF 20 is live" );
+
                if( has_hardfork( BEARS_HARDFORK_0_14__278 ) && !has_hardfork( BEARS_HARDFORK_0_20__SP190 ) )
                {
                   if( head_block_num() - w.last_confirmed_block_num  > BEARS_BLOCKS_PER_DAY )
@@ -3727,7 +3727,7 @@ FC_TODO( "#ifndef not needed after HF 20 is live" );
                      push_virtual_operation( shutdown_witness_operation( w.owner ) );
                   }
                }
-#endif
+
             } );
          }
       }
