@@ -113,7 +113,7 @@
 #define BEARS_REVERSE_AUCTION_WINDOW_SECONDS_HF6 (60*30) /// 30 minutes
 #define BEARS_REVERSE_AUCTION_WINDOW_SECONDS_HF20 (60*15) /// 15 minutes
 #define BEARS_MIN_VOTE_INTERVAL_SEC           3
-#define BEARS_VOTE_DUST_THRESHOLD             (50000000)
+#define BEARS_VOTE_DUST_THRESHOLD             (2500)
 
 #define BEARS_MIN_ROOT_COMMENT_INTERVAL       (fc::seconds(60*5)) // 5 minutes
 #define BEARS_MIN_REPLY_INTERVAL              (fc::seconds(20)) // 20 seconds
