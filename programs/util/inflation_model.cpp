@@ -82,7 +82,7 @@ int main( int argc, char** argv, char** envp )
 
    auto block_inflation_model = [&]( uint32_t block_num, share_type& current_supply )
    {
-      uint32_t coining_factor = (block_num < BEARS_START_COINING_BLOCK) ? 0 : 0;
+      uint32_t coining_factor = (block_num < BEARS_START_COINING_BLOCK) ? 0 : BEARS_INFLATION_NUMBER;
 
       share_type curate_reward   = calc_percent_reward_per_block< BEARS_CURATE_APR_PERCENT >( current_supply );
       reward_delta[ CURATE_OFF ] = std::max( curate_reward, BEARS_MIN_CURATE_REWARD.amount );
