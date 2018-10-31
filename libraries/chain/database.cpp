@@ -2246,7 +2246,7 @@ void database::process_funds()
       if( props.head_block_number < BEARS_START_COINING_BLOCK )
          coining_reward.amount = 0;
       else
-         coining_reward.amount.value *= 9;
+         coining_reward.amount = 0; //.value *= 0;
 
       modify( props, [&]( dynamic_global_property_object& p )
       {
