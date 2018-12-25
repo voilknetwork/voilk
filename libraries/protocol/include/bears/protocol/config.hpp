@@ -96,7 +96,7 @@
 #define BEARS_MAX_MINER_WITNESSES_HF0         1
 #define BEARS_MAX_RUNNER_WITNESSES_HF0        1
 
-#define BEARS_MAX_VOTED_WITNESSES_HF17        19
+#define BEARS_MAX_VOTED_WITNESSES_HF17        20
 #define BEARS_MAX_MINER_WITNESSES_HF17        0
 #define BEARS_MAX_RUNNER_WITNESSES_HF17       1
 
@@ -244,7 +244,7 @@
 #define BEARS_FEED_HISTORY_WINDOW_PRE_HF_16   (24*7) /// 7 days * 24 hours per day
 #define BEARS_FEED_HISTORY_WINDOW             (12*7) // 3.5 days
 #define BEARS_MAX_FEED_AGE_SECONDS            (60*60*1) // 1 hour
-#define BEARS_MIN_FEEDS                       (1)//(BEARS_MAX_WITNESSES/7) /// 3 Witnesses to publish feed..  protects the network from conversions before price has been established
+#define BEARS_MIN_FEEDS                       (BEARS_MAX_WITNESSES/7) /// 3 Witnesses to publish feed..  protects the network from conversions before price has been established
 #define BEARS_CONVERSION_DELAY_PRE_HF_16      (fc::days(7))
 #define BEARS_CONVERSION_DELAY                (fc::hours(BEARS_FEED_HISTORY_WINDOW)) //3.5 day conversion
 
