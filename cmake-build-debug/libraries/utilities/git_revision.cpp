@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <bears/utilities/git_revision.hpp>
 
-#define BEARS_GIT_REVISION_SHA "8802a2a89d20b4161bdc556b71d25ba0cb4bbcd7"
-#define BEARS_GIT_REVISION_UNIX_TIMESTAMP 1539498223
-#define BEARS_GIT_REVISION_DESCRIPTION "v0.20.5-38-g8802a2a"
+#define BEARS_GIT_REVISION_SHA "cf0174e3ba2f62cdfe9fad359d5c5653e7473fc9"
+#define BEARS_GIT_REVISION_UNIX_TIMESTAMP 1545723750
+#define BEARS_GIT_REVISION_DESCRIPTION "v0.20.5-51-gcf0174e"
 
 namespace bears { namespace utilities {
 

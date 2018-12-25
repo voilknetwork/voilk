@@ -17,6 +17,76 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="rocksdb">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/librocksdb.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 rocksdb"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/librocksdb.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 rocksdb/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="build_version">
 				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/CMakeFiles/build_version.dir/build_version.objlib" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb"/>
@@ -84,76 +154,6 @@
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 build_version/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="rocksdb">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/librocksdb.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb"/>
-				<Option object_output="./"/>
-				<Option type="2"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 rocksdb"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="rocksdb/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/librocksdb.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb"/>
-				<Option object_output="./"/>
-				<Option type="2"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 rocksdb/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
@@ -229,8 +229,8 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="write_stress">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/write_stress" prefix_auto="0" extension_auto="0"/>
+			<Target title="rocksdb_dump">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_dump" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -258,14 +258,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 write_stress"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_dump"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="write_stress/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/write_stress" prefix_auto="0" extension_auto="0"/>
+			<Target title="rocksdb_dump/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_dump" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -293,77 +293,7 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 write_stress/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="db_stress">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_stress" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_stress"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="db_stress/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_stress" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_stress/fast"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_dump/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
@@ -374,216 +304,6 @@
 				<Option type="4"/>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 tools"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="sst_dump">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/sst_dump" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 sst_dump"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="sst_dump/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/sst_dump" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 sst_dump/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ldb">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/ldb" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ldb/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/ldb" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="db_repl_stress">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_repl_stress" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_repl_stress"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="db_repl_stress/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_repl_stress" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DSNAPPY"/>
-					<Add option="-DZLIB"/>
-					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
-					<Add option="-DOS_LINUX"/>
-					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
-					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
-					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_repl_stress/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
@@ -659,6 +379,76 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="sst_dump">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/sst_dump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 sst_dump"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sst_dump/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/sst_dump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 sst_dump/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="rocksdb_undump">
 				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_undump" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
@@ -729,8 +519,8 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="rocksdb_dump">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_dump" prefix_auto="0" extension_auto="0"/>
+			<Target title="db_stress">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_stress" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -758,14 +548,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_dump"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_stress"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="rocksdb_dump/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_dump" prefix_auto="0" extension_auto="0"/>
+			<Target title="db_stress/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_stress" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -793,7 +583,7 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_dump/fast"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_stress/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
@@ -804,6 +594,216 @@
 				<Option type="4"/>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb_tests"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ldb">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/ldb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ldb/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/ldb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="write_stress">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/write_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 write_stress"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="write_stress/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/write_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 write_stress/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_repl_stress">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_repl_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_repl_stress"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_repl_stress/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/db_repl_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_repl_stress/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>

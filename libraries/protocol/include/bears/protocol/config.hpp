@@ -240,11 +240,11 @@
 #define BEARS_SOFT_MAX_BLOCK_SIZE             (2*1024*1024)
 #define BEARS_MIN_BLOCK_SIZE                  115
 #define BEARS_BLOCKS_PER_HOUR                 (60*60/BEARS_BLOCK_INTERVAL)
-#define BEARS_FEED_INTERVAL_BLOCKS            (BEARS_BLOCKS_PER_HOUR/6) // 200 
+#define BEARS_FEED_INTERVAL_BLOCKS            (BEARS_BLOCKS_PER_HOUR/2) // 600 
 #define BEARS_FEED_HISTORY_WINDOW_PRE_HF_16   (24*7) /// 7 days * 24 hours per day
 #define BEARS_FEED_HISTORY_WINDOW             (12*7) // 3.5 days
 #define BEARS_MAX_FEED_AGE_SECONDS            (60*60*1) // 1 hour
-#define BEARS_MIN_FEEDS                       (BEARS_MAX_WITNESSES/7) /// 7 Witnesses to publish feed..  protects the network from conversions before price has been established
+#define BEARS_MIN_FEEDS                       (1)//(BEARS_MAX_WITNESSES/7) /// 3 Witnesses to publish feed..  protects the network from conversions before price has been established
 #define BEARS_CONVERSION_DELAY_PRE_HF_16      (fc::days(7))
 #define BEARS_CONVERSION_DELAY                (fc::hours(BEARS_FEED_HISTORY_WINDOW)) //3.5 day conversion
 
@@ -266,8 +266,8 @@
 #define BEARS_VIRTUAL_SCHEDULE_LAP_LENGTH  ( fc::uint128(uint64_t(-1)) )
 #define BEARS_VIRTUAL_SCHEDULE_LAP_LENGTH2 ( fc::uint128::max_value() )
 
-#define BEARS_INITIAL_VOTE_POWER_RATE (40)
-#define BEARS_REDUCED_VOTE_POWER_RATE (10)
+#define BEARS_INITIAL_VOTE_POWER_RATE (20)
+#define BEARS_REDUCED_VOTE_POWER_RATE (20)
 
 #define BEARS_MAX_LIMIT_ORDER_EXPIRATION     (60*60*24*28) // 28 days
 #define BEARS_DELEGATION_RETURN_PERIOD_HF0   (BEARS_CASHOUT_WINDOW_SECONDS)

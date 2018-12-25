@@ -1,7 +1,7 @@
 #include <fc/git_revision.hpp>
 
-#define FC_GIT_REVISION_SHA "8802a2a89d20b4161bdc556b71d25ba0cb4bbcd7"
-#define FC_GIT_REVISION_UNIX_TIMESTAMP 1539498223
+#define FC_GIT_REVISION_SHA "cf0174e3ba2f62cdfe9fad359d5c5653e7473fc9"
+#define FC_GIT_REVISION_UNIX_TIMESTAMP 1545723750
 
 namespace fc { 
 

@@ -17,16 +17,6 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="project_secp256k1">
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 project_secp256k1"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
 			<Target title="fc">
 				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/libfc_debug.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc"/>
@@ -97,6 +87,16 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="project_secp256k1">
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 project_secp256k1"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="equihash">
 				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/vendor/equihash/libequihash_debug.a" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/vendor/equihash"/>
@@ -145,8 +145,8 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="sha_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/sha_test" prefix_auto="0" extension_auto="0"/>
+			<Target title="task_cancel_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/task_cancel_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -170,14 +170,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 sha_test"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 task_cancel_test"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="sha_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/sha_test" prefix_auto="0" extension_auto="0"/>
+			<Target title="task_cancel_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/task_cancel_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -201,7 +201,7 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 sha_test/fast"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 task_cancel_test/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
@@ -269,8 +269,8 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="ecdsa_canon_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecdsa_canon_test" prefix_auto="0" extension_auto="0"/>
+			<Target title="ntp_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ntp_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -294,14 +294,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecdsa_canon_test"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ntp_test"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="ecdsa_canon_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecdsa_canon_test" prefix_auto="0" extension_auto="0"/>
+			<Target title="ntp_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ntp_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -325,7 +325,7 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecdsa_canon_test/fast"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ntp_test/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
@@ -393,8 +393,8 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="blind">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/blind" prefix_auto="0" extension_auto="0"/>
+			<Target title="sha_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/sha_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -418,14 +418,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blind"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 sha_test"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="blind/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/blind" prefix_auto="0" extension_auto="0"/>
+			<Target title="sha_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/sha_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -449,503 +449,7 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blind/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="bloom_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bloom_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bloom_test"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="bloom_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bloom_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bloom_test/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="api">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/api" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 api"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="api/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/api" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 api/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="hmac_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/hmac_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 hmac_test"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="hmac_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/hmac_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 hmac_test/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ecc_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecc_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecc_test"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ecc_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecc_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecc_test/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ntp_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ntp_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ntp_test"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ntp_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ntp_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ntp_test/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="bip_lock">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bip_lock" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bip_lock"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="bip_lock/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bip_lock" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bip_lock/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="task_cancel_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/task_cancel_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 task_cancel_test"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="task_cancel_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/task_cancel_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 task_cancel_test/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="log_test">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/log_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 log_test"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="log_test/fast">
-				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/log_test" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add option="-DHAS_ZLIB"/>
-					<Add option="-DHAS_BZIP2"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
-					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
-					<Add directory="/usr/include/c++/5"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
-					<Add directory="/usr/include/c++/5/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 log_test/fast"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 sha_test/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
@@ -1013,6 +517,68 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="bloom_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bloom_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bloom_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bloom_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bloom_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bloom_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="real128_test">
 				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/real128_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
@@ -1075,6 +641,68 @@
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="api">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/api" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 api"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="api/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/api" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 api/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="blinding_test">
 				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/blinding_test" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
@@ -1132,6 +760,378 @@
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blinding_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hmac_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/hmac_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 hmac_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hmac_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/hmac_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 hmac_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bip_lock">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bip_lock" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bip_lock"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bip_lock/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/bip_lock" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bip_lock/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecdsa_canon_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecdsa_canon_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecdsa_canon_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecdsa_canon_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecdsa_canon_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecdsa_canon_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecc_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecc_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecc_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecc_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/ecc_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecc_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="blind">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/blind" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blind"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="blind/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/blind" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blind/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="log_test">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/log_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 log_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="log_test/fast">
+				<Option output="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/log_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/bilaldon/Desktop/bears/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 log_test/fast"/>
 					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j4 -f &quot;/home/bilaldon/Desktop/bears/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
@@ -1853,13 +1853,13 @@
 			<Option target="fc"/>
 		</Unit>
 		<Unit filename="/home/bilaldon/Desktop/bears/libraries/fc/tests/all_tests.cpp">
-			<Option target="all_tests"/>
-			<Option target="blind"/>
-			<Option target="bloom_test"/>
-			<Option target="ntp_test"/>
 			<Option target="task_cancel_test"/>
+			<Option target="all_tests"/>
+			<Option target="ntp_test"/>
 			<Option target="thread_test"/>
+			<Option target="bloom_test"/>
 			<Option target="real128_test"/>
+			<Option target="blind"/>
 		</Unit>
 		<Unit filename="/home/bilaldon/Desktop/bears/libraries/fc/tests/api.cpp">
 			<Option target="api"/>
@@ -1933,8 +1933,8 @@
 			<Option target="sha_test"/>
 		</Unit>
 		<Unit filename="/home/bilaldon/Desktop/bears/libraries/fc/tests/thread/task_cancel.cpp">
-			<Option target="all_tests"/>
 			<Option target="task_cancel_test"/>
+			<Option target="all_tests"/>
 		</Unit>
 		<Unit filename="/home/bilaldon/Desktop/bears/libraries/fc/tests/thread/thread_tests.cpp">
 			<Option target="all_tests"/>
