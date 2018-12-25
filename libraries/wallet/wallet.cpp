@@ -295,8 +295,8 @@ public:
       result["participation"] = (100*dynamic_props.recent_slots_filled.popcount()) / 128.0;
       result["median_bsd_price"] = _remote_api->get_current_median_history_price();
       result["account_creation_fee"] = _remote_api->get_chain_properties().account_creation_fee;
-      //result["post_reward_fund"] = fc::variant(_remote_api->get_reward_fund( BEARS_POST_REWARD_FUND_NAME )).get_object();
-      //result["comment_reward_fund"] = fc::variant(_remote_api->get_reward_fund( BEARS_COMMENT_REWARD_FUND_NAME )).get_object();
+      result["post_reward_fund"] = fc::variant(_remote_api->get_reward_fund( BEARS_POST_REWARD_FUND_NAME )).get_object();
+      result["comment_reward_fund"] = fc::variant(_remote_api->get_reward_fund( BEARS_COMMENT_REWARD_FUND_NAME )).get_object();
       return result;
    }
 
