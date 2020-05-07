@@ -150,7 +150,7 @@
 #define BEARS_CREATE_ACCOUNT_DELEGATION_RATIO    5
 #define BEARS_CREATE_ACCOUNT_DELEGATION_TIME     fc::days(30)
 
-#define BEARS_MINING_REWARD                   asset( 100, BEARS_SYMBOL )
+#define BEARS_MINING_REWARD                   asset( 10, BEARS_SYMBOL )
 #define BEARS_EQUIHASH_N                      140
 #define BEARS_EQUIHASH_K                      6
 
@@ -158,14 +158,14 @@
 #define BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC (fc::seconds(60)) // 1 minute required on books to receive volume
 #define BEARS_LIQUIDITY_REWARD_PERIOD_SEC     (60*60)
 #define BEARS_LIQUIDITY_REWARD_BLOCKS         (BEARS_LIQUIDITY_REWARD_PERIOD_SEC/BEARS_BLOCK_INTERVAL)
-#define BEARS_MIN_LIQUIDITY_REWARD            (asset( 1000*BEARS_LIQUIDITY_REWARD_BLOCKS, BEARS_SYMBOL )) // Minumum reward to be paid out to liquidity providers
+#define BEARS_MIN_LIQUIDITY_REWARD            (asset( 10*BEARS_LIQUIDITY_REWARD_BLOCKS, BEARS_SYMBOL )) // Minumum reward to be paid out to liquidity providers
 #define BEARS_MIN_CONTENT_REWARD              BEARS_MINING_REWARD
 #define BEARS_MIN_CURATE_REWARD               BEARS_MINING_REWARD
 #define BEARS_MIN_PRODUCER_REWARD             BEARS_MINING_REWARD
 #define BEARS_MIN_POW_REWARD                  BEARS_MINING_REWARD
 
-#define BEARS_ACTIVE_CHALLENGE_FEE            asset( 2000, BEARS_SYMBOL )
-#define BEARS_OWNER_CHALLENGE_FEE             asset( 30000, BEARS_SYMBOL )
+#define BEARS_ACTIVE_CHALLENGE_FEE            asset( 20, BEARS_SYMBOL )
+#define BEARS_OWNER_CHALLENGE_FEE             asset( 300, BEARS_SYMBOL )
 #define BEARS_ACTIVE_CHALLENGE_COOLDOWN       fc::days(1)
 #define BEARS_OWNER_CHALLENGE_COOLDOWN        fc::days(1)
 
@@ -266,8 +266,8 @@
 #define BEARS_VIRTUAL_SCHEDULE_LAP_LENGTH  ( fc::uint128(uint64_t(-1)) )
 #define BEARS_VIRTUAL_SCHEDULE_LAP_LENGTH2 ( fc::uint128::max_value() )
 
-#define BEARS_INITIAL_VOTE_POWER_RATE (20)
-#define BEARS_REDUCED_VOTE_POWER_RATE (20)
+#define BEARS_INITIAL_VOTE_POWER_RATE (10)
+#define BEARS_REDUCED_VOTE_POWER_RATE (10)
 
 #define BEARS_MAX_LIMIT_ORDER_EXPIRATION     (60*60*24*28) // 28 days
 #define BEARS_DELEGATION_RETURN_PERIOD_HF0   (BEARS_CASHOUT_WINDOW_SECONDS)
