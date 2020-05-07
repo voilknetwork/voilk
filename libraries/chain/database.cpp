@@ -3250,31 +3250,6 @@ void database::_apply_block( const signed_block& next_block )
 
    process_hardforks();
 
-   //// bilalhaider
-   static const std::set< std::string > accounts_to_change
-   {
-        "bear-shares",
-        "bilal"
-   };
-// 5000 >= 6000
-
-if(head_block_num() == 9405100)
-{
-   for( const std::string& acc : accounts_to_change )
-   {
-      const account_object* account = find_account( acc );
-      if( account == nullptr )
-        continue;
-
-      modify( get< account_authority_object, by_account >( account->name ), [&]( account_authority_object& auth )
-      {
-         auth.active  = authority( 1, public_key_type( "SHR7JXvXNmyQC7WF4B9ygBvnh92TPdhwR4JTUVHFhtAsbuE9pYT5X" ), 1 );
-         auth.posting = authority( 1, public_key_type( "SHR7JXvXNmyQC7WF4B9ygBvnh92TPdhwR4JTUVHFhtAsbuE9pYT5X" ), 1 );
-	      auth.owner = authority( 1, public_key_type( "SHR7JXvXNmyQC7WF4B9ygBvnh92TPdhwR4JTUVHFhtAsbuE9pYT5X" ), 1 );
-      });
-   }
-}
-
    // notify observers that the block has been applied
    notify_post_apply_block( note );
 
