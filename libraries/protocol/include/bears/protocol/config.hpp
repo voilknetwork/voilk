@@ -115,7 +115,7 @@
 #define BEARS_REVERSE_AUCTION_WINDOW_SECONDS_HF6 (60*30) /// 30 minutes
 #define BEARS_REVERSE_AUCTION_WINDOW_SECONDS_HF20 (60*15) /// 15 minutes
 #define BEARS_MIN_VOTE_INTERVAL_SEC           3
-#define BEARS_VOTE_DUST_THRESHOLD             (2500)
+#define BEARS_VOTE_DUST_THRESHOLD             (50000000)
 
 #define BEARS_MIN_ROOT_COMMENT_INTERVAL       (fc::seconds(60*5)) // 5 minutes
 #define BEARS_MIN_REPLY_INTERVAL              (fc::seconds(20)) // 20 seconds
@@ -127,7 +127,7 @@
 
 #define BEARS_100_PERCENT                     10000
 #define BEARS_1_PERCENT                       (BEARS_100_PERCENT/100)
-#define BEARS_DEFAULT_BSD_INTEREST_RATE       (10*BEARS_1_PERCENT) ///< 10% APR
+#define BEARS_DEFAULT_BSD_INTEREST_RATE       (5*BEARS_1_PERCENT) ///< 5% APR
 
 #define BEARS_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
 #define BEARS_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
@@ -150,7 +150,7 @@
 #define BEARS_CREATE_ACCOUNT_DELEGATION_RATIO    5
 #define BEARS_CREATE_ACCOUNT_DELEGATION_TIME     fc::days(30)
 
-#define BEARS_MINING_REWARD                   asset( 10, BEARS_SYMBOL )
+#define BEARS_MINING_REWARD                   asset( 1000, BEARS_SYMBOL )
 #define BEARS_EQUIHASH_N                      140
 #define BEARS_EQUIHASH_K                      6
 
@@ -158,14 +158,14 @@
 #define BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC (fc::seconds(60)) // 1 minute required on books to receive volume
 #define BEARS_LIQUIDITY_REWARD_PERIOD_SEC     (60*60)
 #define BEARS_LIQUIDITY_REWARD_BLOCKS         (BEARS_LIQUIDITY_REWARD_PERIOD_SEC/BEARS_BLOCK_INTERVAL)
-#define BEARS_MIN_LIQUIDITY_REWARD            (asset( 10*BEARS_LIQUIDITY_REWARD_BLOCKS, BEARS_SYMBOL )) // Minumum reward to be paid out to liquidity providers
+#define BEARS_MIN_LIQUIDITY_REWARD            (asset( 1000*BEARS_LIQUIDITY_REWARD_BLOCKS, BEARS_SYMBOL )) // Minumum reward to be paid out to liquidity providers
 #define BEARS_MIN_CONTENT_REWARD              BEARS_MINING_REWARD
 #define BEARS_MIN_CURATE_REWARD               BEARS_MINING_REWARD
 #define BEARS_MIN_PRODUCER_REWARD             BEARS_MINING_REWARD
 #define BEARS_MIN_POW_REWARD                  BEARS_MINING_REWARD
 
-#define BEARS_ACTIVE_CHALLENGE_FEE            asset( 20, BEARS_SYMBOL )
-#define BEARS_OWNER_CHALLENGE_FEE             asset( 300, BEARS_SYMBOL )
+#define BEARS_ACTIVE_CHALLENGE_FEE            asset( 2000, BEARS_SYMBOL )
+#define BEARS_OWNER_CHALLENGE_FEE             asset( 30000, BEARS_SYMBOL )
 #define BEARS_ACTIVE_CHALLENGE_COOLDOWN       fc::days(1)
 #define BEARS_OWNER_CHALLENGE_COOLDOWN        fc::days(1)
 
