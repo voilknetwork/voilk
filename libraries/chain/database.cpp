@@ -4688,7 +4688,7 @@ void database::process_hardforks()
       // If there are upcoming hardforks and the next one is later, do nothing
       const auto& hardforks = get_hardfork_property_object();
 
-      if( has_hardfork( LATEST_HARD_FORK ))//BEARS_HARDFORK_0_5__54 ) )
+      if( has_hardfork( BEARS_HARDFORK_0_5__54 ) )
       {
          while( _hardfork_versions[ hardforks.last_hardfork ] < hardforks.next_hardfork
             && hardforks.next_hardfork_time <= head_block_time() )
@@ -4704,7 +4704,7 @@ void database::process_hardforks()
       {
          while( hardforks.last_hardfork < BEARS_NUM_HARDFORKS
                && _hardfork_times[ hardforks.last_hardfork + 1 ] <= head_block_time()
-               && hardforks.last_hardfork < LATEST_HARD_FORK )//BEARS_HARDFORK_0_5__54 )
+               && hardforks.last_hardfork < BEARS_HARDFORK_0_5__54 )
          {
             apply_hardfork( hardforks.last_hardfork + 1 );
          }
@@ -4729,7 +4729,7 @@ void database::set_hardfork( uint32_t hardfork, bool apply_now )
 
    for( uint32_t i = hardforks.last_hardfork + 1; i <= hardfork && i <= BEARS_NUM_HARDFORKS; i++ )
    {
-      if( i <= LATEST_HARD_FORK )//BEARS_HARDFORK_0_5__54 )
+      if( i <= BEARS_HARDFORK_0_5__54 )
          _hardfork_times[i] = head_block_time();
       else
       {
