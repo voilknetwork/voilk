@@ -68,7 +68,7 @@
 #define BEARS_OWNER_UPDATE_LIMIT                          fc::minutes(60)
 #define BEARS_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 0
 
-#define BEARS_INIT_SUPPLY                     (int64_t( 55 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define BEARS_INIT_SUPPLY                     (int64_t( 555 ) * int64_t( 1000000 ) * int64_t( 100 ))
 
 #endif
 
