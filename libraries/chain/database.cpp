@@ -2193,7 +2193,7 @@ void database::process_funds()
       // below subtraction cannot underflow int64_t because inflation_rate_adjustment is <2^32
       int64_t current_inflation_rate = std::max( start_inflation_rate - inflation_rate_adjustment, inflation_rate_floor );
 
-      share_type new_bears = ( int64_t (BEARS_INIT_SUPPLY/10) * 2 * current_inflation_rate ) / ( int64_t( BEARS_100_PERCENT ) * int64_t( BEARS_BLOCKS_PER_YEAR ) );
+      share_type new_bears = ( int64_t (BEARS_INIT_SUPPLY) * 2 * current_inflation_rate ) / ( int64_t( BEARS_100_PERCENT ) * int64_t( BEARS_BLOCKS_PER_YEAR ) );
       auto content_reward = ( new_bears * BEARS_CONTENT_REWARD_PERCENT ) / BEARS_100_PERCENT;
       if( has_hardfork( BEARS_HARDFORK_0_17__774 ) )
          content_reward = pay_reward_funds( content_reward ); /// 75% to content creator
@@ -4688,7 +4688,7 @@ void database::process_hardforks()
       // If there are upcoming hardforks and the next one is later, do nothing
       const auto& hardforks = get_hardfork_property_object();
 
-      if( has_hardfork( BEARS_HARDFORK_0_5__54 ) )
+      if( has_hardfork( BEARS_NUM_HARDFORKS ) )
       {
          while( _hardfork_versions[ hardforks.last_hardfork ] < hardforks.next_hardfork
             && hardforks.next_hardfork_time <= head_block_time() )
@@ -4704,7 +4704,7 @@ void database::process_hardforks()
       {
          while( hardforks.last_hardfork < BEARS_NUM_HARDFORKS
                && _hardfork_times[ hardforks.last_hardfork + 1 ] <= head_block_time()
-               && hardforks.last_hardfork < BEARS_HARDFORK_0_5__54 )
+               && hardforks.last_hardfork < BEARS_NUM_HARDFORKS )
          {
             apply_hardfork( hardforks.last_hardfork + 1 );
          }
@@ -4729,7 +4729,7 @@ void database::set_hardfork( uint32_t hardfork, bool apply_now )
 
    for( uint32_t i = hardforks.last_hardfork + 1; i <= hardfork && i <= BEARS_NUM_HARDFORKS; i++ )
    {
-      if( i <= BEARS_HARDFORK_0_5__54 )
+      if( i <= BEARS_NUM_HARDFORKS )
          _hardfork_times[i] = head_block_time();
       else
       {
