@@ -3379,22 +3379,22 @@ try {
             if( skip_price_feed_limit_check )
                return;
 #endif
-            if( has_hardfork( BEARS_HARDFORK_0_14__230 ) )
-            {
-               // This block limits the effective median price to force BSD to remain at or
-               // below 10% of the combined market cap of BEARS and BSD.
-               //
-               // For example, if we have 500 BEARS and 100 BSD, the price is limited to
-               // 900 BSD / 500 BEARS which works out to be $1.80.  At this price, 500 Bears
-               // would be valued at 500 * $1.80 = $900.  100 BSD is by definition always $100,
-               // so the combined market cap is $900 + $100 = $1000.
+            // if( has_hardfork( BEARS_HARDFORK_0_14__230 ) )
+            // {
+            //    // This block limits the effective median price to force BSD to remain at or
+            //    // below 10% of the combined market cap of BEARS and BSD.
+            //    //
+            //    // For example, if we have 500 BEARS and 100 BSD, the price is limited to
+            //    // 900 BSD / 500 BEARS which works out to be $1.80.  At this price, 500 Bears
+            //    // would be valued at 500 * $1.80 = $900.  100 BSD is by definition always $100,
+            //    // so the combined market cap is $900 + $100 = $1000.
 
-               const auto& gpo = get_dynamic_global_properties();
-               price min_price( asset( 9 * gpo.current_bsd_supply.amount, BSD_SYMBOL ), gpo.current_supply );
+            //    const auto& gpo = get_dynamic_global_properties();
+            //    price min_price( asset( 9 * gpo.current_bsd_supply.amount, BSD_SYMBOL ), gpo.current_supply );
 
-               if( min_price > fho.current_median_history )
-                  fho.current_median_history = min_price;
-            }
+            //    if( min_price > fho.current_median_history )
+            //       fho.current_median_history = min_price;
+            // }
          }
       });
    }
