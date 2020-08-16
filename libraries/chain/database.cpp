@@ -2193,7 +2193,7 @@ void database::process_funds()
       // below subtraction cannot underflow int64_t because inflation_rate_adjustment is <2^32
       int64_t current_inflation_rate = std::max( start_inflation_rate - inflation_rate_adjustment, inflation_rate_floor );
 
-      auto new_bears = ( props.virtual_supply.amount * current_inflation_rate ) / ( int64_t( BEARS_100_PERCENT ) * int64_t( BEARS_BLOCKS_PER_YEAR ) );
+      auto new_bears = ( (BEARS_INIT_SUPPLY*2) * current_inflation_rate ) / ( int64_t( BEARS_100_PERCENT ) * int64_t( BEARS_BLOCKS_PER_YEAR ) );
       auto content_reward = ( new_bears * BEARS_CONTENT_REWARD_PERCENT ) / BEARS_100_PERCENT;
       if( has_hardfork( BEARS_HARDFORK_0_17__774 ) )
          content_reward = pay_reward_funds( content_reward ); /// 75% to content creator
@@ -2883,7 +2883,7 @@ void database::init_genesis( uint64_t init_supply )
             a.name = BEARS_INIT_MINER_NAME + ( i ? fc::to_string( i ) : std::string() );
             a.memo_key = init_public_key;
             a.balance  = asset( i ? 0 : init_supply, BEARS_SYMBOL );
-            a.bsd_balance = asset( i ? 0 : 10000, BSD_SYMBOL );
+            a.bsd_balance = asset( i ? 0 : init_supply, BSD_SYMBOL );
          } );
 
          create< account_authority_object >( [&]( account_authority_object& auth )
@@ -2910,8 +2910,8 @@ void database::init_genesis( uint64_t init_supply )
          p.recent_slots_filled = fc::uint128::max_value();
          p.participation_count = 128;
          p.current_supply = asset( init_supply, BEARS_SYMBOL );
-         p.current_bsd_supply = asset( 10000, BSD_SYMBOL );
-         p.virtual_supply = p.current_supply;
+         p.current_bsd_supply = asset( init_supply, BSD_SYMBOL );
+         p.virtual_supply = p.current_supply + p.current_bsd_supply;
          p.maximum_block_size = BEARS_MAX_BLOCK_SIZE;
          p.reverse_auction_seconds = BEARS_REVERSE_AUCTION_WINDOW_SECONDS_HF6;
          p.bsd_stop_percent = BEARS_BSD_STOP_PERCENT_HF14;
