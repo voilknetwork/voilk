@@ -4245,14 +4245,17 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                auto bsd_post_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_seconds_last_update));
                auto compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
 
+               // if it's user's first transaction, we don't need to pay any interest.
+               // We only update the bsd_seconds_last_update to current time
+               // after a user received his first BSDs, he can then wait for 30 days to receive an interest
+
                if(bsd_post_seconds<=0){
                   compounded_period = 0;
                }else {
                   compounded_period = compounded_period - bsd_post_seconds;
-                  acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * fc::uint128_t(compounded_period);
                }
 
-               
+               acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * fc::uint128_t(compounded_period);
                acnt.bsd_seconds_last_update = head_block_time();
 
 
@@ -4444,7 +4447,25 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
          case BEARS_ASSET_NUM_BSD:
             if( a.savings_bsd_seconds_last_update != head_block_time() )
             {
-               acnt.savings_bsd_seconds += fc::uint128_t(a.savings_bsd_balance.amount.value) * (head_block_time() - a.savings_bsd_seconds_last_update).to_seconds();
+
+
+               // first interest a user can receive from his/her BSD balance should not be insance :)
+
+               auto savings_bsd_post_seconds = fc::uint128_t(fc::time_point_sec(a.savings_bsd_seconds_last_update));
+               auto savings_compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
+
+
+               // Check to see whether or not it's first transaction that user has received.
+               // if it's first transaction, we don't need to pay any interest.
+               // We only want to update the savings_bsd_seconds_last_update
+
+               if(savings_bsd_post_seconds<=0){
+                  savings_compounded_period = 0;
+               }else {
+                  savings_compounded_period = savings_compounded_period - savings_bsd_post_seconds;
+               }
+
+               acnt.savings_bsd_seconds += fc::uint128_t(a.savings_bsd_balance.amount.value) * fc::uint128_t(savings_compounded_period);
                acnt.savings_bsd_seconds_last_update = head_block_time();
 
                if( acnt.savings_bsd_seconds > 0 &&
