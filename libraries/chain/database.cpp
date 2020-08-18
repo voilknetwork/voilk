@@ -4241,7 +4241,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
             {
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
-               acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * (head_block_time() - (a.bsd_seconds_last_update>=BEARS_INIT_TIME?a.bsd_seconds_last_update:head_block_time())).to_seconds();
+               acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * (head_block_time() - ((a.bsd_seconds_last_update.to_seconds() >= BEARS_INIT_TIME )?a.bsd_seconds_last_update:head_block_time())).to_seconds();
                acnt.bsd_seconds_last_update = head_block_time();
 
                if( acnt.bsd_seconds > 0 &&
