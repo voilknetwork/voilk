@@ -4239,11 +4239,14 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
          case BEARS_ASSET_NUM_BSD:
             if( a.bsd_seconds_last_update != head_block_time() )
             {
-               acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * (head_block_time() - a.bsd_seconds_last_update).to_seconds();
+
+               // first interest a user can receive from his/her BSD balance should not be insance :)
+               acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * (head_block_time() - (a.bsd_seconds_last_update>=BEARS_INIT_TIME?a.bsd_seconds_last_update:head_block_time())).to_seconds();
                acnt.bsd_seconds_last_update = head_block_time();
 
                if( acnt.bsd_seconds > 0 &&
-                   (acnt.bsd_seconds_last_update - acnt.bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC )
+                   (acnt.bsd_seconds_last_update - acnt.bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC
+               )
                {
                   auto interest = acnt.bsd_seconds / BEARS_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().bsd_interest_rate;
