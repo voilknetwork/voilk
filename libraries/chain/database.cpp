@@ -4253,7 +4253,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                // We only update the bsd_seconds_last_update to current time
                // after a user received his first BSDs, he can then wait for 30 days to receive an interest
 
-               if(bsd_interest_seconds<=0||last_bsd_interest){
+               if(bsd_interest_seconds<=0||last_bsd_interest<=0){
                   compounded_period = 0;
                   acnt.bsd_last_interest_payment = head_block_time();
                }else {
