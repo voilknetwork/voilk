@@ -4248,7 +4248,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                auto bsd_interest_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_seconds_last_update));
                auto compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
                auto last_bsd_interest = fc::uint128_t(fc::time_point_sec(a.bsd_last_interest_payment));
-
+               elog( "bsd_interest_seconds ${hf} compounded_period ${b}", ("hf", bsd_interest_seconds)("b", compounded_period) );
                // if it's user's first transaction, we don't need to pay any interest.
                // We only update the bsd_seconds_last_update to current time
                // after a user received his first BSDs, he can then wait for 30 days to receive an interest
@@ -4263,10 +4263,11 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
 
                acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * fc::uint128_t(compounded_period);
                acnt.bsd_seconds_last_update = head_block_time();
+               auto current_minus_last_interest = (head_block_time() - a.bsd_last_interest_payment).to_seconds();
+               elog( "current_minus_last_interest ${hf} ", ("hf", current_minus_last_interest) );
 
                if( acnt.bsd_seconds > 0 &&
-                   (head_block_time() - a.bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC
-               )
+                   ( current_minus_last_interest > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC)
                {
                   auto interest = acnt.bsd_seconds / BEARS_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().bsd_interest_rate;
