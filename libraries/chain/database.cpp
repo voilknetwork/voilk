@@ -4448,13 +4448,13 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
             }
             break;
          case BEARS_ASSET_NUM_BSD:
-            if( a.savings_bsd_seconds_last_update != head_block_time() )
+            if( a.savings_bsd_last_interest_payment != head_block_time() )
             {
 
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
 
-               auto savings_bsd_post_seconds = fc::uint128_t(fc::time_point_sec(a.savings_bsd_seconds_last_update));
+               auto savings_interest_seconds = fc::uint128_t(fc::time_point_sec(a.savings_bsd_last_interest_payment));
                auto savings_compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
 
 
@@ -4462,17 +4462,17 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
                // if it's first transaction, we don't need to pay any interest.
                // We only want to update the savings_bsd_seconds_last_update
 
-               if(savings_bsd_post_seconds<=0){
+               if(savings_interest_seconds<=0){
                   savings_compounded_period = 0;
                }else {
-                  savings_compounded_period = savings_compounded_period - savings_bsd_post_seconds;
+                  savings_compounded_period = savings_compounded_period - savings_interest_seconds;
                }
 
                acnt.savings_bsd_seconds += fc::uint128_t(a.savings_bsd_balance.amount.value) * fc::uint128_t(savings_compounded_period);
-               acnt.savings_bsd_seconds_last_update = head_block_time();
+               
 
                if( acnt.savings_bsd_seconds > 0 &&
-                   (acnt.savings_bsd_seconds_last_update - acnt.savings_bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC )
+                   (fc::uint128_t(fc::time_point_sec(head_block_time())) - savings_interest_seconds) > fc::uint128_t(BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC) )
                {
                   auto interest = acnt.savings_bsd_seconds / BEARS_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().bsd_interest_rate;
@@ -4492,6 +4492,8 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
                   } );
                }
             }
+            // this had nothing to do with interest payment..
+            acnt.savings_bsd_seconds_last_update = head_block_time();
             acnt.savings_bsd_balance += delta;
             if( check_balance )
             {
