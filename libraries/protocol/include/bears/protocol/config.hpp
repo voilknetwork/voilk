@@ -43,7 +43,7 @@
 
 #else // IS LIVE BEARS NETWORK
 
-#define BEARS_BLOCKCHAIN_VERSION              ( version(0, 20, 5) )
+#define BEARS_BLOCKCHAIN_VERSION              ( version(0, 20, 6) )
 
 #define BEARS_INIT_PUBLIC_KEY_STR             "SHR7YDq7bh9EG3oufCAPRjf1ZESqCqjdjj55Xp2QXDTnYndVqxBom"
 #define BEARS_CHAIN_ID (fc::sha256::hash("I love Pakistan"))
