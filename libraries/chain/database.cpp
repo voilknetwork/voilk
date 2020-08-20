@@ -4255,6 +4255,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
 
                if(bsd_interest_seconds<=BEARS_FIRST_BLOCK_TIME||last_bsd_interest<=BEARS_FIRST_BLOCK_TIME){
                   compounded_period = 0;
+                  acnt.bsd_seconds = 0;
                   acnt.bsd_last_interest_payment = head_block_time();
                }else {
                   compounded_period = compounded_period - bsd_interest_seconds;
@@ -4469,6 +4470,7 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
 
                if(savings_interest_seconds<=BEARS_FIRST_BLOCK_TIME||last_interest<=BEARS_FIRST_BLOCK_TIME){
                   savings_compounded_period = 0;
+                  acnt.savings_bsd_seconds = 0;
                   // for the first time, just update the interest time to current, and pay nothing.
                   acnt.savings_bsd_last_interest_payment = head_block_time();
                }else {
