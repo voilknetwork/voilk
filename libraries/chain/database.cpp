@@ -4459,9 +4459,9 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
 
-               auto savings_interest_seconds = fc::uint128_t(fc::time_point_sec(a.savings_bsd_seconds_last_update));
-               auto savings_compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
-               auto last_interest = fc::uint128_t(fc::time_point_sec(a.savings_bsd_last_interest_payment));
+               auto savings_interest_seconds = (a.savings_bsd_seconds_last_update).sec_since_epoch();
+               auto savings_compounded_period = head_block_time().sec_since_epoch();
+               auto last_interest = (a.savings_bsd_last_interest_payment).sec_since_epoch();
 
                // Check to see whether or not it's first transaction that user has received.
                // if it's first transaction, we don't need to pay any interest.
