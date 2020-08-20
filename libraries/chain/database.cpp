@@ -4240,12 +4240,12 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
 
             /// Pay the interest :) if conditions are right 
 
-            if( a.bsd_last_interest_payment != head_block_time() )
+            if( a.bsd_seconds_last_update != head_block_time() )
             {
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
 
-               auto bsd_interest_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_last_interest_payment));
+               auto bsd_interest_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_seconds_last_update));
                auto compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
 
                // if it's user's first transaction, we don't need to pay any interest.
@@ -4259,9 +4259,12 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                   compounded_period = compounded_period - bsd_interest_seconds;
                }
 
+
                acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * fc::uint128_t(compounded_period);
+               acnt.bsd_seconds_last_update = head_block_time();
+
                if( acnt.bsd_seconds > 0 &&
-                   (fc::uint128_t(fc::time_point_sec(head_block_time())) - bsd_interest_seconds) > fc::uint128_t(BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC)
+                   (head_block_time() - a.bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC
                )
                {
                   auto interest = acnt.bsd_seconds / BEARS_SECONDS_PER_YEAR;
@@ -4283,8 +4286,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                }
             }
 
-            // bsd seconds last update has nothing to do with interest payment. duh!!
-            acnt.bsd_seconds_last_update = head_block_time();
+            
             acnt.bsd_balance += delta;
             if( check_balance )
             {
@@ -4449,13 +4451,13 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
             }
             break;
          case BEARS_ASSET_NUM_BSD:
-            if( a.savings_bsd_last_interest_payment != head_block_time() )
+            if( a.savings_bsd_seconds_last_update != head_block_time() )
             {
 
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
 
-               auto savings_interest_seconds = fc::uint128_t(fc::time_point_sec(a.savings_bsd_last_interest_payment));
+               auto savings_interest_seconds = fc::uint128_t(fc::time_point_sec(a.savings_bsd_seconds_last_update));
                auto savings_compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
 
 
@@ -4472,10 +4474,10 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
                }
 
                acnt.savings_bsd_seconds += fc::uint128_t(a.savings_bsd_balance.amount.value) * fc::uint128_t(savings_compounded_period);
+               acnt.savings_bsd_seconds_last_update = head_block_time();
                
-
                if( acnt.savings_bsd_seconds > 0 &&
-                   (fc::uint128_t(fc::time_point_sec(head_block_time())) - savings_interest_seconds) > fc::uint128_t(BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC) )
+                   (head_block_time() - acnt.savings_bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC )
                {
                   auto interest = acnt.savings_bsd_seconds / BEARS_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().bsd_interest_rate;
@@ -4495,8 +4497,7 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
                   } );
                }
             }
-            // this had nothing to do with interest payment..
-            acnt.savings_bsd_seconds_last_update = head_block_time();
+            
             acnt.savings_bsd_balance += delta;
             if( check_balance )
             {
