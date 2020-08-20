@@ -4237,30 +4237,30 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
             }
             break;
          case BEARS_ASSET_NUM_BSD:
-            if( a.bsd_seconds_last_update != head_block_time() )
+
+            /// Pay the interest :) if conditions are right 
+
+            if( a.bsd_last_interest_payment != head_block_time() )
             {
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
 
-               auto bsd_post_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_seconds_last_update));
+               auto bsd_interest_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_last_interest_payment));
                auto compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
 
                // if it's user's first transaction, we don't need to pay any interest.
                // We only update the bsd_seconds_last_update to current time
                // after a user received his first BSDs, he can then wait for 30 days to receive an interest
 
-               if(bsd_post_seconds<=0){
+               if(bsd_interest_seconds<=0){
                   compounded_period = 0;
                }else {
-                  compounded_period = compounded_period - bsd_post_seconds;
+                  compounded_period = compounded_period - bsd_interest_seconds;
                }
 
                acnt.bsd_seconds += fc::uint128_t(a.bsd_balance.amount.value) * fc::uint128_t(compounded_period);
-               acnt.bsd_seconds_last_update = head_block_time();
-
-
                if( acnt.bsd_seconds > 0 &&
-                   (acnt.bsd_seconds_last_update - acnt.bsd_last_interest_payment).to_seconds() > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC
+                   (fc::uint128_t(fc::time_point_sec(head_block_time())) - bsd_interest_seconds) > fc::uint128_t(BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC)
                )
                {
                   auto interest = acnt.bsd_seconds / BEARS_SECONDS_PER_YEAR;
@@ -4281,6 +4281,9 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                   } );
                }
             }
+
+            // bsd seconds last update has nothing to do with interest payment. duh!!
+            acnt.bsd_seconds_last_update = head_block_time();
             acnt.bsd_balance += delta;
             if( check_balance )
             {
