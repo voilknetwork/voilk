@@ -89,6 +89,7 @@
 #define BEARS_INIT_MINER_NAME                 "bearshare"
 #define BEARS_NUM_INIT_MINERS                 1
 #define BEARS_INIT_TIME                       (fc::time_point_sec());
+#define BEARS_FIRST_BLOCK_TIME                (1597679631)
 
 #define BEARS_MAX_WITNESSES                   21
 

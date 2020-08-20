@@ -4253,7 +4253,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                // We only update the bsd_seconds_last_update to current time
                // after a user received his first BSDs, he can then wait for 30 days to receive an interest
 
-               if(bsd_interest_seconds<=0||last_bsd_interest<=0){
+               if(bsd_interest_seconds<=BEARS_FIRST_BLOCK_TIME||last_bsd_interest<=BEARS_FIRST_BLOCK_TIME){
                   compounded_period = 0;
                   acnt.bsd_last_interest_payment = head_block_time();
                }else {
@@ -4467,7 +4467,7 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
                // if it's first transaction, we don't need to pay any interest.
                // We only want to update the savings_bsd_seconds_last_update
 
-               if(savings_interest_seconds<=0||last_interest<=0){
+               if(savings_interest_seconds<=BEARS_FIRST_BLOCK_TIME||last_interest<=BEARS_FIRST_BLOCK_TIME){
                   savings_compounded_period = 0;
                   // for the first time, just update the interest time to current, and pay nothing.
                   acnt.savings_bsd_last_interest_payment = head_block_time();
