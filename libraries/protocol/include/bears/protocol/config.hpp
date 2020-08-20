@@ -133,8 +133,9 @@
 #define BEARS_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
 #define BEARS_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
 #define BEARS_INFLATION_NARROWING_PERIOD      (250000) // Narrow 0.01% every 250k blocks
-#define BEARS_CONTENT_REWARD_PERCENT          (75*BEARS_1_PERCENT) //75% of inflation, 7.125% inflation
-#define BEARS_COINING_FUND_PERCENT            (15*BEARS_1_PERCENT) //15% of inflation, 1.425% inflation
+#define BEARS_CONTENT_REWARD_PERCENT          (85*BEARS_1_PERCENT) //85% of block reward goes to content creators
+#define BEARS_COINING_FUND_PERCENT            (0*BEARS_1_PERCENT) //0% staking reward
+/// remaining 15% goes to block producers/witnesses
 
 #define BEARS_MINER_PAY_PERCENT               (BEARS_1_PERCENT) // 1%
 #define BEARS_MAX_RATION_DECAY_RATE           (1000000)
