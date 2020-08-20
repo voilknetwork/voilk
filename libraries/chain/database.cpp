@@ -4267,7 +4267,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                elog( "current_minus_last_interest ${hf} ", ("hf", current_minus_last_interest) );
 
                if( acnt.bsd_seconds > 0 &&
-                   ( current_minus_last_interest > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC)
+                  current_minus_last_interest > BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC)
                {
                   auto interest = acnt.bsd_seconds / BEARS_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().bsd_interest_rate;
