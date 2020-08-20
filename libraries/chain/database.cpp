@@ -4245,9 +4245,9 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
 
                // first interest a user can receive from his/her BSD balance should not be insance :)
 
-               auto bsd_interest_seconds = fc::uint128_t(fc::time_point_sec(a.bsd_seconds_last_update));
-               auto compounded_period = fc::uint128_t(fc::time_point_sec(head_block_time()));
-               auto last_bsd_interest = fc::uint128_t(fc::time_point_sec(a.bsd_last_interest_payment));
+               auto bsd_interest_seconds = (a.bsd_seconds_last_update).sec_since_epoch();
+               auto compounded_period = head_block_time().sec_since_epoch();
+               auto last_bsd_interest = (a.bsd_last_interest_payment).sec_since_epoch();
                elog( "bsd_interest_seconds ${hf} compounded_period ${b}", ("hf", bsd_interest_seconds)("b", compounded_period) );
                // if it's user's first transaction, we don't need to pay any interest.
                // We only update the bsd_seconds_last_update to current time
