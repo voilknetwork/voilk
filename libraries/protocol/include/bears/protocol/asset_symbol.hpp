@@ -36,8 +36,8 @@
 #else
 
 #define COINS_SYMBOL_U64  (uint64_t('C') | (uint64_t('O') << 8) | (uint64_t('I') << 16) | (uint64_t('N') << 24) | (uint64_t('S') << 32))
-#define BEARS_SYMBOL_U64  (uint64_t('B') | (uint64_t('E') << 8) | (uint64_t('A') << 16) | (uint64_t('R') << 24) | (uint64_t('S') << 32))
-#define BSD_SYMBOL_U64    (uint64_t('B') | (uint64_t('S') << 8) | (uint64_t('D') << 16))
+#define BEARS_SYMBOL_U64  (uint64_t('V') | (uint64_t('O') << 8) | (uint64_t('I') << 16) | (uint64_t('L') << 24) | (uint64_t('K') << 32))
+#define BSD_SYMBOL_U64    (uint64_t('V') | (uint64_t('S') << 8) | (uint64_t('D') << 16))
 
 #endif
 
