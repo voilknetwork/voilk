@@ -22,18 +22,18 @@
  * THE SOFTWARE.
  */
 
-#include <bears/utilities/tempdir.hpp>
+#include <voilk/utilities/tempdir.hpp>
 
 #include <cstdlib>
 
-namespace bears { namespace utilities {
+namespace voilk { namespace utilities {
 
 fc::path temp_directory_path()
 {
-   const char* bearshares_tempdir = getenv("BEARS_TEMPDIR");
-   if( bearshares_tempdir != nullptr )
-      return fc::path( bearshares_tempdir );
-   return fc::temp_directory_path() / "bears-tmp";
+   const char* voilknetwork_tempdir = getenv("VOILK_TEMPDIR");
+   if( voilknetwork_tempdir != nullptr )
+      return fc::path( voilknetwork_tempdir );
+   return fc::temp_directory_path() / "voilk-tmp";
 }
 
-} } // bears::utilities
+} } // voilk::utilities

@@ -1,19 +1,19 @@
 
-#include <bears/app/api_context.hpp>
-#include <bears/app/application.hpp>
+#include <voilk/app/api_context.hpp>
+#include <voilk/app/application.hpp>
 
-#include <bears/protocol/authority.hpp>
-#include <bears/protocol/sign_state.hpp>
+#include <voilk/protocol/authority.hpp>
+#include <voilk/protocol/sign_state.hpp>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/database.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/database.hpp>
 
-#include <bears/plugins/auth_util/auth_util_api.hpp>
-#include <bears/plugins/auth_util/auth_util_plugin.hpp>
+#include <voilk/plugins/auth_util/auth_util_api.hpp>
+#include <voilk/plugins/auth_util/auth_util_plugin.hpp>
 
 #include <fc/container/flat.hpp>
 
-namespace bears { namespace plugin { namespace auth_util {
+namespace voilk { namespace plugin { namespace auth_util {
 
 using boost::container::flat_set;
 
@@ -22,18 +22,18 @@ namespace detail {
 class auth_util_api_impl
 {
    public:
-      auth_util_api_impl( bears::app::application& _app );
+      auth_util_api_impl( voilk::app::application& _app );
       void check_authority_signature( const check_authority_signature_params& args, check_authority_signature_result& result );
 
-      std::shared_ptr< bears::plugin::auth_util::auth_util_plugin > get_plugin();
+      std::shared_ptr< voilk::plugin::auth_util::auth_util_plugin > get_plugin();
 
-      bears::app::application& app;
+      voilk::app::application& app;
 };
 
-auth_util_api_impl::auth_util_api_impl( bears::app::application& _app ) : app( _app )
+auth_util_api_impl::auth_util_api_impl( voilk::app::application& _app ) : app( _app )
 {}
 
-std::shared_ptr< bears::plugin::auth_util::auth_util_plugin > auth_util_api_impl::get_plugin()
+std::shared_ptr< voilk::plugin::auth_util::auth_util_plugin > auth_util_api_impl::get_plugin()
 {
    return app.get_plugin< auth_util_plugin >( "auth_util" );
 }
@@ -80,7 +80,7 @@ void auth_util_api_impl::check_authority_signature( const check_authority_signat
 
 } // detail
 
-auth_util_api::auth_util_api( const bears::app::api_context& ctx )
+auth_util_api::auth_util_api( const voilk::app::api_context& ctx )
 {
    my = std::make_shared< detail::auth_util_api_impl >(ctx.app);
 }
@@ -94,4 +94,4 @@ check_authority_signature_result auth_util_api::check_authority_signature( check
    return result;
 }
 
-} } } // bears::plugin::auth_util
+} } } // voilk::plugin::auth_util

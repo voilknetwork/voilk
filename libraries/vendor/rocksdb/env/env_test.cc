@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Use of this source code is governed by a VSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
 #ifndef OS_WIN
@@ -12,7 +12,7 @@
 #endif
 
 #ifdef ROCKSDB_MALLOC_USABLE_SIZE
-#ifdef OS_FREEBSD
+#ifdef OS_FREEVSD
 #include <malloc_np.h>
 #else
 #include <malloc.h>
@@ -1137,7 +1137,7 @@ TEST_P(EnvPosixTestWithParam, Preallocation) {
     unique_ptr<WritableFile> srcfile;
     EnvOptions soptions;
     soptions.use_direct_reads = soptions.use_direct_writes = direct_io_;
-#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_SOLARIS) && !defined(OS_AIX) && !defined(OS_OPENBSD)
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_SOLARIS) && !defined(OS_AIX) && !defined(OS_OPENVSD)
     if (soptions.use_direct_writes) {
       rocksdb::SyncPoint::GetInstance()->SetCallBack(
           "NewWritableFile:O_DIRECT", [&](void* arg) {
@@ -1199,7 +1199,7 @@ TEST_P(EnvPosixTestWithParam, ConsistentChildrenAttributes) {
       oss << test::TmpDir(env_) << "/testfile_" << i;
       const std::string path = oss.str();
       unique_ptr<WritableFile> file;
-#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_SOLARIS) && !defined(OS_AIX) && !defined(OS_OPENBSD)
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_SOLARIS) && !defined(OS_AIX) && !defined(OS_OPENVSD)
       if (soptions.use_direct_writes) {
         rocksdb::SyncPoint::GetInstance()->SetCallBack(
             "NewWritableFile:O_DIRECT", [&](void* arg) {

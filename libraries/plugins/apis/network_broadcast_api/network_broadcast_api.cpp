@@ -1,10 +1,10 @@
 
-#include <bears/plugins/network_broadcast_api/network_broadcast_api.hpp>
-#include <bears/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
+#include <voilk/plugins/network_broadcast_api/network_broadcast_api.hpp>
+#include <voilk/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
 
 #include <appbase/application.hpp>
 
-namespace bears { namespace plugins { namespace network_broadcast_api {
+namespace voilk { namespace plugins { namespace network_broadcast_api {
 
 namespace detail
 {
@@ -12,8 +12,8 @@ namespace detail
    {
       public:
          network_broadcast_api_impl() :
-            _p2p( appbase::app().get_plugin< bears::plugins::p2p::p2p_plugin >() ),
-            _chain( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >() )
+            _p2p( appbase::app().get_plugin< voilk::plugins::p2p::p2p_plugin >() ),
+            _chain( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >() )
          {}
 
          DECLARE_API_IMPL(
@@ -23,8 +23,8 @@ namespace detail
 
          bool check_max_block_age( int32_t max_block_age ) const;
 
-         bears::plugins::p2p::p2p_plugin&                      _p2p;
-         bears::plugins::chain::chain_plugin&                  _chain;
+         voilk::plugins::p2p::p2p_plugin&                      _p2p;
+         voilk::plugins::chain::chain_plugin&                  _chain;
    };
 
    DEFINE_API_IMPL( network_broadcast_api_impl, broadcast_transaction )
@@ -61,7 +61,7 @@ namespace detail
 
 network_broadcast_api::network_broadcast_api() : my( new detail::network_broadcast_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_NETWORK_BROADCAST_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_NETWORK_BROADCAST_API_PLUGIN_NAME );
 }
 
 network_broadcast_api::~network_broadcast_api() {}
@@ -71,4 +71,4 @@ DEFINE_LOCKLESS_APIS( network_broadcast_api,
    (broadcast_block)
 )
 
-} } } // bears::plugins::network_broadcast_api
+} } } // voilk::plugins::network_broadcast_api

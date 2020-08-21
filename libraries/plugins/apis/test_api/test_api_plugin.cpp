@@ -1,8 +1,8 @@
-#include <bears/plugins/test_api/test_api_plugin.hpp>
+#include <voilk/plugins/test_api/test_api_plugin.hpp>
 
 #include <fc/log/logger_config.hpp>
 
-namespace bears { namespace plugins { namespace test_api {
+namespace voilk { namespace plugins { namespace test_api {
 
 test_api_plugin::test_api_plugin() {}
 test_api_plugin::~test_api_plugin() {}
@@ -31,4 +31,4 @@ test_api_b_return test_api_plugin::test_api_b( const test_api_b_args& args, bool
    return result;
 }
 
-} } } // bears::plugins::test_api
+} } } // voilk::plugins::test_api

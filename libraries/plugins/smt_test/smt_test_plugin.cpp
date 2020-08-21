@@ -1,21 +1,21 @@
-#include <bears/plugins/smt_test/smt_test_plugin.hpp>
-#include <bears/plugins/smt_test/smt_test_objects.hpp>
+#include <voilk/plugins/smt_test/smt_test_plugin.hpp>
+#include <voilk/plugins/smt_test/smt_test_objects.hpp>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/database.hpp>
-#include <bears/chain/index.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/index.hpp>
 
-#include <bears/protocol/smt_operations.hpp>
+#include <voilk/protocol/smt_operations.hpp>
 
-namespace bears { namespace plugins { namespace smt_test {
+namespace voilk { namespace plugins { namespace smt_test {
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 
 class smt_test_plugin_impl
 {
    public:
       smt_test_plugin_impl( smt_test_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
 
       void on_pre_apply_operation( const operation_notification& op_obj );
@@ -63,34 +63,34 @@ void smt_test_plugin_impl::on_post_apply_operation( const operation_notification
    note.op.visit( post_operation_visitor( *this ) );
 }
 
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
 
 void test_alpha()
 {
    vector<operation>  operations;
 
    smt_capped_generation_policy gpolicy;
-   uint64_t max_supply = BEARS_MAX_SHARE_SUPPLY / 6000;
+   uint64_t max_supply = VOILK_MAX_SHARE_SUPPLY / 6000;
 
-   // set bears unit, total is 100 BEARS-satoshis = 0.1 BEARS
-   gpolicy.pre_soft_cap_unit.bears_unit.emplace( "founder_a",   7 );
-   gpolicy.pre_soft_cap_unit.bears_unit.emplace( "founder_b",  23 );
-   gpolicy.pre_soft_cap_unit.bears_unit.emplace( "founder_c",  70 );
+   // set voilk unit, total is 100 VOILK-satoshis = 0.1 VOILK
+   gpolicy.pre_soft_cap_unit.voilk_unit.emplace( "founder_a",   7 );
+   gpolicy.pre_soft_cap_unit.voilk_unit.emplace( "founder_b",  23 );
+   gpolicy.pre_soft_cap_unit.voilk_unit.emplace( "founder_c",  70 );
 
    // set token unit, total is 6 token-satoshis = 0.0006 ALPHA
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "$from", 5 );
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "founder_d", 1 );
 
    // no soft cap -> no soft cap unit
-   gpolicy.post_soft_cap_unit.bears_unit.clear();
+   gpolicy.post_soft_cap_unit.voilk_unit.clear();
    gpolicy.post_soft_cap_unit.token_unit.clear();
 
-   gpolicy.min_bears_units_commitment.fillin_nonhidden_value( 1 );
-   gpolicy.hard_cap_bears_units_commitment.fillin_nonhidden_value( max_supply );
+   gpolicy.min_voilk_units_commitment.fillin_nonhidden_value( 1 );
+   gpolicy.hard_cap_voilk_units_commitment.fillin_nonhidden_value( max_supply );
 
-   gpolicy.soft_cap_percent = BEARS_100_PERCENT;
+   gpolicy.soft_cap_percent = VOILK_100_PERCENT;
 
-   // .0006 ALPHA / 0.1 BEARS -> 1000 token-units / bears-unit
+   // .0006 ALPHA / 0.1 VOILK -> 1000 token-units / voilk-unit
    gpolicy.min_unit_ratio = 1000;
    gpolicy.max_unit_ratio = 1000;
 
@@ -127,9 +127,9 @@ void test_beta()
 
    smt_capped_generation_policy gpolicy;
 
-   // set bears unit, total is 100 BEARS-satoshis = 0.1 BEARS
-   gpolicy.pre_soft_cap_unit.bears_unit.emplace( "fred"  , 3 );
-   gpolicy.pre_soft_cap_unit.bears_unit.emplace( "george", 2 );
+   // set voilk unit, total is 100 VOILK-satoshis = 0.1 VOILK
+   gpolicy.pre_soft_cap_unit.voilk_unit.emplace( "fred"  , 3 );
+   gpolicy.pre_soft_cap_unit.voilk_unit.emplace( "george", 2 );
 
    // set token unit, total is 6 token-satoshis = 0.0006 ALPHA
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "$from" , 7 );
@@ -137,15 +137,15 @@ void test_beta()
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "henry" , 2 );
 
    // no soft cap -> no soft cap unit
-   gpolicy.post_soft_cap_unit.bears_unit.clear();
+   gpolicy.post_soft_cap_unit.voilk_unit.clear();
    gpolicy.post_soft_cap_unit.token_unit.clear();
 
-   gpolicy.min_bears_units_commitment.fillin_nonhidden_value( 5000000 );
-   gpolicy.hard_cap_bears_units_commitment.fillin_nonhidden_value( 30000000 );
+   gpolicy.min_voilk_units_commitment.fillin_nonhidden_value( 5000000 );
+   gpolicy.hard_cap_voilk_units_commitment.fillin_nonhidden_value( 30000000 );
 
-   gpolicy.soft_cap_percent = BEARS_100_PERCENT;
+   gpolicy.soft_cap_percent = VOILK_100_PERCENT;
 
-   // .0006 ALPHA / 0.1 BEARS -> 1000 token-units / bears-unit
+   // .0006 ALPHA / 0.1 VOILK -> 1000 token-units / voilk-unit
    gpolicy.min_unit_ratio = 50;
    gpolicy.max_unit_ratio = 100;
 
@@ -181,22 +181,22 @@ void test_delta()
 
    smt_capped_generation_policy gpolicy;
 
-   // set bears unit, total is 1 BEARS-satoshi = 0.001 BEARS
-   gpolicy.pre_soft_cap_unit.bears_unit.emplace( "founder", 1 );
+   // set voilk unit, total is 1 VOILK-satoshi = 0.001 VOILK
+   gpolicy.pre_soft_cap_unit.voilk_unit.emplace( "founder", 1 );
 
    // set token unit, total is 10,000 token-satoshis = 0.10000 DELTA
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "founder" , 10000 );
 
    // no soft cap -> no soft cap unit
-   gpolicy.post_soft_cap_unit.bears_unit.clear();
+   gpolicy.post_soft_cap_unit.voilk_unit.clear();
    gpolicy.post_soft_cap_unit.token_unit.clear();
 
-   gpolicy.min_bears_units_commitment.fillin_nonhidden_value(      10000000 );
-   gpolicy.hard_cap_bears_units_commitment.fillin_nonhidden_value( 10000000 );
+   gpolicy.min_voilk_units_commitment.fillin_nonhidden_value(      10000000 );
+   gpolicy.hard_cap_voilk_units_commitment.fillin_nonhidden_value( 10000000 );
 
-   gpolicy.soft_cap_percent = BEARS_100_PERCENT;
+   gpolicy.soft_cap_percent = VOILK_100_PERCENT;
 
-   // .001 BEARS / .100000 DELTA -> 100 DELTA / BEARS
+   // .001 VOILK / .100000 DELTA -> 100 DELTA / VOILK
    gpolicy.min_unit_ratio = 1000;
    gpolicy.max_unit_ratio = 1000;
 
@@ -260,7 +260,7 @@ void smt_test_plugin::plugin_initialize( const boost::program_options::variables
    try
    {
       ilog( "Initializing smt_test plugin" );
-      chain::database& db = appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
+      chain::database& db = appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db();
 
       db.add_pre_apply_operation_handler( [&]( const operation_notification& note ){ my->on_pre_apply_operation( note ); }, *this, 0 );
       db.add_post_apply_operation_handler( [&]( const operation_notification& note ){ my->on_post_apply_operation( note ); }, *this, 0 );
@@ -274,4 +274,4 @@ void smt_test_plugin::plugin_startup() {}
 
 void smt_test_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::smt_test
+} } } // voilk::plugins::smt_test

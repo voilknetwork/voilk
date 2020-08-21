@@ -1,27 +1,27 @@
 
-namespace bears { namespace protocol {
+namespace voilk { namespace protocol {
 struct votable_asset_info_v1;
 } }
 
-#include <bears/protocol/types_fwd.hpp>
+#include <voilk/protocol/types_fwd.hpp>
 
-#include <bears/schema/schema.hpp>
-#include <bears/schema/schema_impl.hpp>
-#include <bears/schema/schema_types.hpp>
+#include <voilk/schema/schema.hpp>
+#include <voilk/schema/schema_impl.hpp>
+#include <voilk/schema/schema_types.hpp>
 
-#include <bears/chain/schema_types/oid.hpp>
-#include <bears/protocol/schema_types/account_name_type.hpp>
-#include <bears/protocol/schema_types/asset_symbol_type.hpp>
+#include <voilk/chain/schema_types/oid.hpp>
+#include <voilk/protocol/schema_types/account_name_type.hpp>
+#include <voilk/protocol/schema_types/asset_symbol_type.hpp>
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/bears_objects.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/voilk_objects.hpp>
 
-using namespace bears::schema;
+using namespace voilk::schema;
 
 struct mystruct
 {
@@ -60,8 +60,8 @@ int main( int argc, char** argv, char** envp )
    std::vector< std::shared_ptr< abstract_schema > > schemas;
 
    schemas.push_back( get_schema_for_type< mystruct >() );
-   schemas.push_back( get_schema_for_type< bears::chain::account_object >() );
-   schemas.push_back( get_schema_for_type< bears::chain::comment_object >() );
+   schemas.push_back( get_schema_for_type< voilk::chain::account_object >() );
+   schemas.push_back( get_schema_for_type< voilk::chain::comment_object >() );
    add_dependent_schemas( schemas );
 
    for( const std::shared_ptr< abstract_schema >& s : schemas )

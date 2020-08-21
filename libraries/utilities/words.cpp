@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 #include <stdint.h>
-#include <bears/utilities/words.hpp>
+#include <voilk/utilities/words.hpp>
 
-namespace bears { namespace words {
+namespace voilk { namespace words {
 
 const const_char_ptr word_list[] = {
 "a",
@@ -14362,7 +14362,7 @@ const const_char_ptr word_list[] = {
 "estado",
 "estamp",
 "estate",
-"ebears",
+"evoilk",
 "ester",
 "estevin",
 "estival",
@@ -49780,4 +49780,4 @@ void hide_unused_warning() {
   (void)word_list;
 }
 
-} } // bears::words
+} } // voilk::words

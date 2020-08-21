@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/bears/wallet/*.hpp")
+file(GLOB HEADERS "include/voilk/wallet/*.hpp")
 
 find_package( Perl )
 find_package( Doxygen )
@@ -8,7 +8,7 @@ if( PERL_FOUND AND DOXYGEN_FOUND AND NOT "${CMAKE_GENERATOR}" STREQUAL "Ninja" )
   add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/doxygen/perlmod/DoxyDocs.pm
                       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                       COMMAND ${DOXYGEN_EXECUTABLE}
-                      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile ${CMAKE_CURRENT_SOURCE_DIR}/include/bears/wallet/wallet.hpp )
+                      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile ${CMAKE_CURRENT_SOURCE_DIR}/include/voilk/wallet/wallet.hpp )
 
   add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp
                       COMMAND PERLLIB=${CMAKE_CURRENT_SOURCE_DIR} ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate_api_documentation.pl ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp.new
@@ -23,13 +23,13 @@ else()
                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api_documentation_standin.cpp )
 endif()
 
-add_library( bears_wallet wallet.cpp remote_node_api.cpp ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp ${HEADERS} )
-target_link_libraries( bears_wallet PRIVATE graphene_net bears_chain bears_protocol bears_utilities fc condenser_api_plugin ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
-target_include_directories( bears_wallet PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
+add_library( voilk_wallet wallet.cpp remote_node_api.cpp ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp ${HEADERS} )
+target_link_libraries( voilk_wallet PRIVATE graphene_net voilk_chain voilk_protocol voilk_utilities fc condenser_api_plugin ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
+target_include_directories( voilk_wallet PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 if( CLANG_TIDY_EXE )
    set_target_properties(
-      bears_wallet PROPERTIES
+      voilk_wallet PROPERTIES
       CXX_CLANG_TIDY "${DO_CLANG_TIDY}"
    )
 endif( CLANG_TIDY_EXE )
@@ -39,10 +39,10 @@ if(MSVC)
 endif(MSVC)
 
 install( TARGETS
-   bears_wallet
+   voilk_wallet
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-install( FILES ${HEADERS} DESTINATION "include/bears/wallet" )
+install( FILES ${HEADERS} DESTINATION "include/voilk/wallet" )

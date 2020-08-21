@@ -1,2 +1,2 @@
-seed.bearshares.com:3331          # bearshares
+seed.voilknetwork.com:3331          # voilknetwork
 

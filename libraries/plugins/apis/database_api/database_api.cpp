@@ -1,17 +1,17 @@
 #include <appbase/application.hpp>
 
-#include <bears/plugins/database_api/database_api.hpp>
-#include <bears/plugins/database_api/database_api_plugin.hpp>
+#include <voilk/plugins/database_api/database_api.hpp>
+#include <voilk/plugins/database_api/database_api_plugin.hpp>
 
-#include <bears/protocol/get_config.hpp>
-#include <bears/protocol/exceptions.hpp>
-#include <bears/protocol/transaction_util.hpp>
+#include <voilk/protocol/get_config.hpp>
+#include <voilk/protocol/exceptions.hpp>
+#include <voilk/protocol/transaction_util.hpp>
 
-#include <bears/utilities/git_revision.hpp>
+#include <voilk/utilities/git_revision.hpp>
 
 #include <fc/git_revision.hpp>
 
-namespace bears { namespace plugins { namespace database_api {
+namespace voilk { namespace plugins { namespace database_api {
 
 class database_api_impl
 {
@@ -51,8 +51,8 @@ class database_api_impl
          (find_coining_delegations)
          (list_coining_delegation_expirations)
          (find_coining_delegation_expirations)
-         (list_bsd_conversion_requests)
-         (find_bsd_conversion_requests)
+         (list_vsd_conversion_requests)
+         (find_vsd_conversion_requests)
          (list_decline_voting_rights_requests)
          (find_decline_voting_rights_requests)
          (list_comments)
@@ -68,7 +68,7 @@ class database_api_impl
          (verify_authority)
          (verify_account_authority)
          (verify_signatures)
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
          (get_smt_next_identifier)
 #endif
       )
@@ -102,13 +102,13 @@ class database_api_impl
 database_api::database_api()
    : my( new database_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_DATABASE_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_DATABASE_API_PLUGIN_NAME );
 }
 
 database_api::~database_api() {}
 
 database_api_impl::database_api_impl()
-   : _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ) {}
+   : _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ) {}
 
 database_api_impl::~database_api_impl() {}
 
@@ -121,15 +121,15 @@ database_api_impl::~database_api_impl() {}
 
 DEFINE_API_IMPL( database_api_impl, get_config )
 {
-   return bears::protocol::get_config();
+   return voilk::protocol::get_config();
 }
 
 DEFINE_API_IMPL( database_api_impl, get_version )
 {
    return get_version_return
    (
-      fc::string( BEARS_BLOCKCHAIN_VERSION ),
-      fc::string( bears::utilities::git_revision_sha ),
+      fc::string( VOILK_BLOCKCHAIN_VERSION ),
+      fc::string( voilk::utilities::git_revision_sha ),
       fc::string( fc::git_revision_sha ),
       _db.get_chain_id()
    );
@@ -806,13 +806,13 @@ DEFINE_API_IMPL( database_api_impl, find_coining_delegation_expirations )
 }
 
 
-/* BSD Conversion Requests */
+/* VSD Conversion Requests */
 
-DEFINE_API_IMPL( database_api_impl, list_bsd_conversion_requests )
+DEFINE_API_IMPL( database_api_impl, list_vsd_conversion_requests )
 {
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
 
-   list_bsd_conversion_requests_return result;
+   list_vsd_conversion_requests_return result;
    result.requests.reserve( args.limit );
 
    switch( args.order )
@@ -844,9 +844,9 @@ DEFINE_API_IMPL( database_api_impl, list_bsd_conversion_requests )
    return result;
 }
 
-DEFINE_API_IMPL( database_api_impl, find_bsd_conversion_requests )
+DEFINE_API_IMPL( database_api_impl, find_vsd_conversion_requests )
 {
-   find_bsd_conversion_requests_return result;
+   find_vsd_conversion_requests_return result;
    const auto& convert_idx = _db.get_index< chain::convert_request_index, chain::by_owner >();
    auto itr = convert_idx.lower_bound( args.account );
 
@@ -1282,36 +1282,36 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
    get_order_book_return result;
 
-   auto max_sell = price::max( BSD_SYMBOL, BEARS_SYMBOL );
-   auto max_buy = price::max( BEARS_SYMBOL, BSD_SYMBOL );
+   auto max_sell = price::max( VSD_SYMBOL, VOILK_SYMBOL );
+   auto max_buy = price::max( VOILK_SYMBOL, VSD_SYMBOL );
 
    const auto& limit_price_idx = _db.get_index< chain::limit_order_index >().indices().get< chain::by_price >();
    auto sell_itr = limit_price_idx.lower_bound( max_sell );
    auto buy_itr  = limit_price_idx.lower_bound( max_buy );
    auto end = limit_price_idx.end();
 
-   while( sell_itr != end && sell_itr->sell_price.base.symbol == BSD_SYMBOL && result.bids.size() < args.limit )
+   while( sell_itr != end && sell_itr->sell_price.base.symbol == VSD_SYMBOL && result.bids.size() < args.limit )
    {
       auto itr = sell_itr;
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price  = 0.0;
       // cur.real_price  = (cur.order_price).to_real();
-      cur.bsd = itr->for_sale;
-      cur.bears = ( asset( itr->for_sale, BSD_SYMBOL ) * cur.order_price ).amount;
+      cur.vsd = itr->for_sale;
+      cur.voilk = ( asset( itr->for_sale, VSD_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.bids.push_back( cur );
       ++sell_itr;
    }
-   while( buy_itr != end && buy_itr->sell_price.base.symbol == BEARS_SYMBOL && result.asks.size() < args.limit )
+   while( buy_itr != end && buy_itr->sell_price.base.symbol == VOILK_SYMBOL && result.asks.size() < args.limit )
    {
       auto itr = buy_itr;
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price = 0.0;
       // cur.real_price  = (~cur.order_price).to_real();
-      cur.bears   = itr->for_sale;
-      cur.bsd     = ( asset( itr->for_sale, BEARS_SYMBOL ) * cur.order_price ).amount;
+      cur.voilk   = itr->for_sale;
+      cur.vsd     = ( asset( itr->for_sale, VOILK_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.asks.push_back( cur );
       ++buy_itr;
@@ -1340,8 +1340,8 @@ DEFINE_API_IMPL( database_api_impl, get_required_signatures )
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).active  ); },
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).owner   ); },
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).posting ); },
-                                                   BEARS_MAX_SIG_CHECK_DEPTH,
-                                                   _db.has_hardfork( BEARS_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
+                                                   VOILK_MAX_SIG_CHECK_DEPTH,
+                                                   _db.has_hardfork( VOILK_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
 
    return result;
 }
@@ -1373,8 +1373,8 @@ DEFINE_API_IMPL( database_api_impl, get_potential_signatures )
             result.keys.insert( k );
          return authority( auth );
       },
-      BEARS_MAX_SIG_CHECK_DEPTH,
-      _db.has_hardfork( BEARS_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical
+      VOILK_MAX_SIG_CHECK_DEPTH,
+      _db.has_hardfork( VOILK_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical
    );
 
    return result;
@@ -1386,10 +1386,10 @@ DEFINE_API_IMPL( database_api_impl, verify_authority )
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).active  ); },
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).owner   ); },
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).posting ); },
-                           BEARS_MAX_SIG_CHECK_DEPTH,
-                           BEARS_MAX_AUTHORITY_MEMBERSHIP,
-                           BEARS_MAX_SIG_CHECK_ACCOUNTS,
-                           _db.has_hardfork( BEARS_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
+                           VOILK_MAX_SIG_CHECK_DEPTH,
+                           VOILK_MAX_AUTHORITY_MEMBERSHIP,
+                           VOILK_MAX_SIG_CHECK_ACCOUNTS,
+                           _db.has_hardfork( VOILK_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
    return verify_authority_return( { true } );
 }
 
@@ -1415,7 +1415,7 @@ DEFINE_API_IMPL( database_api_impl, verify_signatures )
    flat_set< public_key_type > sig_keys;
    for( const auto&  sig : args.signatures )
    {
-      BEARS_ASSERT(
+      VOILK_ASSERT(
          sig_keys.insert( fc::ecc::public_key( sig, args.hash ) ).second,
          protocol::tx_duplicate_sig,
          "Duplicate Signature detected" );
@@ -1427,20 +1427,20 @@ DEFINE_API_IMPL( database_api_impl, verify_signatures )
    // verify authority throws on failure, catch and return false
    try
    {
-      bears::protocol::verify_authority< verify_signatures_args >(
+      voilk::protocol::verify_authority< verify_signatures_args >(
          { args },
          sig_keys,
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).owner ); },
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).active ); },
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).posting ); },
-         BEARS_MAX_SIG_CHECK_DEPTH );
+         VOILK_MAX_SIG_CHECK_DEPTH );
    }
    catch( fc::exception& ) { result.valid = false; }
 
    return result;
 }
 
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 // SMT                                                              //
@@ -1486,8 +1486,8 @@ DEFINE_READ_APIS( database_api,
    (find_coining_delegations)
    (list_coining_delegation_expirations)
    (find_coining_delegation_expirations)
-   (list_bsd_conversion_requests)
-   (find_bsd_conversion_requests)
+   (list_vsd_conversion_requests)
+   (find_vsd_conversion_requests)
    (list_decline_voting_rights_requests)
    (find_decline_voting_rights_requests)
    (list_comments)
@@ -1503,9 +1503,9 @@ DEFINE_READ_APIS( database_api,
    (verify_authority)
    (verify_account_authority)
    (verify_signatures)
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
    (get_smt_next_identifier)
 #endif
 )
 
-} } } // bears::plugins::database_api
+} } } // voilk::plugins::database_api

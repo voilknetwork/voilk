@@ -1,8 +1,8 @@
-#include <bears/plugins/condenser_api/condenser_api_plugin.hpp>
-#include <bears/plugins/condenser_api/condenser_api.hpp>
-#include <bears/plugins/chain/chain_plugin.hpp>
+#include <voilk/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <voilk/plugins/condenser_api/condenser_api.hpp>
+#include <voilk/plugins/chain/chain_plugin.hpp>
 
-namespace bears { namespace plugins { namespace condenser_api {
+namespace voilk { namespace plugins { namespace condenser_api {
 
 condenser_api_plugin::condenser_api_plugin() {}
 condenser_api_plugin::~condenser_api_plugin() {}
@@ -26,4 +26,4 @@ void condenser_api_plugin::plugin_startup()
 
 void condenser_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::condenser_api
+} } } // voilk::plugins::condenser_api

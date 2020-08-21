@@ -95,7 +95,7 @@ PID=$!
 
 #
 #Start the monitoring. Default is "vsz" monitoring for upto cache_size ($cs) value of virtual mem
-#You could also monitor RSS and CPUTIME (bsdtime). Try 'pflag -h' for how to do this
+#You could also monitor RSS and CPUTIME (vsdtime). Try 'pflag -h' for how to do this
 #
 ${PFLAG} -p $PID -v
 

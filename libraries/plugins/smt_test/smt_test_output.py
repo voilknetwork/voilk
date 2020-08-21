@@ -7,20 +7,20 @@ import sys
 
 argv = list(sys.argv)
 
-bearsd = None
-i_bearsd = -1
+voilkd = None
+i_voilkd = -1
 for i, a in enumerate(argv):
-    if a.startswith("--bearsd="):
-        _, bearsd = a.split("=", 1)
-        i_bearsd = i
+    if a.startswith("--voilkd="):
+        _, voilkd = a.split("=", 1)
+        i_voilkd = i
 
-if bearsd is None:
-    sys.stderr.write("missing --bearsd argument\n")
+if voilkd is None:
+    sys.stderr.write("missing --voilkd argument\n")
     sys.exit(1)
 
-del argv[i_bearsd]
+del argv[i_voilkd]
 
-with subprocess.Popen( [bearsd] + argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT ) as outproc:
+with subprocess.Popen( [voilkd] + argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT ) as outproc:
     while True:
         line = outproc.stdout.readline()
         line = line.decode("utf-8")

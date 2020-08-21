@@ -1,18 +1,18 @@
 #ifdef IS_TEST_NET
-#include <bears/chain/generic_custom_operation_interpreter.hpp>
-#include <bears/chain/account_object.hpp>
+#include <voilk/chain/generic_custom_operation_interpreter.hpp>
+#include <voilk/chain/account_object.hpp>
 
 #include <boost/test/unit_test.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace bears::chain;
-using namespace bears::chain::test;
+using namespace voilk::chain;
+using namespace voilk::chain::test;
 /*
-namespace bears { namespace plugin_tests {
+namespace voilk { namespace plugin_tests {
 
-using namespace bears::app;
-using namespace bears::chain;
+using namespace voilk::app;
+using namespace voilk::chain;
 
 struct test_a_operation : base_operation
 {
@@ -42,8 +42,8 @@ class test_plugin : public plugin
       std::shared_ptr< generic_custom_operation_interpreter< test_op > > _evaluator_registry;
 };
 
-BEARS_DEFINE_PLUGIN_EVALUATOR( test_plugin, test_a_operation, test_a );
-BEARS_DEFINE_PLUGIN_EVALUATOR( test_plugin, test_b_operation, test_b );
+VOILK_DEFINE_PLUGIN_EVALUATOR( test_plugin, test_a_operation, test_a );
+VOILK_DEFINE_PLUGIN_EVALUATOR( test_plugin, test_b_operation, test_b );
 
 void test_a_evaluator::do_apply( const test_a_operation& o )
 {
@@ -75,16 +75,16 @@ test_plugin::test_plugin( application* app ) : plugin( app )
    database().set_custom_operation_interpreter( plugin_name(), _evaluator_registry );
 }
 
-} } // bears::plugin_tests
+} } // voilk::plugin_tests
 
-BEARS_DEFINE_PLUGIN( test, bears::plugin_tests::test_plugin )
+VOILK_DEFINE_PLUGIN( test, voilk::plugin_tests::test_plugin )
 
-FC_REFLECT( bears::plugin_tests::test_a_operation, (account) )
-FC_REFLECT( bears::plugin_tests::test_b_operation, (account) )
+FC_REFLECT( voilk::plugin_tests::test_a_operation, (account) )
+FC_REFLECT( voilk::plugin_tests::test_b_operation, (account) )
 
-BEARS_DECLARE_OPERATION_TYPE( bears::plugin_tests::test_op );
-FC_REFLECT_TYPENAME( bears::plugin_tests::test_op );
-BEARS_DEFINE_OPERATION_TYPE( bears::plugin_tests::test_op );
+VOILK_DECLARE_OPERATION_TYPE( voilk::plugin_tests::test_op );
+FC_REFLECT_TYPENAME( voilk::plugin_tests::test_op );
+VOILK_DEFINE_OPERATION_TYPE( voilk::plugin_tests::test_op );
 */
 
 BOOST_FIXTURE_TEST_SUITE( plugin_ops, clean_database_fixture );

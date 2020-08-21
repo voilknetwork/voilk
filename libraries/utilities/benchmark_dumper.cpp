@@ -1,7 +1,7 @@
 
-#include <bears/utilities/benchmark_dumper.hpp>
+#include <voilk/utilities/benchmark_dumper.hpp>
 
-namespace bears { namespace utilities {
+namespace voilk { namespace utilities {
 
 #define PROC_STATUS_LINE_LENGTH 1028
 

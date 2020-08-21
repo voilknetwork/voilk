@@ -1,19 +1,19 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <bears/protocol/exceptions.hpp>
-#include <bears/protocol/hardfork.hpp>
+#include <voilk/protocol/exceptions.hpp>
+#include <voilk/protocol/hardfork.hpp>
 
-#include <bears/chain/block_summary_object.hpp>
-#include <bears/chain/database.hpp>
-#include <bears/chain/history_object.hpp>
-#include <bears/chain/bears_objects.hpp>
+#include <voilk/chain/block_summary_object.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/history_object.hpp>
+#include <voilk/chain/voilk_objects.hpp>
 
-#include <bears/chain/util/reward.hpp>
+#include <voilk/chain/util/reward.hpp>
 
-#include <bears/plugins/debug_node/debug_node_plugin.hpp>
-#include <bears/plugins/rc/rc_objects.hpp>
-#include <bears/plugins/rc/resource_count.hpp>
+#include <voilk/plugins/debug_node/debug_node_plugin.hpp>
+#include <voilk/plugins/rc/rc_objects.hpp>
+#include <voilk/plugins/rc/resource_count.hpp>
 
 #include <fc/crypto/digest.hpp>
 
@@ -21,10 +21,10 @@
 
 #include <cmath>
 
-using namespace bears;
-using namespace bears::chain;
-using namespace bears::chain::util;
-using namespace bears::protocol;
+using namespace voilk;
+using namespace voilk::chain;
+using namespace voilk::chain::util;
+using namespace voilk::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( operation_time_tests, clean_database_fixture )
 
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
       // A,B,D : posters
       // U,V,W : voters
 
-      // set a ridiculously high BEARS price ($1 / satoshi) to disable dust threshold
+      // set a ridiculously high VOILK price ($1 / satoshi) to disable dust threshold
       set_price_feed( price( ASSET( "1.000 TBD" ), ASSET( "0.001 TESTS" ) ) );
 
       for( const auto& voter : voters )
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
          comment_operation com;
          com.author = author.name;
          com.permlink = "mypost";
-         com.parent_author = BEARS_ROOT_POST_PARENT;
+         com.parent_author = VOILK_ROOT_POST_PARENT;
          com.parent_permlink = "test";
          com.title = "Hello from "+author.name;
          com.body = "Hello, my name is "+author.name;
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
             tx.operations.push_back( copt );
          }
 
-         tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+         tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
          sign( tx, author.private_key );
          db->push_transaction( tx, 0 );
       }
@@ -116,18 +116,18 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
          vote.voter = voter.name;
          vote.author = voter.favorite_author;
          vote.permlink = "mypost";
-         vote.weight = BEARS_100_PERCENT;
+         vote.weight = VOILK_100_PERCENT;
          tx.operations.push_back( vote );
-         tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+         tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
          sign( tx, voter.private_key );
          db->push_transaction( tx, 0 );
       }
 
-      //auto reward_bears = db->get_dynamic_global_properties().total_reward_fund_bears;
+      //auto reward_voilk = db->get_dynamic_global_properties().total_reward_fund_voilk;
 
       // generate a few blocks to seed the reward fund
       generate_blocks(10);
-      //const auto& rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
+      //const auto& rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
       //idump( (rf) );
 
       generate_blocks( db->get_comment( "alice", string( "mypost" ) ).cashout_time, true );
@@ -135,12 +135,12 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
       for( const auto& author : authors )
       {
          const account_object& a = db->get_account(author.name);
-         ilog( "${n} : ${bears} ${bsd}", ("n", author.name)("bears", a.reward_bears_balance)("bsd", a.reward_bsd_balance) );
+         ilog( "${n} : ${voilk} ${vsd}", ("n", author.name)("voilk", a.reward_voilk_balance)("vsd", a.reward_vsd_balance) );
       }
       for( const auto& voter : voters )
       {
          const account_object& a = db->get_account(voter.name);
-         ilog( "${n} : ${bears} ${bsd}", ("n", voter.name)("bears", a.reward_bears_balance)("bsd", a.reward_bsd_balance) );
+         ilog( "${n} : ${voilk} ${vsd}", ("n", voter.name)("voilk", a.reward_voilk_balance)("vsd", a.reward_vsd_balance) );
       }
       */
 
@@ -148,9 +148,9 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
       const account_object& bob_account   = db->get_account("bob");
       const account_object& dave_account  = db->get_account("dave");
 
-      BOOST_CHECK( alice_account.reward_bsd_balance == ASSET( "10720.000 TBD" ) );
-      BOOST_CHECK( bob_account.reward_bsd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_CHECK( dave_account.reward_bsd_balance == alice_account.reward_bsd_balance );
+      BOOST_CHECK( alice_account.reward_vsd_balance == ASSET( "10720.000 TBD" ) );
+      BOOST_CHECK( bob_account.reward_vsd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_CHECK( dave_account.reward_vsd_balance == alice_account.reward_vsd_balance );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -164,8 +164,8 @@ BOOST_AUTO_TEST_CASE( comment_payout_dust )
       ACTORS( (alice)(bob) )
       generate_block();
 
-      coin( BEARS_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
-      coin( BEARS_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
 
       set_price_feed( price( ASSET( "1.000 TBD" ), ASSET( "1.000 TESTS" ) ) );
 
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE( comment_payout_dust )
 
       signed_transaction tx;
       tx.operations.push_back( comment );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
       validate_database();
@@ -200,18 +200,18 @@ BOOST_AUTO_TEST_CASE( comment_payout_dust )
       vote.voter = "alice";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = 81 * BEARS_1_PERCENT;
+      vote.weight = 81 * VOILK_1_PERCENT;
 
       tx.clear();
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
       validate_database();
 
       vote.voter = "bob";
       vote.author = "bob";
-      vote.weight = 59 * BEARS_1_PERCENT;
+      vote.weight = 59 * VOILK_1_PERCENT;
 
       tx.clear();
       tx.operations.push_back( vote );
@@ -221,8 +221,8 @@ BOOST_AUTO_TEST_CASE( comment_payout_dust )
 
       generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time );
 
-      // If comments are paid out independent of order, then the last satoshi of BEARS cannot be divided among them
-      const auto rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
+      // If comments are paid out independent of order, then the last satoshi of VOILK cannot be divided among them
+      const auto rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
       BOOST_REQUIRE( rf.reward_balance == ASSET( "0.001 TESTS" ) );
 
       validate_database();
@@ -257,10 +257,10 @@ BOOST_AUTO_TEST_CASE( reward_funds )
       vote.voter = "alice";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       tx.operations.push_back( comment );
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -279,26 +279,26 @@ BOOST_AUTO_TEST_CASE( reward_funds )
       generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time );
 
       {
-         const auto& post_rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
-         const auto& comment_rf = db->get< reward_fund_object, by_name >( BEARS_COMMENT_REWARD_FUND_NAME );
+         const auto& post_rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
+         const auto& comment_rf = db->get< reward_fund_object, by_name >( VOILK_COMMENT_REWARD_FUND_NAME );
 
          BOOST_REQUIRE( post_rf.reward_balance.amount == 0 );
          BOOST_REQUIRE( comment_rf.reward_balance.amount > 0 );
-         BOOST_REQUIRE( db->get_account( "alice" ).reward_bsd_balance.amount > 0 );
-         BOOST_REQUIRE( db->get_account( "bob" ).reward_bsd_balance.amount == 0 );
+         BOOST_REQUIRE( db->get_account( "alice" ).reward_vsd_balance.amount > 0 );
+         BOOST_REQUIRE( db->get_account( "bob" ).reward_vsd_balance.amount == 0 );
          validate_database();
       }
 
       generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time );
 
       {
-         const auto& post_rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
-         const auto& comment_rf = db->get< reward_fund_object, by_name >( BEARS_COMMENT_REWARD_FUND_NAME );
+         const auto& post_rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
+         const auto& comment_rf = db->get< reward_fund_object, by_name >( VOILK_COMMENT_REWARD_FUND_NAME );
 
          BOOST_REQUIRE( post_rf.reward_balance.amount > 0 );
          BOOST_REQUIRE( comment_rf.reward_balance.amount == 0 );
-         BOOST_REQUIRE( db->get_account( "alice" ).reward_bsd_balance.amount > 0 );
-         BOOST_REQUIRE( db->get_account( "bob" ).reward_bsd_balance.amount > 0 );
+         BOOST_REQUIRE( db->get_account( "alice" ).reward_vsd_balance.amount > 0 );
+         BOOST_REQUIRE( db->get_account( "bob" ).reward_vsd_balance.amount > 0 );
          validate_database();
       }
    }
@@ -329,16 +329,16 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       vote.voter = "alice";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       tx.operations.push_back( comment );
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       auto alice_vshares = util::evaluate_reward_curve( db->get_comment( "alice", string( "test" ) ).net_rshares.value,
-         db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME ).author_reward_curve,
-         db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME ).content_constant );
+         db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME ).author_reward_curve,
+         db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME ).content_constant );
 
       generate_blocks( 5 );
 
@@ -354,7 +354,7 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time );
 
       {
-         const auto& post_rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
+         const auto& post_rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
 
          BOOST_REQUIRE( post_rf.recent_claims == alice_vshares );
          validate_database();
@@ -362,15 +362,15 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
 
       auto bob_cashout_time = db->get_comment( "bob", string( "test" ) ).cashout_time;
       auto bob_vshares = util::evaluate_reward_curve( db->get_comment( "bob", string( "test" ) ).net_rshares.value,
-         db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME ).author_reward_curve,
-         db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME ).content_constant );
+         db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME ).author_reward_curve,
+         db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME ).content_constant );
 
       generate_block();
 
       while( db->head_block_time() < bob_cashout_time )
       {
-         alice_vshares -= ( alice_vshares * BEARS_BLOCK_INTERVAL ) / BEARS_RECENT_RSHARES_DECAY_TIME_HF19.to_seconds();
-         const auto& post_rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
+         alice_vshares -= ( alice_vshares * VOILK_BLOCK_INTERVAL ) / VOILK_RECENT_RSHARES_DECAY_TIME_HF19.to_seconds();
+         const auto& post_rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
 
          BOOST_REQUIRE( post_rf.recent_claims == alice_vshares );
 
@@ -379,8 +379,8 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       }
 
       {
-         alice_vshares -= ( alice_vshares * BEARS_BLOCK_INTERVAL ) / BEARS_RECENT_RSHARES_DECAY_TIME_HF19.to_seconds();
-         const auto& post_rf = db->get< reward_fund_object, by_name >( BEARS_POST_REWARD_FUND_NAME );
+         alice_vshares -= ( alice_vshares * VOILK_BLOCK_INTERVAL ) / VOILK_RECENT_RSHARES_DECAY_TIME_HF19.to_seconds();
+         const auto& post_rf = db->get< reward_fund_object, by_name >( VOILK_POST_REWARD_FUND_NAME );
 
          BOOST_REQUIRE( post_rf.recent_claims == alice_vshares + bob_vshares );
          validate_database();
@@ -418,7 +418,7 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       com.title = "foo";
       com.body = "bar";
       tx.operations.push_back( com );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -439,7 +439,7 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       vote.voter = "alice";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       tx.operations.push_back( vote );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -473,28 +473,28 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
 
       BOOST_TEST_MESSAGE( "Generate blocks up until first payout" );
 
-      //generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - BEARS_BLOCK_INTERVAL, true );
+      //generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - VOILK_BLOCK_INTERVAL, true );
 
-      auto reward_bears = db->get_dynamic_global_properties().total_reward_fund_bears + ASSET( "1.667 TESTS" );
+      auto reward_voilk = db->get_dynamic_global_properties().total_reward_fund_voilk + ASSET( "1.667 TESTS" );
       auto total_rshares2 = db->get_dynamic_global_properties().total_reward_shares2;
       auto bob_comment_rshares = db->get_comment( "bob", string( "test" ) ).net_rshares;
       auto bob_coin_shares = db->get_account( "bob" ).coining_shares;
-      auto bob_bsd_balance = db->get_account( "bob" ).bsd_balance;
+      auto bob_vsd_balance = db->get_account( "bob" ).vsd_balance;
 
-      auto bob_comment_payout = asset( ( ( uint128_t( bob_comment_rshares.value ) * bob_comment_rshares.value * reward_bears.amount.value ) / total_rshares2 ).to_uint64(), BEARS_SYMBOL );
-      auto bob_comment_discussion_rewards = asset( bob_comment_payout.amount / 4, BEARS_SYMBOL );
+      auto bob_comment_payout = asset( ( ( uint128_t( bob_comment_rshares.value ) * bob_comment_rshares.value * reward_voilk.amount.value ) / total_rshares2 ).to_uint64(), VOILK_SYMBOL );
+      auto bob_comment_discussion_rewards = asset( bob_comment_payout.amount / 4, VOILK_SYMBOL );
       bob_comment_payout -= bob_comment_discussion_rewards;
-      auto bob_comment_bsd_reward = db->to_bsd( asset( bob_comment_payout.amount / 2, BEARS_SYMBOL ) );
-      auto bob_comment_coining_reward = ( bob_comment_payout - asset( bob_comment_payout.amount / 2, BEARS_SYMBOL) ) * db->get_dynamic_global_properties().get_coining_share_price();
+      auto bob_comment_vsd_reward = db->to_vsd( asset( bob_comment_payout.amount / 2, VOILK_SYMBOL ) );
+      auto bob_comment_coining_reward = ( bob_comment_payout - asset( bob_comment_payout.amount / 2, VOILK_SYMBOL) ) * db->get_dynamic_global_properties().get_coining_share_price();
 
       BOOST_TEST_MESSAGE( "Cause first payout" );
 
       generate_block();
 
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_bears == reward_bears - bob_comment_payout );
-      BOOST_REQUIRE( db->get_comment( "bob", string( "test" ) ).total_payout_value == bob_comment_coining_reward * db->get_dynamic_global_properties().get_coining_share_price() + bob_comment_bsd_reward * exchange_rate );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_voilk == reward_voilk - bob_comment_payout );
+      BOOST_REQUIRE( db->get_comment( "bob", string( "test" ) ).total_payout_value == bob_comment_coining_reward * db->get_dynamic_global_properties().get_coining_share_price() + bob_comment_vsd_reward * exchange_rate );
       BOOST_REQUIRE( db->get_account( "bob" ).coining_shares == bob_coin_shares + bob_comment_coining_reward );
-      BOOST_REQUIRE( db->get_account( "bob" ).bsd_balance == bob_bsd_balance + bob_comment_bsd_reward );
+      BOOST_REQUIRE( db->get_account( "bob" ).vsd_balance == bob_vsd_balance + bob_comment_vsd_reward );
 
       BOOST_TEST_MESSAGE( "Testing no payout when less than $0.02" );
 
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       vote.voter = "alice";
       vote.author = "alice";
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -511,20 +511,20 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       tx.signatures.clear();
       vote.voter = "dave";
       vote.author = "bob";
-      vote.weight = BEARS_1_PERCENT;
+      vote.weight = VOILK_1_PERCENT;
       tx.operations.push_back( vote );
       sign( tx, dave_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - BEARS_BLOCK_INTERVAL, true );
+      generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - VOILK_BLOCK_INTERVAL, true );
 
       tx.operations.clear();
       tx.signatures.clear();
       vote.voter = "bob";
       vote.author = "alice";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
@@ -543,14 +543,14 @@ BOOST_AUTO_TEST_CASE( recent_claims_decay )
       db->push_transaction( tx, 0 );
 
       bob_coin_shares = db->get_account( "bob" ).coining_shares;
-      bob_bsd_balance = db->get_account( "bob" ).bsd_balance;
+      bob_vsd_balance = db->get_account( "bob" ).vsd_balance;
 
       validate_database();
 
       generate_block();
 
       BOOST_REQUIRE( bob_coin_shares.amount.value == db->get_account( "bob" ).coining_shares.amount.value );
-      BOOST_REQUIRE( bob_bsd_balance.amount.value == db->get_account( "bob" ).bsd_balance.amount.value );
+      BOOST_REQUIRE( bob_vsd_balance.amount.value == db->get_account( "bob" ).vsd_balance.amount.value );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -587,7 +587,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       com.title = "foo";
       com.body = "bar";
       tx.operations.push_back( com );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -606,7 +606,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       vote.voter = "alice";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       tx.operations.push_back( vote );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -635,7 +635,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
 
       BOOST_TEST_MESSAGE( "Generating blocks..." );
 
-      generate_blocks( fc::time_point_sec( db->head_block_time().sec_since_epoch() + BEARS_CASHOUT_WINDOW_SECONDS / 2 ), true );
+      generate_blocks( fc::time_point_sec( db->head_block_time().sec_since_epoch() + VOILK_CASHOUT_WINDOW_SECONDS / 2 ), true );
 
       BOOST_TEST_MESSAGE( "Second round of votes." );
 
@@ -643,7 +643,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       tx.signatures.clear();
       vote.voter = "alice";
       vote.author = "bob";
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( vote );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -665,7 +665,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
 
       BOOST_TEST_MESSAGE( "Generating more blocks..." );
 
-      generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - ( BEARS_BLOCK_INTERVAL / 2 ), true );
+      generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - ( VOILK_BLOCK_INTERVAL / 2 ), true );
 
       BOOST_TEST_MESSAGE( "Check comments have not been paid out." );
 
@@ -682,27 +682,27 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       BOOST_REQUIRE( db->get_comment( "bob", string( "test" ) ).net_rshares.value > 0 );
       validate_database();
 
-      auto reward_bears = db->get_dynamic_global_properties().total_reward_fund_bears + ASSET( "2.000 TESTS" );
+      auto reward_voilk = db->get_dynamic_global_properties().total_reward_fund_voilk + ASSET( "2.000 TESTS" );
       auto total_rshares2 = db->get_dynamic_global_properties().total_reward_shares2;
       auto bob_comment_vote_total = db->get_comment( "bob", string( "test" ) ).total_vote_weight;
       auto bob_comment_rshares = db->get_comment( "bob", string( "test" ) ).net_rshares;
-      auto bob_bsd_balance = db->get_account( "bob" ).bsd_balance;
+      auto bob_vsd_balance = db->get_account( "bob" ).vsd_balance;
       auto alice_coin_shares = db->get_account( "alice" ).coining_shares;
       auto bob_coin_shares = db->get_account( "bob" ).coining_shares;
       auto sam_coin_shares = db->get_account( "sam" ).coining_shares;
       auto dave_coin_shares = db->get_account( "dave" ).coining_shares;
 
-      auto bob_comment_payout = asset( ( ( uint128_t( bob_comment_rshares.value ) * bob_comment_rshares.value * reward_bears.amount.value ) / total_rshares2 ).to_uint64(), BEARS_SYMBOL );
-      auto bob_comment_vote_rewards = asset( bob_comment_payout.amount / 2, BEARS_SYMBOL );
+      auto bob_comment_payout = asset( ( ( uint128_t( bob_comment_rshares.value ) * bob_comment_rshares.value * reward_voilk.amount.value ) / total_rshares2 ).to_uint64(), VOILK_SYMBOL );
+      auto bob_comment_vote_rewards = asset( bob_comment_payout.amount / 2, VOILK_SYMBOL );
       bob_comment_payout -= bob_comment_vote_rewards;
-      auto bob_comment_bsd_reward = asset( bob_comment_payout.amount / 2, BEARS_SYMBOL ) * exchange_rate;
-      auto bob_comment_coining_reward = ( bob_comment_payout - asset( bob_comment_payout.amount / 2, BEARS_SYMBOL ) ) * db->get_dynamic_global_properties().get_coining_share_price();
+      auto bob_comment_vsd_reward = asset( bob_comment_payout.amount / 2, VOILK_SYMBOL ) * exchange_rate;
+      auto bob_comment_coining_reward = ( bob_comment_payout - asset( bob_comment_payout.amount / 2, VOILK_SYMBOL ) ) * db->get_dynamic_global_properties().get_coining_share_price();
       auto unclaimed_payments = bob_comment_vote_rewards;
-      auto alice_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * bob_comment_vote_rewards.amount.value ) / bob_comment_vote_total ), BEARS_SYMBOL );
+      auto alice_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * bob_comment_vote_rewards.amount.value ) / bob_comment_vote_total ), VOILK_SYMBOL );
       auto alice_vote_coining = alice_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
-      auto bob_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * bob_comment_vote_rewards.amount.value ) / bob_comment_vote_total ), BEARS_SYMBOL );
+      auto bob_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * bob_comment_vote_rewards.amount.value ) / bob_comment_vote_total ), VOILK_SYMBOL );
       auto bob_vote_coining = bob_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
-      auto sam_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "sam" ) ).id ) )->weight ) * bob_comment_vote_rewards.amount.value ) / bob_comment_vote_total ), BEARS_SYMBOL );
+      auto sam_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "sam" ) ).id ) )->weight ) * bob_comment_vote_rewards.amount.value ) / bob_comment_vote_total ), VOILK_SYMBOL );
       auto sam_vote_coining = sam_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
       unclaimed_payments -= ( alice_vote_reward + bob_vote_reward + sam_vote_reward );
 
@@ -712,9 +712,9 @@ BOOST_AUTO_TEST_CASE( comment_payout )
 
       auto bob_comment_reward = get_last_operations( 1 )[0].get< comment_reward_operation >();
 
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_bears.amount.value == reward_bears.amount.value - ( bob_comment_payout + bob_comment_vote_rewards - unclaimed_payments ).amount.value );
-      BOOST_REQUIRE( db->get_comment( "bob", string( "test" ) ).total_payout_value.amount.value == ( ( bob_comment_coining_reward * db->get_dynamic_global_properties().get_coining_share_price() ) + ( bob_comment_bsd_reward * exchange_rate ) ).amount.value );
-      BOOST_REQUIRE( db->get_account( "bob" ).bsd_balance.amount.value == ( bob_bsd_balance + bob_comment_bsd_reward ).amount.value );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_voilk.amount.value == reward_voilk.amount.value - ( bob_comment_payout + bob_comment_vote_rewards - unclaimed_payments ).amount.value );
+      BOOST_REQUIRE( db->get_comment( "bob", string( "test" ) ).total_payout_value.amount.value == ( ( bob_comment_coining_reward * db->get_dynamic_global_properties().get_coining_share_price() ) + ( bob_comment_vsd_reward * exchange_rate ) ).amount.value );
+      BOOST_REQUIRE( db->get_account( "bob" ).vsd_balance.amount.value == ( bob_vsd_balance + bob_comment_vsd_reward ).amount.value );
       BOOST_REQUIRE( db->get_comment( "alice", string( "test" ) ).net_rshares.value > 0 );
       BOOST_REQUIRE( db->get_comment( "bob", string( "test" ) ).net_rshares.value == 0 );
       BOOST_REQUIRE( db->get_account( "alice" ).coining_shares.amount.value == ( alice_coin_shares + alice_vote_coining ).amount.value );
@@ -723,7 +723,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       BOOST_REQUIRE( db->get_account( "dave" ).coining_shares.amount.value == dave_coin_shares.amount.value );
       BOOST_REQUIRE( bob_comment_reward.author == "bob" );
       BOOST_REQUIRE( bob_comment_reward.permlink == "test" );
-      BOOST_REQUIRE( bob_comment_reward.payout.amount.value == bob_comment_bsd_reward.amount.value );
+      BOOST_REQUIRE( bob_comment_reward.payout.amount.value == bob_comment_vsd_reward.amount.value );
       BOOST_REQUIRE( bob_comment_reward.coining_payout.amount.value == bob_comment_coining_reward.amount.value );
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) ) != vote_idx.end() );
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id   ) ) != vote_idx.end() );
@@ -736,7 +736,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
 
       BOOST_TEST_MESSAGE( "Generating blocks up to next comment payout" );
 
-      generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time - ( BEARS_BLOCK_INTERVAL / 2 ), true );
+      generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time - ( VOILK_BLOCK_INTERVAL / 2 ), true );
 
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) ) != vote_idx.end() );
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id   ) ) != vote_idx.end() );
@@ -751,44 +751,44 @@ BOOST_AUTO_TEST_CASE( comment_payout )
 
       BOOST_TEST_MESSAGE( "Generate block to cause payout" );
 
-      reward_bears = db->get_dynamic_global_properties().total_reward_fund_bears + ASSET( "2.000 TESTS" );
+      reward_voilk = db->get_dynamic_global_properties().total_reward_fund_voilk + ASSET( "2.000 TESTS" );
       total_rshares2 = db->get_dynamic_global_properties().total_reward_shares2;
       auto alice_comment_vote_total = db->get_comment( "alice", string( "test" ) ).total_vote_weight;
       auto alice_comment_rshares = db->get_comment( "alice", string( "test" ) ).net_rshares;
-      auto alice_bsd_balance = db->get_account( "alice" ).bsd_balance;
+      auto alice_vsd_balance = db->get_account( "alice" ).vsd_balance;
       alice_coin_shares = db->get_account( "alice" ).coining_shares;
       bob_coin_shares = db->get_account( "bob" ).coining_shares;
       sam_coin_shares = db->get_account( "sam" ).coining_shares;
       dave_coin_shares = db->get_account( "dave" ).coining_shares;
 
       u256 rs( alice_comment_rshares.value );
-      u256 rf( reward_bears.amount.value );
+      u256 rf( reward_voilk.amount.value );
       u256 trs2 = total_rshares2.hi;
       trs2 = ( trs2 << 64 ) + total_rshares2.lo;
       auto rs2 = rs*rs;
 
-      auto alice_comment_payout = asset( static_cast< uint64_t >( ( rf * rs2 ) / trs2 ), BEARS_SYMBOL );
-      auto alice_comment_vote_rewards = asset( alice_comment_payout.amount / 2, BEARS_SYMBOL );
+      auto alice_comment_payout = asset( static_cast< uint64_t >( ( rf * rs2 ) / trs2 ), VOILK_SYMBOL );
+      auto alice_comment_vote_rewards = asset( alice_comment_payout.amount / 2, VOILK_SYMBOL );
       alice_comment_payout -= alice_comment_vote_rewards;
-      auto alice_comment_bsd_reward = asset( alice_comment_payout.amount / 2, BEARS_SYMBOL ) * exchange_rate;
-      auto alice_comment_coining_reward = ( alice_comment_payout - asset( alice_comment_payout.amount / 2, BEARS_SYMBOL ) ) * db->get_dynamic_global_properties().get_coining_share_price();
+      auto alice_comment_vsd_reward = asset( alice_comment_payout.amount / 2, VOILK_SYMBOL ) * exchange_rate;
+      auto alice_comment_coining_reward = ( alice_comment_payout - asset( alice_comment_payout.amount / 2, VOILK_SYMBOL ) ) * db->get_dynamic_global_properties().get_coining_share_price();
       unclaimed_payments = alice_comment_vote_rewards;
-      alice_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), BEARS_SYMBOL );
+      alice_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), VOILK_SYMBOL );
       alice_vote_coining = alice_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
-      bob_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), BEARS_SYMBOL );
+      bob_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), VOILK_SYMBOL );
       bob_vote_coining = bob_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
-      sam_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "sam" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), BEARS_SYMBOL );
+      sam_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "sam" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), VOILK_SYMBOL );
       sam_vote_coining = sam_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
-      auto dave_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "dave" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), BEARS_SYMBOL );
+      auto dave_vote_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "dave" ) ).id ) )->weight ) * alice_comment_vote_rewards.amount.value ) / alice_comment_vote_total ), VOILK_SYMBOL );
       auto dave_vote_coining = dave_vote_reward * db->get_dynamic_global_properties().get_coining_share_price();
       unclaimed_payments -= ( alice_vote_reward + bob_vote_reward + sam_vote_reward + dave_vote_reward );
 
       generate_block();
       auto alice_comment_reward = get_last_operations( 1 )[0].get< comment_reward_operation >();
 
-      BOOST_REQUIRE( ( db->get_dynamic_global_properties().total_reward_fund_bears + alice_comment_payout + alice_comment_vote_rewards - unclaimed_payments ).amount.value == reward_bears.amount.value );
-      BOOST_REQUIRE( db->get_comment( "alice", string( "test" ) ).total_payout_value.amount.value == ( ( alice_comment_coining_reward * db->get_dynamic_global_properties().get_coining_share_price() ) + ( alice_comment_bsd_reward * exchange_rate ) ).amount.value );
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance.amount.value == ( alice_bsd_balance + alice_comment_bsd_reward ).amount.value );
+      BOOST_REQUIRE( ( db->get_dynamic_global_properties().total_reward_fund_voilk + alice_comment_payout + alice_comment_vote_rewards - unclaimed_payments ).amount.value == reward_voilk.amount.value );
+      BOOST_REQUIRE( db->get_comment( "alice", string( "test" ) ).total_payout_value.amount.value == ( ( alice_comment_coining_reward * db->get_dynamic_global_properties().get_coining_share_price() ) + ( alice_comment_vsd_reward * exchange_rate ) ).amount.value );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance.amount.value == ( alice_vsd_balance + alice_comment_vsd_reward ).amount.value );
       BOOST_REQUIRE( db->get_comment( "alice", string( "test" ) ).net_rshares.value == 0 );
       BOOST_REQUIRE( db->get_comment( "alice", string( "test" ) ).net_rshares.value == 0 );
       BOOST_REQUIRE( db->get_account( "alice" ).coining_shares.amount.value == ( alice_coin_shares + alice_vote_coining + alice_comment_coining_reward ).amount.value );
@@ -797,7 +797,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       BOOST_REQUIRE( db->get_account( "dave" ).coining_shares.amount.value == ( dave_coin_shares + dave_vote_coining ).amount.value );
       BOOST_REQUIRE( alice_comment_reward.author == "alice" );
       BOOST_REQUIRE( alice_comment_reward.permlink == "test" );
-      BOOST_REQUIRE( alice_comment_reward.payout.amount.value == alice_comment_bsd_reward.amount.value );
+      BOOST_REQUIRE( alice_comment_reward.payout.amount.value == alice_comment_vsd_reward.amount.value );
       BOOST_REQUIRE( alice_comment_reward.coining_payout.amount.value == alice_comment_coining_reward.amount.value );
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) ) == vote_idx.end() );
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id   ) ) == vote_idx.end() );
@@ -815,7 +815,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       vote.voter = "alice";
       vote.author = "alice";
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -823,20 +823,20 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       tx.signatures.clear();
       vote.voter = "dave";
       vote.author = "bob";
-      vote.weight = BEARS_1_PERCENT;
+      vote.weight = VOILK_1_PERCENT;
       tx.operations.push_back( vote );
       sign( tx, dave_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - BEARS_BLOCK_INTERVAL, true );
+      generate_blocks( db->get_comment( "bob", string( "test" ) ).cashout_time - VOILK_BLOCK_INTERVAL, true );
 
       tx.operations.clear();
       tx.signatures.clear();
       vote.voter = "bob";
       vote.author = "alice";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
@@ -855,7 +855,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
       db->push_transaction( tx, 0 );
 
       bob_coin_shares = db->get_account( "bob" ).coining_shares;
-      auto bob_bsd = db->get_account( "bob" ).bsd_balance;
+      auto bob_vsd = db->get_account( "bob" ).vsd_balance;
 
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "dave" ) ).id ) ) != vote_idx.end() );
       validate_database();
@@ -864,7 +864,7 @@ BOOST_AUTO_TEST_CASE( comment_payout )
 
       BOOST_REQUIRE( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "dave" ) ).id ) ) == vote_idx.end() );
       BOOST_REQUIRE( bob_coin_shares.amount.value == db->get_account( "bob" ).coining_shares.amount.value );
-      BOOST_REQUIRE( bob_bsd.amount.value == db->get_account( "bob" ).bsd_balance.amount.value );
+      BOOST_REQUIRE( bob_vsd.amount.value == db->get_account( "bob" ).vsd_balance.amount.value );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -894,7 +894,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       comment_op.parent_permlink = "test";
       comment_op.title = "foo";
       comment_op.body = "bar";
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( comment_op );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -931,7 +931,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       vote_op.voter = "alice";
       vote_op.author = "alice";
       vote_op.permlink = "test";
-      vote_op.weight = BEARS_100_PERCENT;
+      vote_op.weight = VOILK_100_PERCENT;
       tx.operations.push_back( vote_op );
       vote_op.author = "bob";
       tx.operations.push_back( vote_op );
@@ -946,7 +946,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       vote_op.author = "bob";
       tx.operations.push_back( vote_op );
       vote_op.author = "dave";
-      vote_op.weight = BEARS_1_PERCENT * 20;
+      vote_op.weight = VOILK_1_PERCENT * 20;
       tx.operations.push_back( vote_op );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
@@ -955,15 +955,15 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       tx.signatures.clear();
       vote_op.voter = "sam";
       vote_op.author = "bob";
-      vote_op.weight = BEARS_100_PERCENT;
+      vote_op.weight = VOILK_100_PERCENT;
       tx.operations.push_back( vote_op );
       sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time - fc::seconds( BEARS_BLOCK_INTERVAL ), true );
+      generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time - fc::seconds( VOILK_BLOCK_INTERVAL ), true );
 
       auto gpo = db->get_dynamic_global_properties();
-      uint128_t reward_bears = gpo.total_reward_fund_bears.amount.value + ASSET( "2.000 TESTS" ).amount.value;
+      uint128_t reward_voilk = gpo.total_reward_fund_voilk.amount.value + ASSET( "2.000 TESTS" ).amount.value;
       uint128_t total_rshares2 = gpo.total_reward_shares2;
 
       auto alice_comment = db->get_comment( "alice", string( "test" ) );
@@ -974,79 +974,79 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       const auto& vote_idx = db->get_index< comment_vote_index >().indices().get< by_comment_voter >();
 
       // Calculate total comment rewards and voting rewards.
-      auto alice_comment_reward = ( ( reward_bears * alice_comment.net_rshares.value * alice_comment.net_rshares.value ) / total_rshares2 ).to_uint64();
+      auto alice_comment_reward = ( ( reward_voilk * alice_comment.net_rshares.value * alice_comment.net_rshares.value ) / total_rshares2 ).to_uint64();
       total_rshares2 -= uint128_t( alice_comment.net_rshares.value ) * ( alice_comment.net_rshares.value );
-      reward_bears -= alice_comment_reward;
+      reward_voilk -= alice_comment_reward;
       auto alice_comment_vote_rewards = alice_comment_reward / 2;
       alice_comment_reward -= alice_comment_vote_rewards;
 
-      auto alice_vote_alice_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * alice_comment_vote_rewards ) / alice_comment.total_vote_weight ), BEARS_SYMBOL );
-      auto bob_vote_alice_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * alice_comment_vote_rewards ) / alice_comment.total_vote_weight ), BEARS_SYMBOL );
-      reward_bears += alice_comment_vote_rewards - ( alice_vote_alice_reward + bob_vote_alice_reward ).amount.value;
+      auto alice_vote_alice_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * alice_comment_vote_rewards ) / alice_comment.total_vote_weight ), VOILK_SYMBOL );
+      auto bob_vote_alice_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "alice", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * alice_comment_vote_rewards ) / alice_comment.total_vote_weight ), VOILK_SYMBOL );
+      reward_voilk += alice_comment_vote_rewards - ( alice_vote_alice_reward + bob_vote_alice_reward ).amount.value;
 
-      auto bob_comment_reward = ( ( reward_bears * bob_comment.net_rshares.value * bob_comment.net_rshares.value ) / total_rshares2 ).to_uint64();
+      auto bob_comment_reward = ( ( reward_voilk * bob_comment.net_rshares.value * bob_comment.net_rshares.value ) / total_rshares2 ).to_uint64();
       total_rshares2 -= uint128_t( bob_comment.net_rshares.value ) * bob_comment.net_rshares.value;
-      reward_bears -= bob_comment_reward;
+      reward_voilk -= bob_comment_reward;
       auto bob_comment_vote_rewards = bob_comment_reward / 2;
       bob_comment_reward -= bob_comment_vote_rewards;
 
-      auto alice_vote_bob_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * bob_comment_vote_rewards ) / bob_comment.total_vote_weight ), BEARS_SYMBOL );
-      auto bob_vote_bob_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * bob_comment_vote_rewards ) / bob_comment.total_vote_weight ), BEARS_SYMBOL );
-      auto sam_vote_bob_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "sam" ) ).id ) )->weight ) * bob_comment_vote_rewards ) / bob_comment.total_vote_weight ), BEARS_SYMBOL );
-      reward_bears += bob_comment_vote_rewards - ( alice_vote_bob_reward + bob_vote_bob_reward + sam_vote_bob_reward ).amount.value;
+      auto alice_vote_bob_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "alice" ) ).id ) )->weight ) * bob_comment_vote_rewards ) / bob_comment.total_vote_weight ), VOILK_SYMBOL );
+      auto bob_vote_bob_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * bob_comment_vote_rewards ) / bob_comment.total_vote_weight ), VOILK_SYMBOL );
+      auto sam_vote_bob_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "bob", string( "test" ).id, db->get_account( "sam" ) ).id ) )->weight ) * bob_comment_vote_rewards ) / bob_comment.total_vote_weight ), VOILK_SYMBOL );
+      reward_voilk += bob_comment_vote_rewards - ( alice_vote_bob_reward + bob_vote_bob_reward + sam_vote_bob_reward ).amount.value;
 
-      auto dave_comment_reward = ( ( reward_bears * dave_comment.net_rshares.value * dave_comment.net_rshares.value ) / total_rshares2 ).to_uint64();
+      auto dave_comment_reward = ( ( reward_voilk * dave_comment.net_rshares.value * dave_comment.net_rshares.value ) / total_rshares2 ).to_uint64();
       total_rshares2 -= uint128_t( dave_comment.net_rshares.value ) * dave_comment.net_rshares.value;
-      reward_bears -= dave_comment_reward;
+      reward_voilk -= dave_comment_reward;
       auto dave_comment_vote_rewards = dave_comment_reward / 2;
       dave_comment_reward -= dave_comment_vote_rewards;
 
-      auto bob_vote_dave_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "dave", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * dave_comment_vote_rewards ) / dave_comment.total_vote_weight ), BEARS_SYMBOL );
-      reward_bears += dave_comment_vote_rewards - bob_vote_dave_reward.amount.value;
+      auto bob_vote_dave_reward = asset( static_cast< uint64_t >( ( u256( vote_idx.find( std::make_tuple( db->get_comment( "dave", string( "test" ).id, db->get_account( "bob" ) ).id ) )->weight ) * dave_comment_vote_rewards ) / dave_comment.total_vote_weight ), VOILK_SYMBOL );
+      reward_voilk += dave_comment_vote_rewards - bob_vote_dave_reward.amount.value;
 
       // Calculate rewards paid to parent posts
-      auto alice_pays_alice_bsd = alice_comment_reward / 2;
-      auto alice_pays_alice_coin = alice_comment_reward - alice_pays_alice_bsd;
-      auto bob_pays_bob_bsd = bob_comment_reward / 2;
-      auto bob_pays_bob_coin = bob_comment_reward - bob_pays_bob_bsd;
-      auto dave_pays_dave_bsd = dave_comment_reward / 2;
-      auto dave_pays_dave_coin = dave_comment_reward - dave_pays_dave_bsd;
+      auto alice_pays_alice_vsd = alice_comment_reward / 2;
+      auto alice_pays_alice_coin = alice_comment_reward - alice_pays_alice_vsd;
+      auto bob_pays_bob_vsd = bob_comment_reward / 2;
+      auto bob_pays_bob_coin = bob_comment_reward - bob_pays_bob_vsd;
+      auto dave_pays_dave_vsd = dave_comment_reward / 2;
+      auto dave_pays_dave_coin = dave_comment_reward - dave_pays_dave_vsd;
 
-      auto bob_pays_alice_bsd = bob_pays_bob_bsd / 2;
+      auto bob_pays_alice_vsd = bob_pays_bob_vsd / 2;
       auto bob_pays_alice_coin = bob_pays_bob_coin / 2;
-      bob_pays_bob_bsd -= bob_pays_alice_bsd;
+      bob_pays_bob_vsd -= bob_pays_alice_vsd;
       bob_pays_bob_coin -= bob_pays_alice_coin;
 
-      auto dave_pays_sam_bsd = dave_pays_dave_bsd / 2;
+      auto dave_pays_sam_vsd = dave_pays_dave_vsd / 2;
       auto dave_pays_sam_coin = dave_pays_dave_coin / 2;
-      dave_pays_dave_bsd -= dave_pays_sam_bsd;
+      dave_pays_dave_vsd -= dave_pays_sam_vsd;
       dave_pays_dave_coin -= dave_pays_sam_coin;
-      auto dave_pays_bob_bsd = dave_pays_sam_bsd / 2;
+      auto dave_pays_bob_vsd = dave_pays_sam_vsd / 2;
       auto dave_pays_bob_coin = dave_pays_sam_coin / 2;
-      dave_pays_sam_bsd -= dave_pays_bob_bsd;
+      dave_pays_sam_vsd -= dave_pays_bob_vsd;
       dave_pays_sam_coin -= dave_pays_bob_coin;
-      auto dave_pays_alice_bsd = dave_pays_bob_bsd / 2;
+      auto dave_pays_alice_vsd = dave_pays_bob_vsd / 2;
       auto dave_pays_alice_coin = dave_pays_bob_coin / 2;
-      dave_pays_bob_bsd -= dave_pays_alice_bsd;
+      dave_pays_bob_vsd -= dave_pays_alice_vsd;
       dave_pays_bob_coin -= dave_pays_alice_coin;
 
       // Calculate total comment payouts
-      auto alice_comment_total_payout = db->to_bsd( asset( alice_pays_alice_bsd + alice_pays_alice_coin, BEARS_SYMBOL ) );
-      alice_comment_total_payout += db->to_bsd( asset( bob_pays_alice_bsd + bob_pays_alice_coin, BEARS_SYMBOL ) );
-      alice_comment_total_payout += db->to_bsd( asset( dave_pays_alice_bsd + dave_pays_alice_coin, BEARS_SYMBOL ) );
-      auto bob_comment_total_payout = db->to_bsd( asset( bob_pays_bob_bsd + bob_pays_bob_coin, BEARS_SYMBOL ) );
-      bob_comment_total_payout += db->to_bsd( asset( dave_pays_bob_bsd + dave_pays_bob_coin, BEARS_SYMBOL ) );
-      auto sam_comment_total_payout = db->to_bsd( asset( dave_pays_sam_bsd + dave_pays_sam_coin, BEARS_SYMBOL ) );
-      auto dave_comment_total_payout = db->to_bsd( asset( dave_pays_dave_bsd + dave_pays_dave_coin, BEARS_SYMBOL ) );
+      auto alice_comment_total_payout = db->to_vsd( asset( alice_pays_alice_vsd + alice_pays_alice_coin, VOILK_SYMBOL ) );
+      alice_comment_total_payout += db->to_vsd( asset( bob_pays_alice_vsd + bob_pays_alice_coin, VOILK_SYMBOL ) );
+      alice_comment_total_payout += db->to_vsd( asset( dave_pays_alice_vsd + dave_pays_alice_coin, VOILK_SYMBOL ) );
+      auto bob_comment_total_payout = db->to_vsd( asset( bob_pays_bob_vsd + bob_pays_bob_coin, VOILK_SYMBOL ) );
+      bob_comment_total_payout += db->to_vsd( asset( dave_pays_bob_vsd + dave_pays_bob_coin, VOILK_SYMBOL ) );
+      auto sam_comment_total_payout = db->to_vsd( asset( dave_pays_sam_vsd + dave_pays_sam_coin, VOILK_SYMBOL ) );
+      auto dave_comment_total_payout = db->to_vsd( asset( dave_pays_dave_vsd + dave_pays_dave_coin, VOILK_SYMBOL ) );
 
       auto alice_starting_coining = db->get_account( "alice" ).coining_shares;
-      auto alice_starting_bsd = db->get_account( "alice" ).bsd_balance;
+      auto alice_starting_vsd = db->get_account( "alice" ).vsd_balance;
       auto bob_starting_coining = db->get_account( "bob" ).coining_shares;
-      auto bob_starting_bsd = db->get_account( "bob" ).bsd_balance;
+      auto bob_starting_vsd = db->get_account( "bob" ).vsd_balance;
       auto sam_starting_coining = db->get_account( "sam" ).coining_shares;
-      auto sam_starting_bsd = db->get_account( "sam" ).bsd_balance;
+      auto sam_starting_vsd = db->get_account( "sam" ).vsd_balance;
       auto dave_starting_coining = db->get_account( "dave" ).coining_shares;
-      auto dave_starting_bsd = db->get_account( "dave" ).bsd_balance;
+      auto dave_starting_vsd = db->get_account( "dave" ).vsd_balance;
 
       generate_block();
 
@@ -1077,7 +1077,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "dave" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_alice_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_alice_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == dave_pays_alice_coin );
 
       com_vop = ops[1].get< comment_reward_operation >();
@@ -1085,7 +1085,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "dave" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_bob_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_bob_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == dave_pays_bob_coin );
 
       com_vop = ops[2].get< comment_reward_operation >();
@@ -1093,7 +1093,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "dave" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_sam_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_sam_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == dave_pays_sam_coin );
 
       com_vop = ops[3].get< comment_reward_operation >();
@@ -1101,7 +1101,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "dave" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_dave_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == dave_pays_dave_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == dave_pays_dave_coin );
 
       cur_vop = ops[4].get< curate_reward_operation >();
@@ -1115,7 +1115,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "bob" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == bob_pays_alice_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == bob_pays_alice_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == bob_pays_alice_coin );
 
       com_vop = ops[6].get< comment_reward_operation >();
@@ -1123,7 +1123,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "bob" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == bob_pays_bob_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == bob_pays_bob_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == bob_pays_bob_coin );
 
       cur_vop = ops[7].get< curate_reward_operation >();
@@ -1149,7 +1149,7 @@ BOOST_AUTO_TEST_CASE( nested_comments )
       BOOST_REQUIRE( com_vop.permlink == "test" );
       BOOST_REQUIRE( com_vop.originating_author == "alice" );
       BOOST_REQUIRE( com_vop.originating_permlink == "test" );
-      BOOST_REQUIRE( com_vop.payout.amount.value == alice_pays_alice_bsd );
+      BOOST_REQUIRE( com_vop.payout.amount.value == alice_pays_alice_vsd );
       BOOST_REQUIRE( ( com_vop.coining_payout * gpo.get_coining_share_price() ).amount.value == alice_pays_alice_coin );
 
       cur_vop = ops[11].get< curate_reward_operation >();
@@ -1166,24 +1166,24 @@ BOOST_AUTO_TEST_CASE( nested_comments )
 
       BOOST_TEST_MESSAGE( "Checking account balances" );
 
-      auto alice_total_bsd = alice_starting_bsd + asset( alice_pays_alice_bsd + bob_pays_alice_bsd + dave_pays_alice_bsd, BEARS_SYMBOL ) * exchange_rate;
-      auto alice_total_coining = alice_starting_coining + asset( alice_pays_alice_coin + bob_pays_alice_coin + dave_pays_alice_coin + alice_vote_alice_reward.amount + alice_vote_bob_reward.amount, BEARS_SYMBOL ) * gpo.get_coining_share_price();
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance.amount.value == alice_total_bsd.amount.value );
+      auto alice_total_vsd = alice_starting_vsd + asset( alice_pays_alice_vsd + bob_pays_alice_vsd + dave_pays_alice_vsd, VOILK_SYMBOL ) * exchange_rate;
+      auto alice_total_coining = alice_starting_coining + asset( alice_pays_alice_coin + bob_pays_alice_coin + dave_pays_alice_coin + alice_vote_alice_reward.amount + alice_vote_bob_reward.amount, VOILK_SYMBOL ) * gpo.get_coining_share_price();
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance.amount.value == alice_total_vsd.amount.value );
       BOOST_REQUIRE( db->get_account( "alice" ).coining_shares.amount.value == alice_total_coining.amount.value );
 
-      auto bob_total_bsd = bob_starting_bsd + asset( bob_pays_bob_bsd + dave_pays_bob_bsd, BEARS_SYMBOL ) * exchange_rate;
-      auto bob_total_coining = bob_starting_coining + asset( bob_pays_bob_coin + dave_pays_bob_coin + bob_vote_alice_reward.amount + bob_vote_bob_reward.amount + bob_vote_dave_reward.amount, BEARS_SYMBOL ) * gpo.get_coining_share_price();
-      BOOST_REQUIRE( db->get_account( "bob" ).bsd_balance.amount.value == bob_total_bsd.amount.value );
+      auto bob_total_vsd = bob_starting_vsd + asset( bob_pays_bob_vsd + dave_pays_bob_vsd, VOILK_SYMBOL ) * exchange_rate;
+      auto bob_total_coining = bob_starting_coining + asset( bob_pays_bob_coin + dave_pays_bob_coin + bob_vote_alice_reward.amount + bob_vote_bob_reward.amount + bob_vote_dave_reward.amount, VOILK_SYMBOL ) * gpo.get_coining_share_price();
+      BOOST_REQUIRE( db->get_account( "bob" ).vsd_balance.amount.value == bob_total_vsd.amount.value );
       BOOST_REQUIRE( db->get_account( "bob" ).coining_shares.amount.value == bob_total_coining.amount.value );
 
-      auto sam_total_bsd = sam_starting_bsd + asset( dave_pays_sam_bsd, BEARS_SYMBOL ) * exchange_rate;
-      auto sam_total_coining = bob_starting_coining + asset( dave_pays_sam_coin + sam_vote_bob_reward.amount, BEARS_SYMBOL ) * gpo.get_coining_share_price();
-      BOOST_REQUIRE( db->get_account( "sam" ).bsd_balance.amount.value == sam_total_bsd.amount.value );
+      auto sam_total_vsd = sam_starting_vsd + asset( dave_pays_sam_vsd, VOILK_SYMBOL ) * exchange_rate;
+      auto sam_total_coining = bob_starting_coining + asset( dave_pays_sam_coin + sam_vote_bob_reward.amount, VOILK_SYMBOL ) * gpo.get_coining_share_price();
+      BOOST_REQUIRE( db->get_account( "sam" ).vsd_balance.amount.value == sam_total_vsd.amount.value );
       BOOST_REQUIRE( db->get_account( "sam" ).coining_shares.amount.value == sam_total_coining.amount.value );
 
-      auto dave_total_bsd = dave_starting_bsd + asset( dave_pays_dave_bsd, BEARS_SYMBOL ) * exchange_rate;
-      auto dave_total_coining = dave_starting_coining + asset( dave_pays_dave_coin, BEARS_SYMBOL ) * gpo.get_coining_share_price();
-      BOOST_REQUIRE( db->get_account( "dave" ).bsd_balance.amount.value == dave_total_bsd.amount.value );
+      auto dave_total_vsd = dave_starting_vsd + asset( dave_pays_dave_vsd, VOILK_SYMBOL ) * exchange_rate;
+      auto dave_total_coining = dave_starting_coining + asset( dave_pays_dave_coin, VOILK_SYMBOL ) * gpo.get_coining_share_price();
+      BOOST_REQUIRE( db->get_account( "dave" ).vsd_balance.amount.value == dave_total_vsd.amount.value );
       BOOST_REQUIRE( db->get_account( "dave" ).coining_shares.amount.value == dave_total_coining.amount.value );
    }
    FC_LOG_AND_RETHROW()
@@ -1207,19 +1207,19 @@ BOOST_AUTO_TEST_CASE( coining_withdrawals )
       withdraw_coining_operation op;
       op.account = "alice";
       op.coining_shares = asset( new_alice.coining_shares.amount / 2, COINS_SYMBOL );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      auto next_withdrawal = db->head_block_time() + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS;
+      auto next_withdrawal = db->head_block_time() + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS;
       asset coining_shares = new_alice.coining_shares;
       asset to_withdraw = op.coining_shares;
       asset original_coining = coining_shares;
       asset withdraw_rate = new_alice.coining_withdraw_rate;
 
       BOOST_TEST_MESSAGE( "Generating block up to first withdrawal" );
-      generate_blocks( next_withdrawal - ( BEARS_BLOCK_INTERVAL / 2 ), true);
+      generate_blocks( next_withdrawal - ( VOILK_BLOCK_INTERVAL / 2 ), true);
 
       BOOST_REQUIRE( db->get_account( "alice" ).coining_shares.amount.value == coining_shares.amount.value );
 
@@ -1243,9 +1243,9 @@ BOOST_AUTO_TEST_CASE( coining_withdrawals )
       auto balance = db->get_account( "alice" ).balance;
       auto old_next_coining = db->get_account( "alice" ).next_coining_withdrawal;
 
-      for( int i = 1; i < BEARS_COINING_WITHDRAW_INTERVALS - 1; i++ )
+      for( int i = 1; i < VOILK_COINING_WITHDRAW_INTERVALS - 1; i++ )
       {
-         generate_blocks( db->head_block_time() + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS );
+         generate_blocks( db->head_block_time() + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS );
 
          const auto& alice = db->get_account( "alice" );
 
@@ -1259,10 +1259,10 @@ BOOST_AUTO_TEST_CASE( coining_withdrawals )
          BOOST_REQUIRE( fill_op.withdrawn.amount.value == withdraw_rate.amount.value );
          BOOST_REQUIRE( std::abs( ( fill_op.deposited - fill_op.withdrawn * gpo.get_coining_share_price() ).amount.value ) <= 1 );
 
-         if ( i == BEARS_COINING_WITHDRAW_INTERVALS - 1 )
+         if ( i == VOILK_COINING_WITHDRAW_INTERVALS - 1 )
             BOOST_REQUIRE( alice.next_coining_withdrawal == fc::time_point_sec::maximum() );
          else
-            BOOST_REQUIRE( alice.next_coining_withdrawal.sec_since_epoch() == ( old_next_coining + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS ).sec_since_epoch() );
+            BOOST_REQUIRE( alice.next_coining_withdrawal.sec_since_epoch() == ( old_next_coining + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS ).sec_since_epoch() );
 
          validate_database();
 
@@ -1274,17 +1274,17 @@ BOOST_AUTO_TEST_CASE( coining_withdrawals )
       if (  to_withdraw.amount.value % withdraw_rate.amount.value != 0 )
       {
          BOOST_TEST_MESSAGE( "Generating one more block to take care of remainder" );
-         generate_blocks( db->head_block_time() + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS, true );
+         generate_blocks( db->head_block_time() + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS, true );
          fill_op = get_last_operations( 1 )[0].get< fill_coining_withdraw_operation >();
          gpo = db->get_dynamic_global_properties();
 
-         BOOST_REQUIRE( db->get_account( "alice" ).next_coining_withdrawal.sec_since_epoch() == ( old_next_coining + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS ).sec_since_epoch() );
+         BOOST_REQUIRE( db->get_account( "alice" ).next_coining_withdrawal.sec_since_epoch() == ( old_next_coining + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS ).sec_since_epoch() );
          BOOST_REQUIRE( fill_op.from_account == "alice" );
          BOOST_REQUIRE( fill_op.to_account == "alice" );
          BOOST_REQUIRE( fill_op.withdrawn.amount.value == withdraw_rate.amount.value );
          BOOST_REQUIRE( std::abs( ( fill_op.deposited - fill_op.withdrawn * gpo.get_coining_share_price() ).amount.value ) <= 1 );
 
-         generate_blocks( db->head_block_time() + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS, true );
+         generate_blocks( db->head_block_time() + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS, true );
          gpo = db->get_dynamic_global_properties();
          fill_op = get_last_operations( 1 )[0].get< fill_coining_withdraw_operation >();
 
@@ -1298,7 +1298,7 @@ BOOST_AUTO_TEST_CASE( coining_withdrawals )
       }
       else
       {
-         generate_blocks( db->head_block_time() + BEARS_COINING_WITHDRAW_INTERVAL_SECONDS, true );
+         generate_blocks( db->head_block_time() + VOILK_COINING_WITHDRAW_INTERVAL_SECONDS, true );
 
          BOOST_REQUIRE( db->get_account( "alice" ).next_coining_withdrawal.sec_since_epoch() == fc::time_point_sec::maximum().sec_since_epoch() );
 
@@ -1333,7 +1333,7 @@ BOOST_AUTO_TEST_CASE( coining_withdraw_route )
       wv.coining_shares = withdraw_amount;
 
       signed_transaction tx;
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( wv );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -1345,13 +1345,13 @@ BOOST_AUTO_TEST_CASE( coining_withdraw_route )
       set_withdraw_coining_route_operation op;
       op.from_account = "alice";
       op.to_account = "bob";
-      op.percent = BEARS_1_PERCENT * 50;
+      op.percent = VOILK_1_PERCENT * 50;
       op.auto_coin = true;
       tx.operations.push_back( op );
 
       BOOST_TEST_MESSAGE( "Setting up sam destination" );
       op.to_account = "sam";
-      op.percent = BEARS_1_PERCENT * 30;
+      op.percent = VOILK_1_PERCENT * 30;
       op.auto_coin = false;
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
@@ -1374,11 +1374,11 @@ BOOST_AUTO_TEST_CASE( coining_withdraw_route )
          const auto& sam = db->get_account( "sam" );
 
          BOOST_REQUIRE( alice.coining_shares == old_alice_coining - coining_withdraw_rate );
-         BOOST_REQUIRE( alice.balance == old_alice_balance + asset( ( coining_withdraw_rate.amount * BEARS_1_PERCENT * 20 ) / BEARS_100_PERCENT, COINS_SYMBOL ) * db->get_dynamic_global_properties().get_coining_share_price() );
-         BOOST_REQUIRE( bob.coining_shares == old_bob_coining + asset( ( coining_withdraw_rate.amount * BEARS_1_PERCENT * 50 ) / BEARS_100_PERCENT, COINS_SYMBOL ) );
+         BOOST_REQUIRE( alice.balance == old_alice_balance + asset( ( coining_withdraw_rate.amount * VOILK_1_PERCENT * 20 ) / VOILK_100_PERCENT, COINS_SYMBOL ) * db->get_dynamic_global_properties().get_coining_share_price() );
+         BOOST_REQUIRE( bob.coining_shares == old_bob_coining + asset( ( coining_withdraw_rate.amount * VOILK_1_PERCENT * 50 ) / VOILK_100_PERCENT, COINS_SYMBOL ) );
          BOOST_REQUIRE( bob.balance == old_bob_balance );
          BOOST_REQUIRE( sam.coining_shares == old_sam_coining );
-         BOOST_REQUIRE( sam.balance ==  old_sam_balance + asset( ( coining_withdraw_rate.amount * BEARS_1_PERCENT * 30 ) / BEARS_100_PERCENT, COINS_SYMBOL ) * db->get_dynamic_global_properties().get_coining_share_price() );
+         BOOST_REQUIRE( sam.balance ==  old_sam_balance + asset( ( coining_withdraw_rate.amount * VOILK_1_PERCENT * 30 ) / VOILK_100_PERCENT, COINS_SYMBOL ) * db->get_dynamic_global_properties().get_coining_share_price() );
 
          old_alice_balance = alice.balance;
          old_alice_coining = alice.coining_shares;
@@ -1394,11 +1394,11 @@ BOOST_AUTO_TEST_CASE( coining_withdraw_route )
       tx.signatures.clear();
 
       op.to_account = "sam";
-      op.percent = BEARS_1_PERCENT * 50 + 1;
+      op.percent = VOILK_1_PERCENT * 50 + 1;
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "Test from_account receiving no withdraw" );
 
@@ -1406,7 +1406,7 @@ BOOST_AUTO_TEST_CASE( coining_withdraw_route )
       tx.signatures.clear();
 
       op.to_account = "sam";
-      op.percent = BEARS_1_PERCENT * 50;
+      op.percent = VOILK_1_PERCENT * 50;
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -1419,10 +1419,10 @@ BOOST_AUTO_TEST_CASE( coining_withdraw_route )
 
          BOOST_REQUIRE( alice.coining_shares == old_alice_coining - coining_withdraw_rate );
          BOOST_REQUIRE( alice.balance == old_alice_balance );
-         BOOST_REQUIRE( bob.coining_shares == old_bob_coining + asset( ( coining_withdraw_rate.amount * BEARS_1_PERCENT * 50 ) / BEARS_100_PERCENT, COINS_SYMBOL ) );
+         BOOST_REQUIRE( bob.coining_shares == old_bob_coining + asset( ( coining_withdraw_rate.amount * VOILK_1_PERCENT * 50 ) / VOILK_100_PERCENT, COINS_SYMBOL ) );
          BOOST_REQUIRE( bob.balance == old_bob_balance );
          BOOST_REQUIRE( sam.coining_shares == old_sam_coining );
-         BOOST_REQUIRE( sam.balance ==  old_sam_balance + asset( ( coining_withdraw_rate.amount * BEARS_1_PERCENT * 50 ) / BEARS_100_PERCENT, COINS_SYMBOL ) * db->get_dynamic_global_properties().get_coining_share_price() );
+         BOOST_REQUIRE( sam.balance ==  old_sam_balance + asset( ( coining_withdraw_rate.amount * VOILK_1_PERCENT * 50 ) / VOILK_100_PERCENT, COINS_SYMBOL ) * db->get_dynamic_global_properties().get_coining_share_price() );
       }
    }
    FC_LOG_AND_RETHROW()
@@ -1438,7 +1438,7 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
 
       BOOST_TEST_MESSAGE( "Setup" );
 
-      generate_blocks( 30 / BEARS_BLOCK_INTERVAL );
+      generate_blocks( 30 / VOILK_BLOCK_INTERVAL );
 
       vector< string > accounts;
       accounts.push_back( "alice0" );
@@ -1464,7 +1464,7 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
       // Upgrade accounts to witnesses
       for( int i = 0; i < 7; i++ )
       {
-         transfer( BEARS_INIT_MINER_NAME, accounts[i], asset( 10000, BEARS_SYMBOL ) );
+         transfer( VOILK_INIT_MINER_NAME, accounts[i], asset( 10000, VOILK_SYMBOL ) );
          witness_create( accounts[i], keys[i], "foo.bar", keys[i].get_public_key(), 1000 );
 
          ops.push_back( feed_publish_operation() );
@@ -1473,17 +1473,17 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
          txs.push_back( signed_transaction() );
       }
 
-      ops[0].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset( 100000, BEARS_SYMBOL ) );
-      ops[1].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset( 105000, BEARS_SYMBOL ) );
-      ops[2].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset(  98000, BEARS_SYMBOL ) );
-      ops[3].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset(  97000, BEARS_SYMBOL ) );
-      ops[4].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset(  99000, BEARS_SYMBOL ) );
-      ops[5].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset(  97500, BEARS_SYMBOL ) );
-      ops[6].exchange_rate = price( asset( 1000, BSD_SYMBOL ), asset( 102000, BEARS_SYMBOL ) );
+      ops[0].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset( 100000, VOILK_SYMBOL ) );
+      ops[1].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset( 105000, VOILK_SYMBOL ) );
+      ops[2].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset(  98000, VOILK_SYMBOL ) );
+      ops[3].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset(  97000, VOILK_SYMBOL ) );
+      ops[4].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset(  99000, VOILK_SYMBOL ) );
+      ops[5].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset(  97500, VOILK_SYMBOL ) );
+      ops[6].exchange_rate = price( asset( 1000, VSD_SYMBOL ), asset( 102000, VOILK_SYMBOL ) );
 
       for( int i = 0; i < 7; i++ )
       {
-         txs[i].set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+         txs[i].set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
          txs[i].operations.push_back( ops[i] );
          sign( txs[i], keys[i] );
          db->push_transaction( txs[i], 0 );
@@ -1491,12 +1491,12 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
 
       BOOST_TEST_MESSAGE( "Jump forward an hour" );
 
-      generate_blocks( BEARS_BLOCKS_PER_HOUR ); // Jump forward 1 hour
+      generate_blocks( VOILK_BLOCKS_PER_HOUR ); // Jump forward 1 hour
       BOOST_TEST_MESSAGE( "Get feed history object" );
       feed_history_object feed_history = db->get_feed_history();
       BOOST_TEST_MESSAGE( "Check state" );
-      BOOST_REQUIRE( feed_history.current_median_history == price( asset( 1000, BSD_SYMBOL ), asset( 99000, BEARS_SYMBOL) ) );
-      BOOST_REQUIRE( feed_history.price_history[ 0 ] == price( asset( 1000, BSD_SYMBOL ), asset( 99000, BEARS_SYMBOL) ) );
+      BOOST_REQUIRE( feed_history.current_median_history == price( asset( 1000, VSD_SYMBOL ), asset( 99000, VOILK_SYMBOL) ) );
+      BOOST_REQUIRE( feed_history.price_history[ 0 ] == price( asset( 1000, VSD_SYMBOL ), asset( 99000, VOILK_SYMBOL) ) );
       validate_database();
 
       for ( int i = 0; i < 23; i++ )
@@ -1507,8 +1507,8 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
          {
             txs[j].operations.clear();
             txs[j].signatures.clear();
-            ops[j].exchange_rate = price( ops[j].exchange_rate.base, asset( ops[j].exchange_rate.quote.amount + 10, BEARS_SYMBOL ) );
-            txs[j].set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+            ops[j].exchange_rate = price( ops[j].exchange_rate.base, asset( ops[j].exchange_rate.quote.amount + 10, VOILK_SYMBOL ) );
+            txs[j].set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
             txs[j].operations.push_back( ops[j] );
             sign( txs[j], keys[j] );
             db->push_transaction( txs[j], 0 );
@@ -1516,7 +1516,7 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
 
          BOOST_TEST_MESSAGE( "Generate Blocks" );
 
-         generate_blocks( BEARS_BLOCKS_PER_HOUR  ); // Jump forward 1 hour
+         generate_blocks( VOILK_BLOCKS_PER_HOUR  ); // Jump forward 1 hour
 
          BOOST_TEST_MESSAGE( "Check feed_history" );
 
@@ -1535,7 +1535,7 @@ BOOST_AUTO_TEST_CASE( convert_delay )
    {
       ACTORS( (alice) )
       generate_block();
-      coin( BEARS_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
       fund( "alice", ASSET( "25.000 TBD" ) );
 
       set_price_feed( price( ASSET( "1.000 TBD" ), ASSET( "1.250 TESTS" ) ) );
@@ -1549,15 +1549,15 @@ BOOST_AUTO_TEST_CASE( convert_delay )
       tx.operations.clear();
       tx.signatures.clear();
       op.owner = "alice";
-      op.amount = asset( 2000, BSD_SYMBOL );
+      op.amount = asset( 2000, VSD_SYMBOL );
       op.requestid = 2;
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "Generating Blocks up to conversion block" );
-      generate_blocks( db->head_block_time() + BEARS_CONVERSION_DELAY - fc::seconds( BEARS_BLOCK_INTERVAL / 2 ), true );
+      generate_blocks( db->head_block_time() + VOILK_CONVERSION_DELAY - fc::seconds( VOILK_BLOCK_INTERVAL / 2 ), true );
 
       BOOST_TEST_MESSAGE( "Verify conversion is not applied" );
       const auto& alice_2 = db->get_account( "alice" );
@@ -1566,7 +1566,7 @@ BOOST_AUTO_TEST_CASE( convert_delay )
 
       BOOST_REQUIRE( convert_request != convert_request_idx.end() );
       BOOST_REQUIRE( alice_2.balance.amount.value == 0 );
-      BOOST_REQUIRE( alice_2.bsd_balance.amount.value == ( start_balance - op.amount ).amount.value );
+      BOOST_REQUIRE( alice_2.vsd_balance.amount.value == ( start_balance - op.amount ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "Generate one more block" );
@@ -1579,7 +1579,7 @@ BOOST_AUTO_TEST_CASE( convert_delay )
       convert_request = convert_request_idx.find( std::make_tuple( "alice", 2 ) );
       BOOST_REQUIRE( convert_request == convert_request_idx.end() );
       BOOST_REQUIRE( alice_3.balance.amount.value == 2500 );
-      BOOST_REQUIRE( alice_3.bsd_balance.amount.value == ( start_balance - op.amount ).amount.value );
+      BOOST_REQUIRE( alice_3.vsd_balance.amount.value == ( start_balance - op.amount ).amount.value );
       BOOST_REQUIRE( vop.owner == "alice" );
       BOOST_REQUIRE( vop.requestid == 2 );
       BOOST_REQUIRE( vop.amount_in.amount.value == ASSET( "2.000 TBD" ).amount.value );
@@ -1589,12 +1589,12 @@ BOOST_AUTO_TEST_CASE( convert_delay )
    FC_LOG_AND_RETHROW();
 }
 
-BOOST_AUTO_TEST_CASE( bears_inflation )
+BOOST_AUTO_TEST_CASE( voilk_inflation )
 {
    try
    {
    /*
-      BOOST_TEST_MESSAGE( "Testing BEARS Inflation until the coining start block" );
+      BOOST_TEST_MESSAGE( "Testing VOILK Inflation until the coining start block" );
 
       auto gpo = db->get_dynamic_global_properties();
       auto virtual_supply = gpo.virtual_supply;
@@ -1602,22 +1602,22 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
       auto old_witness_balance = db->get_account( witness_name ).balance;
       auto old_witness_shares = db->get_account( witness_name ).coining_shares;
 
-      auto new_rewards = std::max( BEARS_MIN_CONTENT_REWARD, asset( ( BEARS_CONTENT_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) )
-         + std::max( BEARS_MIN_CURATE_REWARD, asset( ( BEARS_CURATE_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
-      auto witness_pay = std::max( BEARS_MIN_PRODUCER_REWARD, asset( ( BEARS_PRODUCER_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
+      auto new_rewards = std::max( VOILK_MIN_CONTENT_REWARD, asset( ( VOILK_CONTENT_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) )
+         + std::max( VOILK_MIN_CURATE_REWARD, asset( ( VOILK_CURATE_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
+      auto witness_pay = std::max( VOILK_MIN_PRODUCER_REWARD, asset( ( VOILK_PRODUCER_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
       auto witness_pay_shares = asset( 0, COINS_SYMBOL );
-      auto new_coining_bears = asset( 0, BEARS_SYMBOL );
+      auto new_coining_voilk = asset( 0, VOILK_SYMBOL );
       auto new_coining_shares = gpo.total_coining_shares;
 
       if ( db->get_account( witness_name ).coining_shares.amount.value == 0 )
       {
-         new_coining_bears += witness_pay;
-         new_coining_shares += witness_pay * ( gpo.total_coining_shares / gpo.total_coining_fund_bears );
+         new_coining_voilk += witness_pay;
+         new_coining_shares += witness_pay * ( gpo.total_coining_shares / gpo.total_coining_fund_voilk );
       }
 
-      auto new_supply = gpo.current_supply + new_rewards + witness_pay + new_coining_bears;
-      new_rewards += gpo.total_reward_fund_bears;
-      new_coining_bears += gpo.total_coining_fund_bears;
+      auto new_supply = gpo.current_supply + new_rewards + witness_pay + new_coining_voilk;
+      new_rewards += gpo.total_reward_fund_voilk;
+      new_coining_voilk += gpo.total_coining_fund_voilk;
 
       generate_block();
 
@@ -1625,14 +1625,14 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
       BOOST_REQUIRE( gpo.current_supply.amount.value == new_supply.amount.value );
       BOOST_REQUIRE( gpo.virtual_supply.amount.value == new_supply.amount.value );
-      BOOST_REQUIRE( gpo.total_reward_fund_bears.amount.value == new_rewards.amount.value );
-      BOOST_REQUIRE( gpo.total_coining_fund_bears.amount.value == new_coining_bears.amount.value );
+      BOOST_REQUIRE( gpo.total_reward_fund_voilk.amount.value == new_rewards.amount.value );
+      BOOST_REQUIRE( gpo.total_coining_fund_voilk.amount.value == new_coining_voilk.amount.value );
       BOOST_REQUIRE( gpo.total_coining_shares.amount.value == new_coining_shares.amount.value );
       BOOST_REQUIRE( db->get_account( witness_name ).balance.amount.value == ( old_witness_balance + witness_pay ).amount.value );
 
       validate_database();
 
-      while( db->head_block_num() < BEARS_START_COINING_BLOCK - 1)
+      while( db->head_block_num() < VOILK_START_COINING_BLOCK - 1)
       {
          virtual_supply = gpo.virtual_supply;
          witness_name = db->get_scheduled_witness(1);
@@ -1640,24 +1640,24 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
          old_witness_shares = db->get_account( witness_name ).coining_shares;
 
 
-         new_rewards = std::max( BEARS_MIN_CONTENT_REWARD, asset( ( BEARS_CONTENT_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) )
-            + std::max( BEARS_MIN_CURATE_REWARD, asset( ( BEARS_CURATE_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
-         witness_pay = std::max( BEARS_MIN_PRODUCER_REWARD, asset( ( BEARS_PRODUCER_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
-         new_coining_bears = asset( 0, BEARS_SYMBOL );
+         new_rewards = std::max( VOILK_MIN_CONTENT_REWARD, asset( ( VOILK_CONTENT_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) )
+            + std::max( VOILK_MIN_CURATE_REWARD, asset( ( VOILK_CURATE_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
+         witness_pay = std::max( VOILK_MIN_PRODUCER_REWARD, asset( ( VOILK_PRODUCER_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
+         new_coining_voilk = asset( 0, VOILK_SYMBOL );
          new_coining_shares = gpo.total_coining_shares;
 
          if ( db->get_account( witness_name ).coining_shares.amount.value == 0 )
          {
-            new_coining_bears += witness_pay;
+            new_coining_voilk += witness_pay;
             witness_pay_shares = witness_pay * gpo.get_coining_share_price();
             new_coining_shares += witness_pay_shares;
             new_supply += witness_pay;
-            witness_pay = asset( 0, BEARS_SYMBOL );
+            witness_pay = asset( 0, VOILK_SYMBOL );
          }
 
-         new_supply = gpo.current_supply + new_rewards + witness_pay + new_coining_bears;
-         new_rewards += gpo.total_reward_fund_bears;
-         new_coining_bears += gpo.total_coining_fund_bears;
+         new_supply = gpo.current_supply + new_rewards + witness_pay + new_coining_voilk;
+         new_rewards += gpo.total_reward_fund_voilk;
+         new_coining_voilk += gpo.total_coining_fund_voilk;
 
          generate_block();
 
@@ -1665,8 +1665,8 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
          BOOST_REQUIRE( gpo.current_supply.amount.value == new_supply.amount.value );
          BOOST_REQUIRE( gpo.virtual_supply.amount.value == new_supply.amount.value );
-         BOOST_REQUIRE( gpo.total_reward_fund_bears.amount.value == new_rewards.amount.value );
-         BOOST_REQUIRE( gpo.total_coining_fund_bears.amount.value == new_coining_bears.amount.value );
+         BOOST_REQUIRE( gpo.total_reward_fund_voilk.amount.value == new_rewards.amount.value );
+         BOOST_REQUIRE( gpo.total_coining_fund_voilk.amount.value == new_coining_voilk.amount.value );
          BOOST_REQUIRE( gpo.total_coining_shares.amount.value == new_coining_shares.amount.value );
          BOOST_REQUIRE( db->get_account( witness_name ).balance.amount.value == ( old_witness_balance + witness_pay ).amount.value );
          BOOST_REQUIRE( db->get_account( witness_name ).coining_shares.amount.value == ( old_witness_shares + witness_pay_shares ).amount.value );
@@ -1676,31 +1676,31 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
       BOOST_TEST_MESSAGE( "Testing up to the start block for miner voting" );
 
-      while( db->head_block_num() < BEARS_START_MINER_VOTING_BLOCK - 1 )
+      while( db->head_block_num() < VOILK_START_MINER_VOTING_BLOCK - 1 )
       {
          virtual_supply = gpo.virtual_supply;
          witness_name = db->get_scheduled_witness(1);
          old_witness_balance = db->get_account( witness_name ).balance;
 
-         new_rewards = std::max( BEARS_MIN_CONTENT_REWARD, asset( ( BEARS_CONTENT_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) )
-            + std::max( BEARS_MIN_CURATE_REWARD, asset( ( BEARS_CURATE_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
-         witness_pay = std::max( BEARS_MIN_PRODUCER_REWARD, asset( ( BEARS_PRODUCER_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
+         new_rewards = std::max( VOILK_MIN_CONTENT_REWARD, asset( ( VOILK_CONTENT_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) )
+            + std::max( VOILK_MIN_CURATE_REWARD, asset( ( VOILK_CURATE_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
+         witness_pay = std::max( VOILK_MIN_PRODUCER_REWARD, asset( ( VOILK_PRODUCER_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
          auto witness_pay_shares = asset( 0, COINS_SYMBOL );
-         new_coining_bears = asset( ( witness_pay + new_rewards ).amount * 9, BEARS_SYMBOL );
+         new_coining_voilk = asset( ( witness_pay + new_rewards ).amount * 9, VOILK_SYMBOL );
          new_coining_shares = gpo.total_coining_shares;
 
          if ( db->get_account( witness_name ).coining_shares.amount.value == 0 )
          {
-            new_coining_bears += witness_pay;
+            new_coining_voilk += witness_pay;
             witness_pay_shares = witness_pay * gpo.get_coining_share_price();
             new_coining_shares += witness_pay_shares;
             new_supply += witness_pay;
-            witness_pay = asset( 0, BEARS_SYMBOL );
+            witness_pay = asset( 0, VOILK_SYMBOL );
          }
 
-         new_supply = gpo.current_supply + new_rewards + witness_pay + new_coining_bears;
-         new_rewards += gpo.total_reward_fund_bears;
-         new_coining_bears += gpo.total_coining_fund_bears;
+         new_supply = gpo.current_supply + new_rewards + witness_pay + new_coining_voilk;
+         new_rewards += gpo.total_reward_fund_voilk;
+         new_coining_voilk += gpo.total_coining_fund_voilk;
 
          generate_block();
 
@@ -1708,8 +1708,8 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
          BOOST_REQUIRE( gpo.current_supply.amount.value == new_supply.amount.value );
          BOOST_REQUIRE( gpo.virtual_supply.amount.value == new_supply.amount.value );
-         BOOST_REQUIRE( gpo.total_reward_fund_bears.amount.value == new_rewards.amount.value );
-         BOOST_REQUIRE( gpo.total_coining_fund_bears.amount.value == new_coining_bears.amount.value );
+         BOOST_REQUIRE( gpo.total_reward_fund_voilk.amount.value == new_rewards.amount.value );
+         BOOST_REQUIRE( gpo.total_coining_fund_voilk.amount.value == new_coining_voilk.amount.value );
          BOOST_REQUIRE( gpo.total_coining_shares.amount.value == new_coining_shares.amount.value );
          BOOST_REQUIRE( db->get_account( witness_name ).balance.amount.value == ( old_witness_balance + witness_pay ).amount.value );
          BOOST_REQUIRE( db->get_account( witness_name ).coining_shares.amount.value == ( old_witness_shares + witness_pay_shares ).amount.value );
@@ -1717,21 +1717,21 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
          validate_database();
       }
 
-      for( int i = 0; i < BEARS_BLOCKS_PER_DAY; i++ )
+      for( int i = 0; i < VOILK_BLOCKS_PER_DAY; i++ )
       {
          virtual_supply = gpo.virtual_supply;
          witness_name = db->get_scheduled_witness(1);
          old_witness_balance = db->get_account( witness_name ).balance;
 
-         new_rewards = std::max( BEARS_MIN_CONTENT_REWARD, asset( ( BEARS_CONTENT_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) )
-            + std::max( BEARS_MIN_CURATE_REWARD, asset( ( BEARS_CURATE_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
-         witness_pay = std::max( BEARS_MIN_PRODUCER_REWARD, asset( ( BEARS_PRODUCER_APR * gpo.virtual_supply.amount ) / ( BEARS_BLOCKS_PER_YEAR * 100 ), BEARS_SYMBOL ) );
+         new_rewards = std::max( VOILK_MIN_CONTENT_REWARD, asset( ( VOILK_CONTENT_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) )
+            + std::max( VOILK_MIN_CURATE_REWARD, asset( ( VOILK_CURATE_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
+         witness_pay = std::max( VOILK_MIN_PRODUCER_REWARD, asset( ( VOILK_PRODUCER_APR * gpo.virtual_supply.amount ) / ( VOILK_BLOCKS_PER_YEAR * 100 ), VOILK_SYMBOL ) );
          witness_pay_shares = witness_pay * gpo.get_coining_share_price();
-         new_coining_bears = asset( ( witness_pay + new_rewards ).amount * 9, BEARS_SYMBOL ) + witness_pay;
+         new_coining_voilk = asset( ( witness_pay + new_rewards ).amount * 9, VOILK_SYMBOL ) + witness_pay;
          new_coining_shares = gpo.total_coining_shares + witness_pay_shares;
-         new_supply = gpo.current_supply + new_rewards + new_coining_bears;
-         new_rewards += gpo.total_reward_fund_bears;
-         new_coining_bears += gpo.total_coining_fund_bears;
+         new_supply = gpo.current_supply + new_rewards + new_coining_voilk;
+         new_rewards += gpo.total_reward_fund_voilk;
+         new_coining_voilk += gpo.total_coining_fund_voilk;
 
          generate_block();
 
@@ -1739,8 +1739,8 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
          BOOST_REQUIRE( gpo.current_supply.amount.value == new_supply.amount.value );
          BOOST_REQUIRE( gpo.virtual_supply.amount.value == new_supply.amount.value );
-         BOOST_REQUIRE( gpo.total_reward_fund_bears.amount.value == new_rewards.amount.value );
-         BOOST_REQUIRE( gpo.total_coining_fund_bears.amount.value == new_coining_bears.amount.value );
+         BOOST_REQUIRE( gpo.total_reward_fund_voilk.amount.value == new_rewards.amount.value );
+         BOOST_REQUIRE( gpo.total_coining_fund_voilk.amount.value == new_coining_voilk.amount.value );
          BOOST_REQUIRE( gpo.total_coining_shares.amount.value == new_coining_shares.amount.value );
          BOOST_REQUIRE( db->get_account( witness_name ).coining_shares.amount.value == ( old_witness_shares + witness_pay_shares ).amount.value );
 
@@ -1749,8 +1749,8 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
       virtual_supply = gpo.virtual_supply;
       coining_shares = gpo.total_coining_shares;
-      coining_bears = gpo.total_coining_fund_bears;
-      reward_bears = gpo.total_reward_fund_bears;
+      coining_voilk = gpo.total_coining_fund_voilk;
+      reward_voilk = gpo.total_reward_fund_voilk;
 
       witness_name = db->get_scheduled_witness(1);
       old_witness_shares = db->get_account( witness_name ).coining_shares;
@@ -1759,28 +1759,28 @@ BOOST_AUTO_TEST_CASE( bears_inflation )
 
       gpo = db->get_dynamic_global_properties();
 
-      BOOST_REQUIRE_EQUAL( gpo.total_coining_fund_bears.amount.value,
-         ( coining_bears.amount.value
-            + ( ( ( uint128_t( virtual_supply.amount.value ) / 10 ) / BEARS_BLOCKS_PER_YEAR ) * 9 )
-            + ( uint128_t( virtual_supply.amount.value ) / 100 / BEARS_BLOCKS_PER_YEAR ) ).to_uint64() );
-      BOOST_REQUIRE_EQUAL( gpo.total_reward_fund_bears.amount.value,
-         reward_bears.amount.value + virtual_supply.amount.value / 10 / BEARS_BLOCKS_PER_YEAR + virtual_supply.amount.value / 10 / BEARS_BLOCKS_PER_DAY );
+      BOOST_REQUIRE_EQUAL( gpo.total_coining_fund_voilk.amount.value,
+         ( coining_voilk.amount.value
+            + ( ( ( uint128_t( virtual_supply.amount.value ) / 10 ) / VOILK_BLOCKS_PER_YEAR ) * 9 )
+            + ( uint128_t( virtual_supply.amount.value ) / 100 / VOILK_BLOCKS_PER_YEAR ) ).to_uint64() );
+      BOOST_REQUIRE_EQUAL( gpo.total_reward_fund_voilk.amount.value,
+         reward_voilk.amount.value + virtual_supply.amount.value / 10 / VOILK_BLOCKS_PER_YEAR + virtual_supply.amount.value / 10 / VOILK_BLOCKS_PER_DAY );
       BOOST_REQUIRE_EQUAL( db->get_account( witness_name ).coining_shares.amount.value,
-         old_witness_shares.amount.value + ( asset( ( ( virtual_supply.amount.value / BEARS_BLOCKS_PER_YEAR ) * BEARS_1_PERCENT ) / BEARS_100_PERCENT, BEARS_SYMBOL ) * ( coining_shares / coining_bears ) ).amount.value );
+         old_witness_shares.amount.value + ( asset( ( ( virtual_supply.amount.value / VOILK_BLOCKS_PER_YEAR ) * VOILK_1_PERCENT ) / VOILK_100_PERCENT, VOILK_SYMBOL ) * ( coining_shares / coining_voilk ) ).amount.value );
       validate_database();
       */
    }
    FC_LOG_AND_RETHROW();
 }
 
-BOOST_AUTO_TEST_CASE( bsd_interest )
+BOOST_AUTO_TEST_CASE( vsd_interest )
 {
    try
    {
       ACTORS( (alice)(bob) )
       generate_block();
-      coin( BEARS_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
-      coin( BEARS_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
 
       set_price_feed( price( ASSET( "1.000 TBD" ), ASSET( "1.000 TESTS" ) ) );
 
@@ -1791,10 +1791,10 @@ BOOST_AUTO_TEST_CASE( bsd_interest )
 
       fund( "alice", ASSET( "31.903 TBD" ) );
 
-      auto start_time = db->get_account( "alice" ).bsd_seconds_last_update;
-      auto alice_bsd = db->get_account( "alice" ).bsd_balance;
+      auto start_time = db->get_account( "alice" ).vsd_seconds_last_update;
+      auto alice_vsd = db->get_account( "alice" ).vsd_balance;
 
-      generate_blocks( db->head_block_time() + fc::seconds( BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( VOILK_VSD_INTEREST_COMPOUND_INTERVAL_SEC ), true );
 
       transfer_operation transfer;
       transfer.to = "bob";
@@ -1802,7 +1802,7 @@ BOOST_AUTO_TEST_CASE( bsd_interest )
       transfer.amount = ASSET( "1.000 TBD" );
       tx.operations.clear();
       tx.signatures.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( transfer );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
@@ -1810,45 +1810,45 @@ BOOST_AUTO_TEST_CASE( bsd_interest )
       auto gpo = db->get_dynamic_global_properties();
       auto interest_op = get_last_operations( 1 )[0].get< interest_operation >();
 
-      BOOST_REQUIRE( gpo.bsd_interest_rate > 0 );
-      BOOST_REQUIRE( static_cast<uint64_t>(db->get_account( "alice" ).bsd_balance.amount.value) == alice_bsd.amount.value - ASSET( "1.000 TBD" ).amount.value + ( ( ( ( uint128_t( alice_bsd.amount.value ) * ( db->head_block_time() - start_time ).to_seconds() ) / BEARS_SECONDS_PER_YEAR ) * gpo.bsd_interest_rate ) / BEARS_100_PERCENT ).to_uint64() );
+      BOOST_REQUIRE( gpo.vsd_interest_rate > 0 );
+      BOOST_REQUIRE( static_cast<uint64_t>(db->get_account( "alice" ).vsd_balance.amount.value) == alice_vsd.amount.value - ASSET( "1.000 TBD" ).amount.value + ( ( ( ( uint128_t( alice_vsd.amount.value ) * ( db->head_block_time() - start_time ).to_seconds() ) / VOILK_SECONDS_PER_YEAR ) * gpo.vsd_interest_rate ) / VOILK_100_PERCENT ).to_uint64() );
       BOOST_REQUIRE( interest_op.owner == "alice" );
-      BOOST_REQUIRE( interest_op.interest.amount.value == db->get_account( "alice" ).bsd_balance.amount.value - ( alice_bsd.amount.value - ASSET( "1.000 TBD" ).amount.value ) );
+      BOOST_REQUIRE( interest_op.interest.amount.value == db->get_account( "alice" ).vsd_balance.amount.value - ( alice_vsd.amount.value - ASSET( "1.000 TBD" ).amount.value ) );
       validate_database();
 
       BOOST_TEST_MESSAGE( "Testing interest under interest period" );
 
-      start_time = db->get_account( "alice" ).bsd_seconds_last_update;
-      alice_bsd = db->get_account( "alice" ).bsd_balance;
+      start_time = db->get_account( "alice" ).vsd_seconds_last_update;
+      alice_vsd = db->get_account( "alice" ).vsd_balance;
 
-      generate_blocks( db->head_block_time() + fc::seconds( BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC / 2 ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( VOILK_VSD_INTEREST_COMPOUND_INTERVAL_SEC / 2 ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( transfer );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance.amount.value == alice_bsd.amount.value - ASSET( "1.000 TBD" ).amount.value );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance.amount.value == alice_vsd.amount.value - ASSET( "1.000 TBD" ).amount.value );
       validate_database();
 
-      auto alice_coindays = uint128_t( alice_bsd.amount.value ) * ( db->head_block_time() - start_time ).to_seconds();
-      alice_bsd = db->get_account( "alice" ).bsd_balance;
-      start_time = db->get_account( "alice" ).bsd_seconds_last_update;
+      auto alice_coindays = uint128_t( alice_vsd.amount.value ) * ( db->head_block_time() - start_time ).to_seconds();
+      alice_vsd = db->get_account( "alice" ).vsd_balance;
+      start_time = db->get_account( "alice" ).vsd_seconds_last_update;
 
       BOOST_TEST_MESSAGE( "Testing longer interest period" );
 
-      generate_blocks( db->head_block_time() + fc::seconds( ( BEARS_BSD_INTEREST_COMPOUND_INTERVAL_SEC * 7 ) / 3 ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( ( VOILK_VSD_INTEREST_COMPOUND_INTERVAL_SEC * 7 ) / 3 ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( transfer );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( static_cast<uint64_t>(db->get_account( "alice" ).bsd_balance.amount.value) == alice_bsd.amount.value - ASSET( "1.000 TBD" ).amount.value + ( ( ( ( uint128_t( alice_bsd.amount.value ) * ( db->head_block_time() - start_time ).to_seconds() + alice_coindays ) / BEARS_SECONDS_PER_YEAR ) * gpo.bsd_interest_rate ) / BEARS_100_PERCENT ).to_uint64() );
+      BOOST_REQUIRE( static_cast<uint64_t>(db->get_account( "alice" ).vsd_balance.amount.value) == alice_vsd.amount.value - ASSET( "1.000 TBD" ).amount.value + ( ( ( ( uint128_t( alice_vsd.amount.value ) * ( db->head_block_time() - start_time ).to_seconds() + alice_coindays ) / VOILK_SECONDS_PER_YEAR ) * gpo.vsd_interest_rate ) / VOILK_100_PERCENT ).to_uint64() );
       validate_database();
    }
    FC_LOG_AND_RETHROW();
@@ -1864,10 +1864,10 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       ACTORS( (alice)(bob)(sam)(dave) )
       generate_block();
-      coin( BEARS_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
-      coin( BEARS_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
-      coin( BEARS_INIT_MINER_NAME, "sam", ASSET( "10.000 TESTS" ) );
-      coin( BEARS_INIT_MINER_NAME, "dave", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "sam", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "dave", ASSET( "10.000 TESTS" ) );
 
       BOOST_TEST_MESSAGE( "Rewarding Bob with TESTS" );
 
@@ -1877,49 +1877,49 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       signed_transaction tx;
 
       fund( "alice", ASSET( "25.522 TBD" ) );
-      asset alice_bsd = db->get_account( "alice" ).bsd_balance;
+      asset alice_vsd = db->get_account( "alice" ).vsd_balance;
 
       generate_block();
 
-      fund( "alice", alice_bsd.amount );
-      fund( "bob", alice_bsd.amount );
-      fund( "sam", alice_bsd.amount );
-      fund( "dave", alice_bsd.amount );
+      fund( "alice", alice_vsd.amount );
+      fund( "bob", alice_vsd.amount );
+      fund( "sam", alice_vsd.amount );
+      fund( "dave", alice_vsd.amount );
 
-      int64_t alice_bsd_volume = 0;
-      int64_t alice_bears_volume = 0;
+      int64_t alice_vsd_volume = 0;
+      int64_t alice_voilk_volume = 0;
       time_point_sec alice_reward_last_update = fc::time_point_sec::min();
-      int64_t bob_bsd_volume = 0;
-      int64_t bob_bears_volume = 0;
+      int64_t bob_vsd_volume = 0;
+      int64_t bob_voilk_volume = 0;
       time_point_sec bob_reward_last_update = fc::time_point_sec::min();
-      int64_t sam_bsd_volume = 0;
-      int64_t sam_bears_volume = 0;
+      int64_t sam_vsd_volume = 0;
+      int64_t sam_voilk_volume = 0;
       time_point_sec sam_reward_last_update = fc::time_point_sec::min();
-      int64_t dave_bsd_volume = 0;
-      int64_t dave_bears_volume = 0;
+      int64_t dave_vsd_volume = 0;
+      int64_t dave_voilk_volume = 0;
       time_point_sec dave_reward_last_update = fc::time_point_sec::min();
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for BEARS that will stay on the books for 30 minutes exactly." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for VOILK that will stay on the books for 30 minutes exactly." );
 
       limit_order_create_operation op;
       op.owner = "alice";
-      op.amount_to_sell = asset( alice_bsd.amount.value / 20, BSD_SYMBOL ) ;
+      op.amount_to_sell = asset( alice_vsd.amount.value / 20, VSD_SYMBOL ) ;
       op.min_to_receive = op.amount_to_sell * exchange_rate;
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
       op.orderid = 1;
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "Waiting 10 minutes" );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for BSD that will be filled immediately." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for VSD that will be filled immediately." );
 
       op.owner = "bob";
       op.min_to_receive = op.amount_to_sell;
@@ -1929,14 +1929,14 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_bears_volume += ( asset( alice_bsd.amount / 20, BSD_SYMBOL ) * exchange_rate ).amount.value;
+      alice_voilk_volume += ( asset( alice_vsd.amount / 20, VSD_SYMBOL ) * exchange_rate ).amount.value;
       alice_reward_last_update = db->head_block_time();
-      bob_bears_volume -= ( asset( alice_bsd.amount / 20, BSD_SYMBOL ) * exchange_rate ).amount.value;
+      bob_voilk_volume -= ( asset( alice_vsd.amount / 20, VSD_SYMBOL ) * exchange_rate ).amount.value;
       bob_reward_last_update = db->head_block_time();
 
       auto ops = get_last_operations( 1 );
@@ -1946,34 +1946,34 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       auto reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       auto fill_order_op = ops[0].get< fill_order_operation >();
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 1 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_bsd.amount.value / 20, BSD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_vsd.amount.value / 20, VSD_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 2 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == ( asset( alice_bsd.amount.value / 20, BSD_SYMBOL ) * exchange_rate ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == ( asset( alice_vsd.amount.value / 20, VSD_SYMBOL ) * exchange_rate ).amount.value );
 
       BOOST_CHECK( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_CHECK( limit_order_idx.find( std::make_tuple( "bob", 2 ) ) == limit_order_idx.end() );
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for BSD that will stay on the books for 60 minutes." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for VSD that will stay on the books for 60 minutes." );
 
       op.owner = "sam";
-      op.amount_to_sell = asset( ( alice_bsd.amount.value / 20 ), BEARS_SYMBOL );
-      op.min_to_receive = asset( ( alice_bsd.amount.value / 20 ), BSD_SYMBOL );
+      op.amount_to_sell = asset( ( alice_vsd.amount.value / 20 ), VOILK_SYMBOL );
+      op.min_to_receive = asset( ( alice_vsd.amount.value / 20 ), VSD_SYMBOL );
       op.orderid = 3;
 
       tx.signatures.clear();
@@ -1984,160 +1984,160 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_TEST_MESSAGE( "Waiting 10 minutes" );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for BSD that will stay on the books for 30 minutes." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for VSD that will stay on the books for 30 minutes." );
 
       op.owner = "bob";
       op.orderid = 4;
-      op.amount_to_sell = asset( ( alice_bsd.amount.value / 10 ) * 3 - alice_bsd.amount.value / 20, BEARS_SYMBOL );
-      op.min_to_receive = asset( ( alice_bsd.amount.value / 10 ) * 3 - alice_bsd.amount.value / 20, BSD_SYMBOL );
+      op.amount_to_sell = asset( ( alice_vsd.amount.value / 10 ) * 3 - alice_vsd.amount.value / 20, VOILK_SYMBOL );
+      op.min_to_receive = asset( ( alice_vsd.amount.value / 10 ) * 3 - alice_vsd.amount.value / 20, VSD_SYMBOL );
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "Waiting 30 minutes" );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
       BOOST_TEST_MESSAGE( "Filling both limit orders." );
 
       op.owner = "alice";
       op.orderid = 5;
-      op.amount_to_sell = asset( ( alice_bsd.amount.value / 10 ) * 3, BSD_SYMBOL );
-      op.min_to_receive = asset( ( alice_bsd.amount.value / 10 ) * 3, BEARS_SYMBOL );
+      op.amount_to_sell = asset( ( alice_vsd.amount.value / 10 ) * 3, VSD_SYMBOL );
+      op.min_to_receive = asset( ( alice_vsd.amount.value / 10 ) * 3, VOILK_SYMBOL );
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_bsd_volume -= ( alice_bsd.amount.value / 10 ) * 3;
+      alice_vsd_volume -= ( alice_vsd.amount.value / 10 ) * 3;
       alice_reward_last_update = db->head_block_time();
-      sam_bsd_volume += alice_bsd.amount.value / 20;
+      sam_vsd_volume += alice_vsd.amount.value / 20;
       sam_reward_last_update = db->head_block_time();
-      bob_bsd_volume += ( alice_bsd.amount.value / 10 ) * 3 - ( alice_bsd.amount.value / 20 );
+      bob_vsd_volume += ( alice_vsd.amount.value / 10 ) * 3 - ( alice_vsd.amount.value / 20 );
       bob_reward_last_update = db->head_block_time();
       ops = get_last_operations( 4 );
 
       fill_order_op = ops[1].get< fill_order_operation >();
       BOOST_REQUIRE( fill_order_op.open_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 4 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( ( alice_bsd.amount.value / 10 ) * 3 - alice_bsd.amount.value / 20, BEARS_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( ( alice_vsd.amount.value / 10 ) * 3 - alice_vsd.amount.value / 20, VOILK_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 5 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( ( alice_bsd.amount.value / 10 ) * 3 - alice_bsd.amount.value / 20, BSD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( ( alice_vsd.amount.value / 10 ) * 3 - alice_vsd.amount.value / 20, VSD_SYMBOL ).amount.value );
 
       fill_order_op = ops[3].get< fill_order_operation >();
       BOOST_REQUIRE( fill_order_op.open_owner == "sam" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 3 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_bsd.amount.value / 20, BEARS_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_vsd.amount.value / 20, VOILK_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 5 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_bsd.amount.value / 20, BSD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_vsd.amount.value / 20, VSD_SYMBOL ).amount.value );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       BOOST_TEST_MESSAGE( "Testing a partial fill before minimum time and full fill after minimum time" );
 
       op.orderid = 6;
-      op.amount_to_sell = asset( alice_bsd.amount.value / 20 * 2, BSD_SYMBOL );
-      op.min_to_receive = asset( alice_bsd.amount.value / 20 * 2, BEARS_SYMBOL );
+      op.amount_to_sell = asset( alice_vsd.amount.value / 20 * 2, VSD_SYMBOL );
+      op.min_to_receive = asset( alice_vsd.amount.value / 20 * 2, VOILK_SYMBOL );
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->head_block_time() + fc::seconds( BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10.to_seconds() / 2 ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10.to_seconds() / 2 ), true );
 
       op.owner = "bob";
       op.orderid = 7;
-      op.amount_to_sell = asset( alice_bsd.amount.value / 20, BEARS_SYMBOL );
-      op.min_to_receive = asset( alice_bsd.amount.value / 20, BSD_SYMBOL );
+      op.amount_to_sell = asset( alice_vsd.amount.value / 20, VOILK_SYMBOL );
+      op.min_to_receive = asset( alice_vsd.amount.value / 20, VSD_SYMBOL );
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->head_block_time() + fc::seconds( BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10.to_seconds() / 2 ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10.to_seconds() / 2 ), true );
 
       ops = get_last_operations( 3 );
       fill_order_op = ops[2].get< fill_order_operation >();
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 6 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_bsd.amount.value / 20, BSD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_vsd.amount.value / 20, VSD_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 7 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_bsd.amount.value / 20, BEARS_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_vsd.amount.value / 20, VOILK_SYMBOL ).amount.value );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
       op.owner = "sam";
       op.orderid = 8;
 
       tx.signatures.clear();
       tx.operations.clear();
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
       sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_bears_volume += alice_bsd.amount.value / 20;
+      alice_voilk_volume += alice_vsd.amount.value / 20;
       alice_reward_last_update = db->head_block_time();
-      sam_bears_volume -= alice_bsd.amount.value / 20;
+      sam_voilk_volume -= alice_vsd.amount.value / 20;
       sam_reward_last_update = db->head_block_time();
 
       ops = get_last_operations( 2 );
@@ -2145,30 +2145,30 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 6 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_bsd.amount.value / 20, BSD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_vsd.amount.value / 20, VSD_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "sam" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 8 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_bsd.amount.value / 20, BEARS_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_vsd.amount.value / 20, VOILK_SYMBOL ).amount.value );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       BOOST_TEST_MESSAGE( "Trading to give Alice and Bob positive volumes to receive rewards" );
@@ -2176,18 +2176,18 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       transfer_operation transfer;
       transfer.to = "dave";
       transfer.from = "alice";
-      transfer.amount = asset( alice_bsd.amount / 2, BSD_SYMBOL );
+      transfer.amount = asset( alice_vsd.amount / 2, VSD_SYMBOL );
 
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( transfer );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "alice";
-      op.amount_to_sell = asset( 8 * ( alice_bsd.amount.value / 20 ), BEARS_SYMBOL );
-      op.min_to_receive = asset( op.amount_to_sell.amount, BSD_SYMBOL );
+      op.amount_to_sell = asset( 8 * ( alice_vsd.amount.value / 20 ), VOILK_SYMBOL );
+      op.min_to_receive = asset( op.amount_to_sell.amount, VSD_SYMBOL );
       op.orderid = 9;
       tx.operations.clear();
       tx.signatures.clear();
@@ -2195,22 +2195,22 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
       op.owner = "dave";
-      op.amount_to_sell = asset( 7 * ( alice_bsd.amount.value / 20 ), BSD_SYMBOL );;
-      op.min_to_receive = asset( op.amount_to_sell.amount, BEARS_SYMBOL );
+      op.amount_to_sell = asset( 7 * ( alice_vsd.amount.value / 20 ), VSD_SYMBOL );;
+      op.min_to_receive = asset( op.amount_to_sell.amount, VOILK_SYMBOL );
       op.orderid = 10;
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, dave_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_bsd_volume += op.amount_to_sell.amount.value;
+      alice_vsd_volume += op.amount_to_sell.amount.value;
       alice_reward_last_update = db->head_block_time();
-      dave_bsd_volume -= op.amount_to_sell.amount.value;
+      dave_vsd_volume -= op.amount_to_sell.amount.value;
       dave_reward_last_update = db->head_block_time();
 
       ops = get_last_operations( 1 );
@@ -2218,41 +2218,41 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 9 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == 7 * ( alice_bsd.amount.value / 20 ) );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == 7 * ( alice_vsd.amount.value / 20 ) );
       BOOST_REQUIRE( fill_order_op.current_owner == "dave" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 10 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == 7 * ( alice_bsd.amount.value / 20 ) );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == 7 * ( alice_vsd.amount.value / 20 ) );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "dave" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "dave" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == dave_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == dave_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == dave_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == dave_voilk_volume );
       BOOST_CHECK( reward->last_update == dave_reward_last_update );*/
 
       op.owner = "bob";
-      op.amount_to_sell.amount = alice_bsd.amount / 20;
+      op.amount_to_sell.amount = alice_vsd.amount / 20;
       op.min_to_receive.amount = op.amount_to_sell.amount;
       op.orderid = 11;
       tx.operations.clear();
@@ -2261,9 +2261,9 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_bsd_volume += op.amount_to_sell.amount.value;
+      alice_vsd_volume += op.amount_to_sell.amount.value;
       alice_reward_last_update = db->head_block_time();
-      bob_bsd_volume -= op.amount_to_sell.amount.value;
+      bob_vsd_volume -= op.amount_to_sell.amount.value;
       bob_reward_last_update = db->head_block_time();
 
       ops = get_last_operations( 1 );
@@ -2271,74 +2271,74 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 9 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == alice_bsd.amount.value / 20 );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == alice_vsd.amount.value / 20 );
       BOOST_REQUIRE( fill_order_op.current_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 11 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == alice_bsd.amount.value / 20 );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == alice_vsd.amount.value / 20 );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "dave" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "dave" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == dave_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == dave_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == dave_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == dave_voilk_volume );
       BOOST_CHECK( reward->last_update == dave_reward_last_update );*/
 
       transfer.to = "bob";
       transfer.from = "alice";
-      transfer.amount = asset( alice_bsd.amount / 5, BSD_SYMBOL );
+      transfer.amount = asset( alice_vsd.amount / 5, VSD_SYMBOL );
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( transfer );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "bob";
       op.orderid = 12;
-      op.amount_to_sell = asset( 3 * ( alice_bsd.amount / 40 ), BSD_SYMBOL );
-      op.min_to_receive = asset( op.amount_to_sell.amount, BEARS_SYMBOL );
+      op.amount_to_sell = asset( 3 * ( alice_vsd.amount / 40 ), VSD_SYMBOL );
+      op.min_to_receive = asset( op.amount_to_sell.amount, VOILK_SYMBOL );
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
       op.owner = "dave";
       op.orderid = 13;
       op.amount_to_sell = op.min_to_receive;
-      op.min_to_receive.symbol = BSD_SYMBOL;
+      op.min_to_receive.symbol = VSD_SYMBOL;
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, dave_private_key );
       db->push_transaction( tx, 0 );
 
-      bob_bears_volume += op.amount_to_sell.amount.value;
+      bob_voilk_volume += op.amount_to_sell.amount.value;
       bob_reward_last_update = db->head_block_time();
-      dave_bears_volume -= op.amount_to_sell.amount.value;
+      dave_voilk_volume -= op.amount_to_sell.amount.value;
       dave_reward_last_update = db->head_block_time();
 
       ops = get_last_operations( 1 );
@@ -2346,37 +2346,37 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 12 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == 3 * ( alice_bsd.amount.value / 40 ) );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == 3 * ( alice_vsd.amount.value / 40 ) );
       BOOST_REQUIRE( fill_order_op.current_owner == "dave" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 13 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == 3 * ( alice_bsd.amount.value / 40 ) );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == 3 * ( alice_vsd.amount.value / 40 ) );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == alice_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == alice_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == alice_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == alice_voilk_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == bob_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == bob_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == bob_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == bob_voilk_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "dave" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "dave" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == dave_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == dave_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == dave_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == dave_voilk_volume );
       BOOST_CHECK( reward->last_update == dave_reward_last_update );*/
 
       auto alice_balance = db->get_account( "alice" ).balance;
@@ -2387,9 +2387,9 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       BOOST_TEST_MESSAGE( "Generating Blocks to trigger liquidity rewards" );
 
       db->liquidity_rewards_enabled = true;
-      generate_blocks( BEARS_LIQUIDITY_REWARD_BLOCKS - ( db->head_block_num() % BEARS_LIQUIDITY_REWARD_BLOCKS ) - 1 );
+      generate_blocks( VOILK_LIQUIDITY_REWARD_BLOCKS - ( db->head_block_num() % VOILK_LIQUIDITY_REWARD_BLOCKS ) - 1 );
 
-      BOOST_REQUIRE( db->head_block_num() % BEARS_LIQUIDITY_REWARD_BLOCKS == BEARS_LIQUIDITY_REWARD_BLOCKS - 1 );
+      BOOST_REQUIRE( db->head_block_num() % VOILK_LIQUIDITY_REWARD_BLOCKS == VOILK_LIQUIDITY_REWARD_BLOCKS - 1 );
       BOOST_REQUIRE( db->get_account( "alice" ).balance.amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_account( "bob" ).balance.amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_account( "sam" ).balance.amount.value == sam_balance.amount.value );
@@ -2397,7 +2397,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       generate_block();
 
-      //alice_balance += BEARS_MIN_LIQUIDITY_REWARD;
+      //alice_balance += VOILK_MIN_LIQUIDITY_REWARD;
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance.amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_account( "bob" ).balance.amount.value == bob_balance.amount.value );
@@ -2406,12 +2406,12 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       ops = get_last_operations( 1 );
 
-      BEARS_REQUIRE_THROW( ops[0].get< liquidity_reward_operation>(), fc::exception );
-      //BOOST_REQUIRE( ops[0].get< liquidity_reward_operation>().payout.amount.value == BEARS_MIN_LIQUIDITY_REWARD.amount.value );
+      VOILK_REQUIRE_THROW( ops[0].get< liquidity_reward_operation>(), fc::exception );
+      //BOOST_REQUIRE( ops[0].get< liquidity_reward_operation>().payout.amount.value == VOILK_MIN_LIQUIDITY_REWARD.amount.value );
 
-      generate_blocks( BEARS_LIQUIDITY_REWARD_BLOCKS );
+      generate_blocks( VOILK_LIQUIDITY_REWARD_BLOCKS );
 
-      //bob_balance += BEARS_MIN_LIQUIDITY_REWARD;
+      //bob_balance += VOILK_MIN_LIQUIDITY_REWARD;
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance.amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_account( "bob" ).balance.amount.value == bob_balance.amount.value );
@@ -2420,17 +2420,17 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       ops = get_last_operations( 1 );
 
-      BEARS_REQUIRE_THROW( ops[0].get< liquidity_reward_operation>(), fc::exception );
-      //BOOST_REQUIRE( ops[0].get< liquidity_reward_operation>().payout.amount.value == BEARS_MIN_LIQUIDITY_REWARD.amount.value );
+      VOILK_REQUIRE_THROW( ops[0].get< liquidity_reward_operation>(), fc::exception );
+      //BOOST_REQUIRE( ops[0].get< liquidity_reward_operation>().payout.amount.value == VOILK_MIN_LIQUIDITY_REWARD.amount.value );
 
-      alice_bears_volume = 0;
-      alice_bsd_volume = 0;
-      bob_bears_volume = 0;
-      bob_bsd_volume = 0;
+      alice_voilk_volume = 0;
+      alice_vsd_volume = 0;
+      bob_voilk_volume = 0;
+      bob_vsd_volume = 0;
 
       BOOST_TEST_MESSAGE( "Testing liquidity timeout" );
 
-      generate_blocks( sam_reward_last_update + BEARS_LIQUIDITY_TIMEOUT_SEC - fc::seconds( BEARS_BLOCK_INTERVAL / 2 ) - BEARS_MIN_LIQUIDITY_REWARD_PERIOD_SEC , true );
+      generate_blocks( sam_reward_last_update + VOILK_LIQUIDITY_TIMEOUT_SEC - fc::seconds( VOILK_BLOCK_INTERVAL / 2 ) - VOILK_MIN_LIQUIDITY_REWARD_PERIOD_SEC , true );
 
       op.owner = "sam";
       op.orderid = 14;
@@ -2439,41 +2439,41 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
-      generate_blocks( db->head_block_time() + ( BEARS_BLOCK_INTERVAL / 2 ) + BEARS_LIQUIDITY_TIMEOUT_SEC, true );
+      generate_blocks( db->head_block_time() + ( VOILK_BLOCK_INTERVAL / 2 ) + VOILK_LIQUIDITY_TIMEOUT_SEC, true );
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       /*BOOST_REQUIRE( reward == liquidity_idx.end() );
       BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       generate_block();
 
       op.owner = "alice";
       op.orderid = 15;
-      op.amount_to_sell.symbol = BSD_SYMBOL;
-      op.min_to_receive.symbol = BEARS_SYMBOL;
+      op.amount_to_sell.symbol = VSD_SYMBOL;
+      op.min_to_receive.symbol = VOILK_SYMBOL;
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      sam_bsd_volume = ASSET( "1.000 TBD" ).amount.value;
-      sam_bears_volume = 0;
+      sam_vsd_volume = ASSET( "1.000 TBD" ).amount.value;
+      sam_voilk_volume = 0;
       sam_reward_last_update = db->head_block_time();
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       /*BOOST_REQUIRE( reward == liquidity_idx.end() );
       BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->bsd_volume == sam_bsd_volume );
-      BOOST_REQUIRE( reward->bears_volume == sam_bears_volume );
+      BOOST_REQUIRE( reward->vsd_volume == sam_vsd_volume );
+      BOOST_REQUIRE( reward->voilk_volume == sam_voilk_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
    }
    FC_LOG_AND_RETHROW();
@@ -2498,16 +2498,16 @@ BOOST_AUTO_TEST_CASE( post_rate_limit )
       signed_transaction tx;
 
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_comment( "alice", string( "test1" ) ).reward_weight == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_comment( "alice", string( "test1" ) ).reward_weight == VOILK_100_PERCENT );
 
       tx.operations.clear();
       tx.signatures.clear();
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( BEARS_BLOCK_INTERVAL ), true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( VOILK_BLOCK_INTERVAL ), true );
 
       op.permlink = "test2";
 
@@ -2515,9 +2515,9 @@ BOOST_AUTO_TEST_CASE( post_rate_limit )
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_comment( "alice", string( "test2" ) ).reward_weight == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_comment( "alice", string( "test2" ) ).reward_weight == VOILK_100_PERCENT );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( BEARS_BLOCK_INTERVAL ), true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( VOILK_BLOCK_INTERVAL ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -2528,9 +2528,9 @@ BOOST_AUTO_TEST_CASE( post_rate_limit )
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_comment( "alice", string( "test3" ) ).reward_weight == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_comment( "alice", string( "test3" ) ).reward_weight == VOILK_100_PERCENT );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( BEARS_BLOCK_INTERVAL ), true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( VOILK_BLOCK_INTERVAL ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -2541,9 +2541,9 @@ BOOST_AUTO_TEST_CASE( post_rate_limit )
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_comment( "alice", string( "test4" ) ).reward_weight == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_comment( "alice", string( "test4" ) ).reward_weight == VOILK_100_PERCENT );
 
-      generate_blocks( db->head_block_time() + BEARS_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( BEARS_BLOCK_INTERVAL ), true );
+      generate_blocks( db->head_block_time() + VOILK_MIN_ROOT_COMMENT_INTERVAL + fc::seconds( VOILK_BLOCK_INTERVAL ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -2554,7 +2554,7 @@ BOOST_AUTO_TEST_CASE( post_rate_limit )
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_comment( "alice", string( "test5" ) ).reward_weight == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_comment( "alice", string( "test5" ) ).reward_weight == VOILK_100_PERCENT );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -2587,7 +2587,7 @@ BOOST_AUTO_TEST_CASE( comment_freeze )
       comment.body = "test";
 
       tx.operations.push_back( comment );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -2601,7 +2601,7 @@ BOOST_AUTO_TEST_CASE( comment_freeze )
       db->push_transaction( tx, 0 );
 
       vote_operation vote;
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
       vote.voter = "bob";
       vote.author = "alice";
       vote.permlink = "test";
@@ -2628,7 +2628,7 @@ BOOST_AUTO_TEST_CASE( comment_freeze )
       tx.signatures.clear();
 
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
@@ -2637,13 +2637,13 @@ BOOST_AUTO_TEST_CASE( comment_freeze )
       BOOST_REQUIRE( db->get_comment( "alice", string( "test" ) ).abs_rshares.value == 0 );
 
       vote.voter = "bob";
-      vote.weight = BEARS_100_PERCENT * -1;
+      vote.weight = VOILK_100_PERCENT * -1;
 
       tx.operations.clear();
       tx.signatures.clear();
 
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
@@ -2658,7 +2658,7 @@ BOOST_AUTO_TEST_CASE( comment_freeze )
       tx.signatures.clear();
 
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, dave_private_key );
 
       db->push_transaction( tx, 0 );
@@ -2680,7 +2680,7 @@ BOOST_AUTO_TEST_CASE( comment_freeze )
 
 // This test is too intensive without optimizations. Disable it when we build in debug
 #ifndef DEBUG
-BOOST_AUTO_TEST_CASE( bsd_stability )
+BOOST_AUTO_TEST_CASE( vsd_stability )
 {
    try
    {
@@ -2699,7 +2699,7 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
       auto exchange_rate = price( ASSET( "1.000 TBD" ), ASSET( "10.000 TESTS" ) );
       set_price_feed( exchange_rate );
 
-      BOOST_REQUIRE( db->get_dynamic_global_properties().bsd_print_rate == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().vsd_print_rate == VOILK_100_PERCENT );
 
       comment_operation comment;
       comment.author = "alice";
@@ -2710,7 +2710,7 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
 
       signed_transaction tx;
       tx.operations.push_back( comment );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -2718,7 +2718,7 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
       vote.voter = "bob";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -2729,18 +2729,18 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
 
       BOOST_TEST_MESSAGE( "Generating blocks up to comment payout" );
 
-      db_plugin->debug_generate_blocks_until( debug_key, fc::time_point_sec( db->get_comment( comment.author, comment.permlink ).cashout_time.sec_since_epoch() - 2 * BEARS_BLOCK_INTERVAL ), true, database::skip_witness_signature );
+      db_plugin->debug_generate_blocks_until( debug_key, fc::time_point_sec( db->get_comment( comment.author, comment.permlink ).cashout_time.sec_since_epoch() - 2 * VOILK_BLOCK_INTERVAL ), true, database::skip_witness_signature );
 
       auto& gpo = db->get_dynamic_global_properties();
 
       BOOST_TEST_MESSAGE( "Changing sam and gpo to set up market cap conditions" );
 
-      asset bsd_balance = asset( ( gpo.virtual_supply.amount * ( gpo.bsd_stop_percent + 112 ) ) / BEARS_100_PERCENT, BEARS_SYMBOL ) * exchange_rate;
+      asset vsd_balance = asset( ( gpo.virtual_supply.amount * ( gpo.vsd_stop_percent + 112 ) ) / VOILK_100_PERCENT, VOILK_SYMBOL ) * exchange_rate;
       db_plugin->debug_update( [=]( database& db )
       {
          db.modify( db.get_account( "sam" ), [&]( account_object& a )
          {
-            a.bsd_balance = bsd_balance;
+            a.vsd_balance = vsd_balance;
          });
       }, database::skip_witness_signature );
 
@@ -2748,8 +2748,8 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
       {
          db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
          {
-            gpo.current_bsd_supply = bsd_balance;
-            gpo.virtual_supply = gpo.virtual_supply + bsd_balance * exchange_rate;
+            gpo.current_vsd_supply = vsd_balance;
+            gpo.virtual_supply = gpo.virtual_supply + vsd_balance * exchange_rate;
          });
       }, database::skip_witness_signature );
 
@@ -2757,31 +2757,31 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
 
       db_plugin->debug_generate_blocks( debug_key, 1, database::skip_witness_signature );
 
-      auto comment_reward = ( gpo.total_reward_fund_bears.amount + 2000 ) - ( ( gpo.total_reward_fund_bears.amount + 2000 ) * 25 * BEARS_1_PERCENT ) / BEARS_100_PERCENT ;
+      auto comment_reward = ( gpo.total_reward_fund_voilk.amount + 2000 ) - ( ( gpo.total_reward_fund_voilk.amount + 2000 ) * 25 * VOILK_1_PERCENT ) / VOILK_100_PERCENT ;
       comment_reward /= 2;
-      auto bsd_reward = ( comment_reward * gpo.bsd_print_rate ) / BEARS_100_PERCENT;
-      auto alice_bsd = db->get_account( "alice" ).bsd_balance + db->get_account( "alice" ).reward_bsd_balance + asset( bsd_reward, BEARS_SYMBOL ) * exchange_rate;
-      auto alice_bears = db->get_account( "alice" ).balance + db->get_account( "alice" ).reward_bears_balance ;
+      auto vsd_reward = ( comment_reward * gpo.vsd_print_rate ) / VOILK_100_PERCENT;
+      auto alice_vsd = db->get_account( "alice" ).vsd_balance + db->get_account( "alice" ).reward_vsd_balance + asset( vsd_reward, VOILK_SYMBOL ) * exchange_rate;
+      auto alice_voilk = db->get_account( "alice" ).balance + db->get_account( "alice" ).reward_voilk_balance ;
 
-      BOOST_TEST_MESSAGE( "Checking printing BSD has slowed" );
-      BOOST_REQUIRE( db->get_dynamic_global_properties().bsd_print_rate < BEARS_100_PERCENT );
+      BOOST_TEST_MESSAGE( "Checking printing VSD has slowed" );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().vsd_print_rate < VOILK_100_PERCENT );
 
-      BOOST_TEST_MESSAGE( "Pay out comment and check rewards are paid as BEARS" );
+      BOOST_TEST_MESSAGE( "Pay out comment and check rewards are paid as VOILK" );
       db_plugin->debug_generate_blocks( debug_key, 1, database::skip_witness_signature );
 
       validate_database();
 
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance + db->get_account( "alice" ).reward_bsd_balance == alice_bsd );
-      BOOST_REQUIRE( db->get_account( "alice" ).balance + db->get_account( "alice" ).reward_bears_balance > alice_bears );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance + db->get_account( "alice" ).reward_vsd_balance == alice_vsd );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance + db->get_account( "alice" ).reward_voilk_balance > alice_voilk );
 
-      BOOST_TEST_MESSAGE( "Letting percent market cap fall to bsd_start_percent to verify printing of BSD turns back on" );
+      BOOST_TEST_MESSAGE( "Letting percent market cap fall to vsd_start_percent to verify printing of VSD turns back on" );
 
-      // Get close to bsd_start_percent for printing BSD to start again, but not all the way
+      // Get close to vsd_start_percent for printing VSD to start again, but not all the way
       db_plugin->debug_update( [=]( database& db )
       {
          db.modify( db.get_account( "sam" ), [&]( account_object& a )
          {
-            a.bsd_balance = asset( ( ( gpo.bsd_start_percent - 6 ) * bsd_balance.amount ) / gpo.bsd_stop_percent, BSD_SYMBOL );
+            a.vsd_balance = asset( ( ( gpo.vsd_start_percent - 6 ) * vsd_balance.amount ) / gpo.vsd_stop_percent, VSD_SYMBOL );
          });
       }, database::skip_witness_signature );
 
@@ -2789,42 +2789,42 @@ BOOST_AUTO_TEST_CASE( bsd_stability )
       {
          db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
          {
-            gpo.current_bsd_supply = alice_bsd + asset( ( ( gpo.bsd_start_percent - 6 ) * bsd_balance.amount ) / gpo.bsd_stop_percent, BSD_SYMBOL );
+            gpo.current_vsd_supply = alice_vsd + asset( ( ( gpo.vsd_start_percent - 6 ) * vsd_balance.amount ) / gpo.vsd_stop_percent, VSD_SYMBOL );
          });
       }, database::skip_witness_signature );
 
       db_plugin->debug_generate_blocks( debug_key, 1, database::skip_witness_signature );
       validate_database();
 
-      BOOST_REQUIRE( db->get_dynamic_global_properties().bsd_print_rate < BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().vsd_print_rate < VOILK_100_PERCENT );
 
-      auto last_print_rate = db->get_dynamic_global_properties().bsd_print_rate;
+      auto last_print_rate = db->get_dynamic_global_properties().vsd_print_rate;
 
-      // Keep producing blocks until printing BSD is back
-      while( ( db->get_dynamic_global_properties().current_bsd_supply * exchange_rate ).amount >= ( db->get_dynamic_global_properties().virtual_supply.amount * db->get_dynamic_global_properties().bsd_start_percent ) / BEARS_100_PERCENT )
+      // Keep producing blocks until printing VSD is back
+      while( ( db->get_dynamic_global_properties().current_vsd_supply * exchange_rate ).amount >= ( db->get_dynamic_global_properties().virtual_supply.amount * db->get_dynamic_global_properties().vsd_start_percent ) / VOILK_100_PERCENT )
       {
          auto& gpo = db->get_dynamic_global_properties();
-         BOOST_REQUIRE( gpo.bsd_print_rate >= last_print_rate );
-         last_print_rate = gpo.bsd_print_rate;
+         BOOST_REQUIRE( gpo.vsd_print_rate >= last_print_rate );
+         last_print_rate = gpo.vsd_print_rate;
          db_plugin->debug_generate_blocks( debug_key, 1, database::skip_witness_signature );
          validate_database();
       }
 
       validate_database();
 
-      BOOST_REQUIRE( db->get_dynamic_global_properties().bsd_print_rate == BEARS_100_PERCENT );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().vsd_print_rate == VOILK_100_PERCENT );
    }
    FC_LOG_AND_RETHROW()
 }
 #endif
 
-BOOST_AUTO_TEST_CASE( bsd_price_feed_limit )
+BOOST_AUTO_TEST_CASE( vsd_price_feed_limit )
 {
    try
    {
       ACTORS( (alice) );
       generate_block();
-      coin( BEARS_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
+      coin( VOILK_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
 
       price exchange_rate( ASSET( "1.000 TBD" ), ASSET( "1.000 TESTS" ) );
       set_price_feed( exchange_rate );
@@ -2840,22 +2840,22 @@ BOOST_AUTO_TEST_CASE( bsd_price_feed_limit )
       vote.voter = "alice";
       vote.author = "alice";
       vote.permlink = "test";
-      vote.weight = BEARS_100_PERCENT;
+      vote.weight = VOILK_100_PERCENT;
 
       signed_transaction tx;
       tx.operations.push_back( comment );
       tx.operations.push_back( vote );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time, true );
 
-      BOOST_TEST_MESSAGE( "Setting BSD percent to greater than 10% market cap." );
+      BOOST_TEST_MESSAGE( "Setting VSD percent to greater than 10% market cap." );
 
       db->skip_price_feed_limit_check = false;
       const auto& gpo = db->get_dynamic_global_properties();
-      auto new_exchange_rate = price( gpo.current_bsd_supply, asset( ( BEARS_100_PERCENT ) * gpo.current_supply.amount, BEARS_SYMBOL ) );
+      auto new_exchange_rate = price( gpo.current_vsd_supply, asset( ( VOILK_100_PERCENT ) * gpo.current_supply.amount, VOILK_SYMBOL ) );
       set_price_feed( new_exchange_rate );
       set_price_feed( new_exchange_rate );
 
@@ -2880,27 +2880,27 @@ BOOST_AUTO_TEST_CASE( clear_null_account )
 
       transfer_operation transfer1;
       transfer1.from = "alice";
-      transfer1.to = BEARS_NULL_ACCOUNT;
+      transfer1.to = VOILK_NULL_ACCOUNT;
       transfer1.amount = ASSET( "1.000 TESTS" );
 
       transfer_operation transfer2;
       transfer2.from = "alice";
-      transfer2.to = BEARS_NULL_ACCOUNT;
+      transfer2.to = VOILK_NULL_ACCOUNT;
       transfer2.amount = ASSET( "2.000 TBD" );
 
       transfer_to_coining_operation coin;
       coin.from = "alice";
-      coin.to = BEARS_NULL_ACCOUNT;
+      coin.to = VOILK_NULL_ACCOUNT;
       coin.amount = ASSET( "3.000 TESTS" );
 
       transfer_to_savings_operation save1;
       save1.from = "alice";
-      save1.to = BEARS_NULL_ACCOUNT;
+      save1.to = VOILK_NULL_ACCOUNT;
       save1.amount = ASSET( "4.000 TESTS" );
 
       transfer_to_savings_operation save2;
       save2.from = "alice";
-      save2.to = BEARS_NULL_ACCOUNT;
+      save2.to = VOILK_NULL_ACCOUNT;
       save2.amount = ASSET( "5.000 TBD" );
 
       BOOST_TEST_MESSAGE( "--- Transferring to NULL Account" );
@@ -2911,60 +2911,60 @@ BOOST_AUTO_TEST_CASE( clear_null_account )
       tx.operations.push_back( coin );
       tx.operations.push_back( save1);
       tx.operations.push_back( save2 );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
       validate_database();
 
       db_plugin->debug_update( [=]( database& db )
       {
-         db.modify( db.get_account( BEARS_NULL_ACCOUNT ), [&]( account_object& a )
+         db.modify( db.get_account( VOILK_NULL_ACCOUNT ), [&]( account_object& a )
          {
-            a.reward_bears_balance = ASSET( "1.000 TESTS" );
-            a.reward_bsd_balance = ASSET( "1.000 TBD" );
+            a.reward_voilk_balance = ASSET( "1.000 TESTS" );
+            a.reward_vsd_balance = ASSET( "1.000 TBD" );
             a.reward_coining_balance = ASSET( "1.000000 COINS" );
-            a.reward_coining_bears = ASSET( "1.000 TESTS" );
+            a.reward_coining_voilk = ASSET( "1.000 TESTS" );
          });
 
          db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
          {
             gpo.current_supply += ASSET( "2.000 TESTS" );
             gpo.virtual_supply += ASSET( "3.000 TESTS" );
-            gpo.current_bsd_supply += ASSET( "1.000 TBD" );
+            gpo.current_vsd_supply += ASSET( "1.000 TBD" );
             gpo.pending_rewarded_coining_shares += ASSET( "1.000000 COINS" );
-            gpo.pending_rewarded_coining_bears += ASSET( "1.000 TESTS" );
+            gpo.pending_rewarded_coining_voilk += ASSET( "1.000 TESTS" );
          });
       });
 
       validate_database();
 
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).balance == ASSET( "1.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).bsd_balance == ASSET( "2.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).coining_shares > ASSET( "0.000000 COINS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).savings_balance == ASSET( "4.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).savings_bsd_balance == ASSET( "5.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_bsd_balance == ASSET( "1.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_bears_balance == ASSET( "1.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_coining_balance == ASSET( "1.000000 COINS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_coining_bears == ASSET( "1.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).balance == ASSET( "1.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).vsd_balance == ASSET( "2.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).coining_shares > ASSET( "0.000000 COINS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).savings_balance == ASSET( "4.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).savings_vsd_balance == ASSET( "5.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_vsd_balance == ASSET( "1.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_voilk_balance == ASSET( "1.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_coining_balance == ASSET( "1.000000 COINS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_coining_voilk == ASSET( "1.000 TESTS" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "2.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance == ASSET( "3.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance == ASSET( "3.000 TBD" ) );
 
       BOOST_TEST_MESSAGE( "--- Generating block to clear balances" );
       generate_block();
       validate_database();
 
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).bsd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).coining_shares == ASSET( "0.000000 COINS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).savings_balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).savings_bsd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_bsd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_bears_balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_coining_balance == ASSET( "0.000000 COINS" ) );
-      BOOST_REQUIRE( db->get_account( BEARS_NULL_ACCOUNT ).reward_coining_bears == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).vsd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).coining_shares == ASSET( "0.000000 COINS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).savings_balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).savings_vsd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_vsd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_voilk_balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_coining_balance == ASSET( "0.000000 COINS" ) );
+      BOOST_REQUIRE( db->get_account( VOILK_NULL_ACCOUNT ).reward_coining_voilk == ASSET( "0.000 TESTS" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "2.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance == ASSET( "3.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance == ASSET( "3.000 TBD" ) );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -3000,7 +3000,7 @@ BOOST_AUTO_TEST_CASE( generate_account_subsidies )
       };
 
       const witness_schedule_object& wso = db->get_witness_schedule_object();
-      BOOST_CHECK_EQUAL( wso.account_subsidy_rd.resource_unit, BEARS_ACCOUNT_SUBSIDY_PRECISION );
+      BOOST_CHECK_EQUAL( wso.account_subsidy_rd.resource_unit, VOILK_ACCOUNT_SUBSIDY_PRECISION );
       BOOST_CHECK_EQUAL( wso.account_subsidy_rd.budget_per_time_unit, 5123 );
       BOOST_CHECK(  is_pool_in_equilibrium( int64_t( wso.account_subsidy_rd.pool_eq )  , wso.account_subsidy_rd.budget_per_time_unit, wso.account_subsidy_rd.decay_params ) );
       BOOST_CHECK( !is_pool_in_equilibrium( int64_t( wso.account_subsidy_rd.pool_eq )-1, wso.account_subsidy_rd.budget_per_time_unit, wso.account_subsidy_rd.decay_params ) );
@@ -3011,10 +3011,10 @@ BOOST_AUTO_TEST_CASE( generate_account_subsidies )
       {
          const dynamic_global_property_object& gpo = db->get_dynamic_global_properties();
          BOOST_CHECK_EQUAL( pool, gpo.available_account_subsidies );
-         if( gpo.available_account_subsidies >= 100 * BEARS_ACCOUNT_SUBSIDY_PRECISION )
+         if( gpo.available_account_subsidies >= 100 * VOILK_ACCOUNT_SUBSIDY_PRECISION )
             break;
          generate_block();
-         pool = pool + 5123 - ((249617279 * pool) >> BEARS_RD_DECAY_DENOM_SHIFT);
+         pool = pool + 5123 - ((249617279 * pool) >> VOILK_RD_DECAY_DENOM_SHIFT);
       }
 
       validate_database();
@@ -3048,7 +3048,7 @@ BOOST_AUTO_TEST_CASE( account_subsidy_witness_limits )
       while( true )
       {
          const dynamic_global_property_object& gpo = db->get_dynamic_global_properties();
-         if( gpo.available_account_subsidies >= 100 * BEARS_ACCOUNT_SUBSIDY_PRECISION )
+         if( gpo.available_account_subsidies >= 100 * VOILK_ACCOUNT_SUBSIDY_PRECISION )
             break;
          generate_block();
       }
@@ -3062,7 +3062,7 @@ BOOST_AUTO_TEST_CASE( account_subsidy_witness_limits )
       op.creator = "alice";
       op.fee = ASSET( "0.000 TESTS" );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
 
       BOOST_CHECK( db->get_account( "alice" ).pending_claimed_accounts == 0 );
@@ -3098,7 +3098,7 @@ BOOST_AUTO_TEST_CASE( account_subsidy_witness_limits )
       }
 
       fc::time_point_sec expiration = db->head_block_time() + fc::seconds(60);
-      size_t n = size_t( db->get< witness_object, by_name >( db->get_scheduled_witness( 1 ) ).available_witness_account_subsidies / BEARS_ACCOUNT_SUBSIDY_PRECISION );
+      size_t n = size_t( db->get< witness_object, by_name >( db->get_scheduled_witness( 1 ) ).available_witness_account_subsidies / VOILK_ACCOUNT_SUBSIDY_PRECISION );
 
       ilog( "Creating ${np1} transactions", ("np1", n+1) );
       // Create n+1 transactions

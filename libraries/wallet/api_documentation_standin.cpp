@@ -23,10 +23,10 @@
  */
 #include <iomanip>
 #include <boost/algorithm/string/join.hpp>
-#include <bears/wallet/wallet.hpp>
-#include <bears/wallet/api_documentation.hpp>
+#include <voilk/wallet/wallet.hpp>
+#include <voilk/wallet/api_documentation.hpp>
 
-namespace bears { namespace wallet {
+namespace voilk { namespace wallet {
    namespace detail {
       namespace
       {
@@ -88,4 +88,4 @@ namespace bears { namespace wallet {
                 std::inserter(method_descriptions, method_descriptions.end()));
    }
 
-} } // end namespace bears::wallet
+} } // end namespace voilk::wallet

@@ -1,11 +1,11 @@
-file(GLOB HEADERS "include/bears/delayed_node/*.hpp")
+file(GLOB HEADERS "include/voilk/delayed_node/*.hpp")
 
-add_library( bears_delayed_node
+add_library( voilk_delayed_node
              delayed_node_plugin.cpp
            )
 
-target_link_libraries( bears_delayed_node bears_chain bears_protocol bears_app )
-target_include_directories( bears_delayed_node
+target_link_libraries( voilk_delayed_node voilk_chain voilk_protocol voilk_app )
+target_include_directories( voilk_delayed_node
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 if(MSVC)
@@ -13,7 +13,7 @@ if(MSVC)
 endif(MSVC)
 
 install( TARGETS
-   bears_delayed_node
+   voilk_delayed_node
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib

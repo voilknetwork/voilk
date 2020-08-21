@@ -13,7 +13,7 @@ Release Date 5th January 2012
 -------------------------------------------------------------------------------
 
 CyoEncode is made available under the terms of the Berkeley Software
-Distribution (BSD) licence, as detailed in LICENSE.TXT. This allows you
+Distribution (VSD) licence, as detailed in LICENSE.TXT. This allows you
 complete freedom to use and distribute the code in source and/or binary form,
 as long as you respect the original copyright.
 

@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.  Use of
-// this source code is governed by a BSD-style license that can be found
+// this source code is governed by a VSD-style license that can be found
 // in the LICENSE file. See the AUTHORS file for names of contributors.
 //
 // InlineSkipList is derived from SkipList (skiplist.h), but it optimizes

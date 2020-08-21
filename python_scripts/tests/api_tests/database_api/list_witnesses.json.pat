@@ -7,17 +7,17 @@
             "id": 0,
             "last_aslot": 0,
             "last_confirmed_block_num": 0,
-            "last_bsd_exchange_update": "1970-01-01T00:00:00",
+            "last_vsd_exchange_update": "1970-01-01T00:00:00",
             "last_work": "0000000000000000000000000000000000000000000000000000000000000000",
-            "owner": "bearshare",
+            "owner": "voilkhare",
             "pow_worker": 0,
             "props": {
                 "account_creation_fee": "0.000 TESTS",
                 "maximum_block_size": 131072,
-                "bsd_interest_rate": 1000
+                "vsd_interest_rate": 1000
             },
             "running_version": "0.0.0",
-            "bsd_exchange_rate": {
+            "vsd_exchange_rate": {
                 "base": "0.000 TESTS",
                 "quote": "0.000 TESTS"
             },

@@ -1,8 +1,8 @@
-#include <bears/plugins/rc_api/rc_api_plugin.hpp>
-#include <bears/plugins/rc_api/rc_api.hpp>
+#include <voilk/plugins/rc_api/rc_api_plugin.hpp>
+#include <voilk/plugins/rc_api/rc_api.hpp>
 
 
-namespace bears { namespace plugins { namespace rc {
+namespace voilk { namespace plugins { namespace rc {
 
 rc_api_plugin::rc_api_plugin() {}
 rc_api_plugin::~rc_api_plugin() {}
@@ -17,4 +17,4 @@ void rc_api_plugin::plugin_initialize( const variables_map& options )
 void rc_api_plugin::plugin_startup() {}
 void rc_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::rc
+} } } // voilk::plugins::rc

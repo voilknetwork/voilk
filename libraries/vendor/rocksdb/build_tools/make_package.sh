@@ -119,7 +119,7 @@ function main() {
     --prefix /usr \
     --url http://rocksdb.org/ \
     -m rocksdb@fb.com \
-    --license BSD \
+    --license VSD \
     --vendor Facebook \
     --description "RocksDB is an embeddable persistent key-value store for fast storage." \
     include $LIB_DIR

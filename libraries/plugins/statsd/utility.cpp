@@ -1,6 +1,6 @@
-#include <bears/plugins/statsd/utility.hpp>
+#include <voilk/plugins/statsd/utility.hpp>
 
-namespace bears { namespace plugins{ namespace statsd { namespace util {
+namespace voilk { namespace plugins{ namespace statsd { namespace util {
 
 bool statsd_enabled()
 {
@@ -14,4 +14,4 @@ const statsd_plugin& get_statsd()
    return statsd;
 }
 
-} } } } // bears::plugins::statsd::util
+} } } } // voilk::plugins::statsd::util

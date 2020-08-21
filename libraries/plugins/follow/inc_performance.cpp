@@ -1,9 +1,9 @@
-#include <bears/plugins/follow/inc_performance.hpp>
+#include <voilk/plugins/follow/inc_performance.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/plugins/follow/follow_objects.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/plugins/follow/follow_objects.hpp>
 
-namespace bears { namespace plugins{ namespace follow {
+namespace voilk { namespace plugins{ namespace follow {
 
 std::unique_ptr< dumper > dumper::self;
 
@@ -214,4 +214,4 @@ template uint32_t performance::delete_old_objects< performance_data::t_creation_
 template uint32_t performance::delete_old_objects< performance_data::t_creation_type::part_feed >( t_feed& old_idx, const account_name_type& start_account, uint32_t max_size, performance_data& pd ) const;
 template uint32_t performance::delete_old_objects< performance_data::t_creation_type::full_blog >( t_blog& old_idx, const account_name_type& start_account, uint32_t max_size, performance_data& pd ) const;
 
-} } } //bears::follow
+} } } //voilk::follow

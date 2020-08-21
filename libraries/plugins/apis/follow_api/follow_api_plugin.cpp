@@ -1,8 +1,8 @@
-#include <bears/plugins/follow_api/follow_api_plugin.hpp>
-#include <bears/plugins/follow_api/follow_api.hpp>
+#include <voilk/plugins/follow_api/follow_api_plugin.hpp>
+#include <voilk/plugins/follow_api/follow_api.hpp>
 
 
-namespace bears { namespace plugins { namespace follow {
+namespace voilk { namespace plugins { namespace follow {
 
 follow_api_plugin::follow_api_plugin() {}
 follow_api_plugin::~follow_api_plugin() {}
@@ -17,4 +17,4 @@ void follow_api_plugin::plugin_initialize( const variables_map& options )
 void follow_api_plugin::plugin_startup() {}
 void follow_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::follow
+} } } // voilk::plugins::follow

@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/bears/plugins/database_api/*.hpp")
+file(GLOB HEADERS "include/voilk/plugins/database_api/*.hpp")
 
 add_library( database_api_plugin
              database_api.cpp

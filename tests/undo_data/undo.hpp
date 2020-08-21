@@ -1,9 +1,9 @@
 #pragma once
 
-#include <bears/chain/database.hpp>
+#include <voilk/chain/database.hpp>
 #include <fstream>
 
-namespace bears { namespace chain {
+namespace voilk { namespace chain {
 
    namespace u_types
    {

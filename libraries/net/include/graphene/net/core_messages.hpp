@@ -24,7 +24,7 @@
 #pragma once
 
 #include <graphene/net/config.hpp>
-#include <bears/protocol/block.hpp>
+#include <voilk/protocol/block.hpp>
 
 #include <fc/crypto/ripemd160.hpp>
 #include <fc/crypto/elliptic.hpp>
@@ -40,10 +40,10 @@
 #include <vector>
 
 namespace graphene { namespace net {
-  using bears::protocol::signed_transaction;
-  using bears::protocol::block_id_type;
-  using bears::protocol::transaction_id_type;
-  using bears::protocol::signed_block;
+  using voilk::protocol::signed_transaction;
+  using voilk::protocol::block_id_type;
+  using voilk::protocol::transaction_id_type;
+  using voilk::protocol::signed_block;
 
   typedef fc::ecc::public_key_data node_id_t;
   typedef fc::ripemd160 item_hash_t;

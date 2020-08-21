@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Use of this source code is governed by a VSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 //
 // See port_example.h for documentation for the following types/functions.
@@ -41,8 +41,8 @@
   #include <arpa/nameser_compat.h>
   #define PLATFORM_IS_LITTLE_ENDIAN (BYTE_ORDER == LITTLE_ENDIAN)
   #include <alloca.h>
-#elif defined(OS_FREEBSD) || defined(OS_OPENBSD) || defined(OS_NETBSD) || \
-    defined(OS_DRAGONFLYBSD) || defined(OS_ANDROID)
+#elif defined(OS_FREEVSD) || defined(OS_OPENVSD) || defined(OS_NETVSD) || \
+    defined(OS_DRAGONFLYVSD) || defined(OS_ANDROID)
   #include <sys/endian.h>
   #include <sys/types.h>
   #define PLATFORM_IS_LITTLE_ENDIAN (_BYTE_ORDER == _LITTLE_ENDIAN)
@@ -60,8 +60,8 @@
 #define PLATFORM_IS_LITTLE_ENDIAN (__BYTE_ORDER == __LITTLE_ENDIAN)
 #endif
 
-#if defined(OS_MACOSX) || defined(OS_SOLARIS) || defined(OS_FREEBSD) ||\
-    defined(OS_NETBSD) || defined(OS_OPENBSD) || defined(OS_DRAGONFLYBSD) ||\
+#if defined(OS_MACOSX) || defined(OS_SOLARIS) || defined(OS_FREEVSD) ||\
+    defined(OS_NETVSD) || defined(OS_OPENVSD) || defined(OS_DRAGONFLYVSD) ||\
     defined(OS_ANDROID) || defined(CYGWIN) || defined(OS_AIX)
 // Use fread/fwrite/fflush on platforms without _unlocked variants
 #define fread_unlocked fread
@@ -69,8 +69,8 @@
 #define fflush_unlocked fflush
 #endif
 
-#if defined(OS_MACOSX) || defined(OS_FREEBSD) ||\
-    defined(OS_OPENBSD) || defined(OS_DRAGONFLYBSD)
+#if defined(OS_MACOSX) || defined(OS_FREEVSD) ||\
+    defined(OS_OPENVSD) || defined(OS_DRAGONFLYVSD)
 // Use fsync() on platforms without fdatasync()
 #define fdatasync fsync
 #endif

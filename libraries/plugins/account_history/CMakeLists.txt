@@ -1,10 +1,10 @@
-file(GLOB HEADERS "include/bears/plugins/account_history/*.hpp")
+file(GLOB HEADERS "include/voilk/plugins/account_history/*.hpp")
 
 add_library( account_history_plugin
              account_history_plugin.cpp
            )
 
-target_link_libraries( account_history_plugin chain_plugin bears_chain bears_protocol bears_utilities )
+target_link_libraries( account_history_plugin chain_plugin voilk_chain voilk_protocol voilk_utilities )
 target_include_directories( account_history_plugin
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 

@@ -1,10 +1,10 @@
 #include <boost/test/unit_test.hpp>
 
-#include <bears/protocol/exceptions.hpp>
-#include <bears/protocol/hardfork.hpp>
+#include <voilk/protocol/exceptions.hpp>
+#include <voilk/protocol/hardfork.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/chain/bears_objects.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/voilk_objects.hpp>
 
 #include <fc/crypto/digest.hpp>
 
@@ -12,9 +12,9 @@
 
 #include <iostream>
 
-using namespace bears;
-using namespace bears::chain;
-using namespace bears::protocol;
+using namespace voilk;
+using namespace voilk::chain;
+using namespace voilk::protocol;
 
 #ifndef IS_TEST_NET
 
@@ -45,10 +45,10 @@ BOOST_AUTO_TEST_CASE( coins_stock_split )
 
       auto old_virtual_supply = db->get_dynamic_global_properties().virtual_supply;
       auto old_current_supply = db->get_dynamic_global_properties().current_supply;
-      auto old_coining_fund = db->get_dynamic_global_properties().total_coining_fund_bears;
+      auto old_coining_fund = db->get_dynamic_global_properties().total_coining_fund_voilk;
       auto old_coining_shares = db->get_dynamic_global_properties().total_coining_shares;
       auto old_rshares2 = db->get_dynamic_global_properties().total_reward_shares2;
-      auto old_reward_fund = db->get_dynamic_global_properties().total_reward_fund_bears;
+      auto old_reward_fund = db->get_dynamic_global_properties().total_reward_fund_voilk;
 
       flat_map< std::tuple< account_name_type, string >, share_type > comment_net_rshares;
       flat_map< std::tuple< account_name_type, string >, share_type > comment_abs_rshares;
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( coins_stock_split )
          {
             total_rshares2 += com_itr->net_rshares.value > 0 ? fc::uint128_t( com_itr->net_rshares.value ) * com_itr->net_rshares.value * magnitude * magnitude : 0;
             u256 rs( com_itr->net_rshares.value );
-            u256 rf( gpo.total_reward_fund_bears.amount.value );
+            u256 rf( gpo.total_reward_fund_voilk.amount.value );
             auto rs2 = rs * rs;
             u256 rshares2 = old_rshares2.hi;
             rshares2 = rshares2 << 64;
@@ -103,10 +103,10 @@ BOOST_AUTO_TEST_CASE( coins_stock_split )
 
       BOOST_REQUIRE( db->get_dynamic_global_properties().current_supply == old_current_supply );
       BOOST_REQUIRE( db->get_dynamic_global_properties().virtual_supply == old_virtual_supply );
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_coining_fund_bears == old_coining_fund );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_coining_fund_voilk == old_coining_fund );
       BOOST_REQUIRE( db->get_dynamic_global_properties().total_coining_shares.amount == old_coining_shares.amount * magnitude );
       BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_shares2 == total_rshares2 );
-      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_bears == old_reward_fund );
+      BOOST_REQUIRE( db->get_dynamic_global_properties().total_reward_fund_voilk == old_reward_fund );
 
       BOOST_TEST_MESSAGE( "Check accounts were updated" );
       acnt_itr = acnt_idx.begin();
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE( coins_stock_split )
          if( com_itr->net_rshares.value > 0 )
          {
             u256 rs( com_itr->net_rshares.value );
-            u256 rf( gpo.total_reward_fund_bears.amount.value );
+            u256 rf( gpo.total_reward_fund_voilk.amount.value );
             u256 rshares2 = total_rshares2.hi;
             rshares2 = ( rshares2 << 64 ) + total_rshares2.lo;
             auto rs2 = rs * rs;

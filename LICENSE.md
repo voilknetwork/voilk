@@ -1,7 +1,7 @@
-Copyright (c) 2017 Bearshares, Inc., and contributors.
+Copyright (c) 2017 Voilknetwork, Inc., and contributors.
 
 The following license applies to code contained within this repository that
-is created by Bearshares, Inc. Other copy right holders have licensed dependencies such
+is created by Voilknetwork, Inc. Other copy right holders have licensed dependencies such
 as Graphene, FC, and Boost under their own individual licenses.
 
 The MIT License

@@ -1,6 +1,6 @@
 # Please Read
 
-Please read these instructions before submitting issues to the Bears GitHub repository. The issue tracker is for bugs and specific implementation discussion **only**. It should not be used for other purposes, as described below.
+Please read these instructions before submitting issues to the Voilk GitHub repository. The issue tracker is for bugs and specific implementation discussion **only**. It should not be used for other purposes, as described below.
 
 ## Bug Reports
 
@@ -8,7 +8,7 @@ If there is an existing feature that is not working correctly, or a glitch in th
 
 ## Enhancement Suggestions
 
-Do **not** use the issue tracker to suggest enhancements or improvements to the platform. The best place for these discussions is on Bearshares.com. If there is a well vetted idea that has the support of the community that you feel should be considered by the development team, please email it to [sneak@bearshares.com](mailto:sneak@bearshares.com) for review.
+Do **not** use the issue tracker to suggest enhancements or improvements to the platform. The best place for these discussions is on Voilknetwork.com. If there is a well vetted idea that has the support of the community that you feel should be considered by the development team, please email it to [sneak@voilknetwork.com](mailto:sneak@voilknetwork.com) for review.
 
 ## Implementation Discussion
 
@@ -22,9 +22,9 @@ This is not the place to make suggestions for product improvement (please see th
 
 Please do a keyword search to see if there is already an existing issue before opening a new one.
 
-## Bearshares.com vs. Bears Blockchain
+## Voilknetwork.com vs. Voilk Blockchain
 
-This issue tracker is only intended to track issues for the Bears blockchain. If the issue is with the Bearshares.com website, please open an issue in the [Bearshares.com Repository](https://github.com/bearshares/bearshares.com/).
+This issue tracker is only intended to track issues for the Voilk blockchain. If the issue is with the Voilknetwork.com website, please open an issue in the [Voilknetwork.com Repository](https://github.com/voilknetwork/voilknetwork.com/).
 
 ## Pull Requests
 

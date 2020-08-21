@@ -1,18 +1,18 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/program_options.hpp>
 
-#include <bears/utilities/tempdir.hpp>
+#include <voilk/utilities/tempdir.hpp>
 
-#include <bears/chain/history_object.hpp>
-#include <bears/chain/bears_objects.hpp>
+#include <voilk/chain/history_object.hpp>
+#include <voilk/chain/voilk_objects.hpp>
 
-#include <bears/plugins/account_history/account_history_plugin.hpp>
-#include <bears/plugins/chain/chain_plugin.hpp>
-#include <bears/plugins/rc/rc_plugin.hpp>
-#include <bears/plugins/webserver/webserver_plugin.hpp>
-#include <bears/plugins/witness/witness_plugin.hpp>
+#include <voilk/plugins/account_history/account_history_plugin.hpp>
+#include <voilk/plugins/chain/chain_plugin.hpp>
+#include <voilk/plugins/rc/rc_plugin.hpp>
+#include <voilk/plugins/webserver/webserver_plugin.hpp>
+#include <voilk/plugins/witness/witness_plugin.hpp>
 
-#include <bears/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <voilk/plugins/condenser_api/condenser_api_plugin.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/smart_ref_impl.hpp>
@@ -23,16 +23,16 @@
 
 #include "database_fixture.hpp"
 
-//using namespace bears::chain::test;
+//using namespace voilk::chain::test;
 
-uint32_t BEARS_TESTING_GENESIS_TIMESTAMP = 1431700000;
+uint32_t VOILK_TESTING_GENESIS_TIMESTAMP = 1431700000;
 
-using namespace bears::plugins::webserver;
-using namespace bears::plugins::database_api;
-using namespace bears::plugins::block_api;
-using bears::plugins::condenser_api::condenser_api_plugin;
+using namespace voilk::plugins::webserver;
+using namespace voilk::plugins::database_api;
+using namespace voilk::plugins::block_api;
+using voilk::plugins::condenser_api::condenser_api_plugin;
 
-namespace bears { namespace chain {
+namespace voilk { namespace chain {
 
 using std::cout;
 using std::cerr;
@@ -51,27 +51,27 @@ clean_database_fixture::clean_database_fixture()
          std::cout << "running test " << boost::unit_test::framework::current_test_case().p_name << std::endl;
    }
 
-   appbase::app().register_plugin< bears::plugins::account_history::account_history_plugin >();
-   db_plugin = &appbase::app().register_plugin< bears::plugins::debug_node::debug_node_plugin >();
-   appbase::app().register_plugin< bears::plugins::rc::rc_plugin >();
-   appbase::app().register_plugin< bears::plugins::witness::witness_plugin >();
+   appbase::app().register_plugin< voilk::plugins::account_history::account_history_plugin >();
+   db_plugin = &appbase::app().register_plugin< voilk::plugins::debug_node::debug_node_plugin >();
+   appbase::app().register_plugin< voilk::plugins::rc::rc_plugin >();
+   appbase::app().register_plugin< voilk::plugins::witness::witness_plugin >();
 
    db_plugin->logging = false;
    appbase::app().initialize<
-      bears::plugins::account_history::account_history_plugin,
-      bears::plugins::debug_node::debug_node_plugin,
-      bears::plugins::rc::rc_plugin,
-      bears::plugins::witness::witness_plugin
+      voilk::plugins::account_history::account_history_plugin,
+      voilk::plugins::debug_node::debug_node_plugin,
+      voilk::plugins::rc::rc_plugin,
+      voilk::plugins::witness::witness_plugin
       >( argc, argv );
 
-   bears::plugins::rc::rc_plugin_skip_flags rc_skip;
+   voilk::plugins::rc::rc_plugin_skip_flags rc_skip;
    rc_skip.skip_reject_not_enough_rc = 1;
    rc_skip.skip_deduct_rc = 0;
    rc_skip.skip_negative_rc_balance = 1;
    rc_skip.skip_reject_unknown_delta_coins = 0;
-   appbase::app().get_plugin< bears::plugins::rc::rc_plugin >().set_rc_plugin_skip_flags( rc_skip );
+   appbase::app().get_plugin< voilk::plugins::rc::rc_plugin >().set_rc_plugin_skip_flags( rc_skip );
 
-   db = &appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
+   db = &appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db();
    BOOST_REQUIRE( db );
 
    init_account_pub_key = init_account_priv_key.get_public_key();
@@ -79,17 +79,17 @@ clean_database_fixture::clean_database_fixture()
    open_database();
 
    generate_block();
-   db->set_hardfork( BEARS_BLOCKCHAIN_VERSION.minor() );
+   db->set_hardfork( VOILK_BLOCKCHAIN_VERSION.minor() );
    generate_block();
 
-   coin( "bearshare", 10000 );
+   coin( "voilkhare", 10000 );
 
    // Fill up the rest of the required miners
-   for( int i = BEARS_NUM_INIT_MINERS; i < BEARS_MAX_WITNESSES; i++ )
+   for( int i = VOILK_NUM_INIT_MINERS; i < VOILK_MAX_WITNESSES; i++ )
    {
-      account_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
-      fund( BEARS_INIT_MINER_NAME + fc::to_string( i ), BEARS_MIN_PRODUCER_REWARD.amount.value );
-      witness_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, BEARS_MIN_PRODUCER_REWARD.amount );
+      account_create( VOILK_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
+      fund( VOILK_INIT_MINER_NAME + fc::to_string( i ), VOILK_MIN_PRODUCER_REWARD.amount.value );
+      witness_create( VOILK_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, VOILK_MIN_PRODUCER_REWARD.amount );
    }
 
    validate_database();
@@ -121,7 +121,7 @@ clean_database_fixture::~clean_database_fixture()
 void clean_database_fixture::validate_database()
 {
    database_fixture::validate_database();
-   appbase::app().get_plugin< bears::plugins::rc::rc_plugin >().validate_database();
+   appbase::app().get_plugin< voilk::plugins::rc::rc_plugin >().validate_database();
 }
 
 void clean_database_fixture::resize_shared_mem( uint64_t size )
@@ -152,17 +152,17 @@ void clean_database_fixture::resize_shared_mem( uint64_t size )
 
 
    generate_block();
-   db->set_hardfork( BEARS_BLOCKCHAIN_VERSION.minor() );
+   db->set_hardfork( VOILK_BLOCKCHAIN_VERSION.minor() );
    generate_block();
 
-   coin( "bearshare", 10000 );
+   coin( "voilkhare", 10000 );
 
    // Fill up the rest of the required miners
-   for( int i = BEARS_NUM_INIT_MINERS; i < BEARS_MAX_WITNESSES; i++ )
+   for( int i = VOILK_NUM_INIT_MINERS; i < VOILK_MAX_WITNESSES; i++ )
    {
-      account_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
-      fund( BEARS_INIT_MINER_NAME + fc::to_string( i ), BEARS_MIN_PRODUCER_REWARD.amount.value );
-      witness_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, BEARS_MIN_PRODUCER_REWARD.amount );
+      account_create( VOILK_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
+      fund( VOILK_INIT_MINER_NAME + fc::to_string( i ), VOILK_MIN_PRODUCER_REWARD.amount.value );
+      witness_create( VOILK_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, VOILK_MIN_PRODUCER_REWARD.amount );
    }
 
    validate_database();
@@ -179,12 +179,12 @@ live_database_fixture::live_database_fixture()
       _chain_dir = fc::current_path() / "test_blockchain";
       FC_ASSERT( fc::exists( _chain_dir ), "Requires blockchain to test on in ./test_blockchain" );
 
-      appbase::app().register_plugin< bears::plugins::account_history::account_history_plugin >();
+      appbase::app().register_plugin< voilk::plugins::account_history::account_history_plugin >();
       appbase::app().initialize<
-         bears::plugins::account_history::account_history_plugin
+         voilk::plugins::account_history::account_history_plugin
          >( argc, argv );
 
-      db = &appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
+      db = &appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db();
       BOOST_REQUIRE( db );
 
       {
@@ -229,7 +229,7 @@ fc::ecc::private_key database_fixture::generate_private_key(string seed)
    return fc::ecc::private_key::regenerate( fc::sha256::hash( seed ) );
 }
 
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
 asset_symbol_type database_fixture::get_new_smt_symbol( uint8_t token_decimal_places, chain::database* db )
 {
    // The list of available nais is not dependent on SMT desired precision (token_decimal_places).
@@ -245,7 +245,7 @@ void database_fixture::open_database()
 {
    if( !data_dir )
    {
-      data_dir = fc::temp_directory( bears::utilities::temp_directory_path() );
+      data_dir = fc::temp_directory( voilk::utilities::temp_directory_path() );
       db->_log_hardforks = false;
 
       database::open_args args;
@@ -260,7 +260,7 @@ void database_fixture::open_database()
 void database_fixture::generate_block(uint32_t skip, const fc::ecc::private_key& key, int miss_blocks)
 {
    skip |= default_skip;
-   db_plugin->debug_generate_blocks( bears::utilities::key_to_wif( key ), 1, skip, miss_blocks );
+   db_plugin->debug_generate_blocks( voilk::utilities::key_to_wif( key ), 1, skip, miss_blocks );
 }
 
 void database_fixture::generate_blocks( uint32_t block_count )
@@ -272,7 +272,7 @@ void database_fixture::generate_blocks( uint32_t block_count )
 void database_fixture::generate_blocks(fc::time_point_sec timestamp, bool miss_intermediate_blocks)
 {
    db_plugin->debug_generate_blocks_until( debug_key, timestamp, miss_intermediate_blocks, default_skip );
-   BOOST_REQUIRE( ( db->head_block_time() - timestamp ).to_seconds() < BEARS_BLOCK_INTERVAL );
+   BOOST_REQUIRE( ( db->head_block_time() - timestamp ).to_seconds() < VOILK_BLOCK_INTERVAL );
 }
 
 const account_object& database_fixture::account_create(
@@ -293,7 +293,7 @@ const account_object& database_fixture::account_create(
       account_create_operation op;
       op.new_account_name = name;
       op.creator = creator;
-      op.fee = asset( actual_fee, BEARS_SYMBOL );
+      op.fee = asset( actual_fee, VOILK_SYMBOL );
       op.owner = authority( 1, key, 1 );
       op.active = authority( 1, key, 1 );
       op.posting = authority( 1, post_key, 1 );
@@ -302,7 +302,7 @@ const account_object& database_fixture::account_create(
 
       trx.operations.push_back( op );
 
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( trx, creator_key );
       trx.validate();
       db->push_transaction( trx, 0 );
@@ -310,7 +310,7 @@ const account_object& database_fixture::account_create(
 
       if( fee_remainder > 0 )
       {
-         coin( BEARS_INIT_MINER_NAME, name, asset( fee_remainder, BEARS_SYMBOL ) );
+         coin( VOILK_INIT_MINER_NAME, name, asset( fee_remainder, VOILK_SYMBOL ) );
       }
 
       const account_object& acct = db->get_account( name );
@@ -330,9 +330,9 @@ const account_object& database_fixture::account_create(
    {
       return account_create(
          name,
-         BEARS_INIT_MINER_NAME,
+         VOILK_INIT_MINER_NAME,
          init_account_priv_key,
-         std::max( db->get_witness_schedule_object().median_props.account_creation_fee.amount * BEARS_CREATE_ACCOUNT_WITH_BEARS_MODIFIER, share_type( 100 ) ),
+         std::max( db->get_witness_schedule_object().median_props.account_creation_fee.amount * VOILK_CREATE_ACCOUNT_WITH_VOILK_MODIFIER, share_type( 100 ) ),
          key,
          post_key,
          "" );
@@ -361,10 +361,10 @@ const witness_object& database_fixture::witness_create(
       op.owner = owner;
       op.url = url;
       op.block_signing_key = signing_key;
-      op.fee = asset( fee, BEARS_SYMBOL );
+      op.fee = asset( fee, VOILK_SYMBOL );
 
       trx.operations.push_back( op );
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( trx, owner_key );
       trx.validate();
       db->push_transaction( trx, 0 );
@@ -382,7 +382,7 @@ void database_fixture::fund(
 {
    try
    {
-      transfer( BEARS_INIT_MINER_NAME, account_name, asset( amount, BEARS_SYMBOL ) );
+      transfer( VOILK_INIT_MINER_NAME, account_name, asset( amount, VOILK_SYMBOL ) );
 
    } FC_CAPTURE_AND_RETHROW( (account_name)(amount) )
 }
@@ -400,36 +400,36 @@ void database_fixture::fund(
          {
             db.adjust_balance(account_name, amount);
             db.adjust_supply(amount);
-            // Note that SMT have no equivalent of BSD, hence no virtual supply, hence no need to update it.
+            // Note that SMT have no equivalent of VSD, hence no virtual supply, hence no need to update it.
             return;
          }
 
          db.modify( db.get_account( account_name ), [&]( account_object& a )
          {
-            if( amount.symbol == BEARS_SYMBOL )
+            if( amount.symbol == VOILK_SYMBOL )
                a.balance += amount;
-            else if( amount.symbol == BSD_SYMBOL )
+            else if( amount.symbol == VSD_SYMBOL )
             {
-               a.bsd_balance += amount;
-               a.bsd_seconds_last_update = db.head_block_time();
+               a.vsd_balance += amount;
+               a.vsd_seconds_last_update = db.head_block_time();
             }
          });
 
          db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
          {
-            if( amount.symbol == BEARS_SYMBOL )
+            if( amount.symbol == VOILK_SYMBOL )
                gpo.current_supply += amount;
-            else if( amount.symbol == BSD_SYMBOL )
-               gpo.current_bsd_supply += amount;
+            else if( amount.symbol == VSD_SYMBOL )
+               gpo.current_vsd_supply += amount;
          });
 
-         if( amount.symbol == BSD_SYMBOL )
+         if( amount.symbol == VSD_SYMBOL )
          {
             const auto& median_feed = db.get_feed_history();
             if( median_feed.current_median_history.is_null() )
                db.modify( median_feed, [&]( feed_history_object& f )
                {
-                  f.current_median_history = price( asset( 1, BSD_SYMBOL ), asset( 1, BEARS_SYMBOL ) );
+                  f.current_median_history = price( asset( 1, VSD_SYMBOL ), asset( 1, VOILK_SYMBOL ) );
                });
          }
 
@@ -445,19 +445,19 @@ void database_fixture::convert(
 {
    try
    {
-      if ( amount.symbol == BEARS_SYMBOL )
+      if ( amount.symbol == VOILK_SYMBOL )
       {
          db->adjust_balance( account_name, -amount );
-         db->adjust_balance( account_name, db->to_bsd( amount ) );
+         db->adjust_balance( account_name, db->to_vsd( amount ) );
          db->adjust_supply( -amount );
-         db->adjust_supply( db->to_bsd( amount ) );
+         db->adjust_supply( db->to_vsd( amount ) );
       }
-      else if ( amount.symbol == BSD_SYMBOL )
+      else if ( amount.symbol == VSD_SYMBOL )
       {
          db->adjust_balance( account_name, -amount );
-         db->adjust_balance( account_name, db->to_bears( amount ) );
+         db->adjust_balance( account_name, db->to_voilk( amount ) );
          db->adjust_supply( -amount );
-         db->adjust_supply( db->to_bears( amount ) );
+         db->adjust_supply( db->to_voilk( amount ) );
       }
    } FC_CAPTURE_AND_RETHROW( (account_name)(amount) )
 }
@@ -475,10 +475,10 @@ void database_fixture::transfer(
       op.amount = amount;
 
       trx.operations.push_back( op );
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       trx.validate();
 
-      if( from == BEARS_INIT_MINER_NAME )
+      if( from == VOILK_INIT_MINER_NAME )
       {
          sign( trx, init_account_priv_key );
       }
@@ -492,7 +492,7 @@ void database_fixture::coin( const string& from, const string& to, const asset& 
 {
    try
    {
-      FC_ASSERT( amount.symbol == BEARS_SYMBOL, "Can only coin TESTS" );
+      FC_ASSERT( amount.symbol == VOILK_SYMBOL, "Can only coin TESTS" );
 
       transfer_to_coining_operation op;
       op.from = from;
@@ -500,12 +500,12 @@ void database_fixture::coin( const string& from, const string& to, const asset& 
       op.amount = amount;
 
       trx.operations.push_back( op );
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       trx.validate();
 
       // This sign() call fixes some tests, like withdraw_coining_apply, that use this method
       //   with debug_plugin such that trx may be re-applied with less generous skip flags.
-      if( from == BEARS_INIT_MINER_NAME )
+      if( from == VOILK_INIT_MINER_NAME )
       {
          sign( trx, init_account_priv_key );
       }
@@ -522,13 +522,13 @@ void database_fixture::coin( const string& from, const share_type& amount )
       transfer_to_coining_operation op;
       op.from = from;
       op.to = "";
-      op.amount = asset( amount, BEARS_SYMBOL );
+      op.amount = asset( amount, VOILK_SYMBOL );
 
       trx.operations.push_back( op );
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       trx.validate();
 
-      if( from == BEARS_INIT_MINER_NAME )
+      if( from == VOILK_INIT_MINER_NAME )
       {
          sign( trx, init_account_priv_key );
       }
@@ -556,17 +556,17 @@ void database_fixture::set_price_feed( const price& new_price )
    for( size_t i = 1; i < 8; i++ )
    {
       witness_set_properties_operation op;
-      op.owner = BEARS_INIT_MINER_NAME + fc::to_string( i );
-      op.props[ "bsd_exchange_rate" ] = fc::raw::pack_to_vector( new_price );
+      op.owner = VOILK_INIT_MINER_NAME + fc::to_string( i );
+      op.props[ "vsd_exchange_rate" ] = fc::raw::pack_to_vector( new_price );
       op.props[ "key" ] = fc::raw::pack_to_vector( init_account_pub_key );
 
       trx.operations.push_back( op );
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       db->push_transaction( trx, ~0 );
       trx.clear();
    }
 
-   generate_blocks( BEARS_BLOCKS_PER_HOUR );
+   generate_blocks( VOILK_BLOCKS_PER_HOUR );
 
    BOOST_REQUIRE(
 #ifdef IS_TEST_NET
@@ -579,16 +579,16 @@ void database_fixture::set_price_feed( const price& new_price )
 void database_fixture::set_witness_props( const flat_map< string, vector< char > >& props )
 {
    trx.clear();
-   for( size_t i=0; i<BEARS_MAX_WITNESSES; i++ )
+   for( size_t i=0; i<VOILK_MAX_WITNESSES; i++ )
    {
       witness_set_properties_operation op;
-      op.owner = BEARS_INIT_MINER_NAME + (i == 0 ? "" : fc::to_string( i ));
+      op.owner = VOILK_INIT_MINER_NAME + (i == 0 ? "" : fc::to_string( i ));
       op.props = props;
       if( props.find( "key" ) == props.end() )
          op.props["key"] = fc::raw::pack_to_vector( init_account_pub_key );
 
       trx.operations.push_back( op );
-      trx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      trx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       db->push_transaction( trx, ~0 );
       trx.clear();
    }
@@ -596,14 +596,14 @@ void database_fixture::set_witness_props( const flat_map< string, vector< char >
    const witness_schedule_object* wso = &(db->get_witness_schedule_object());
    uint32_t old_next_shuffle = wso->next_shuffle_block_num;
 
-   for( size_t i=0; i<2*BEARS_MAX_WITNESSES+1; i++ )
+   for( size_t i=0; i<2*VOILK_MAX_WITNESSES+1; i++ )
    {
       generate_block();
       wso = &(db->get_witness_schedule_object());
       if( wso->next_shuffle_block_num != old_next_shuffle )
          return;
    }
-   FC_ASSERT( false, "Couldn't apply properties in ${n} blocks", ("n", 2*BEARS_MAX_WITNESSES+1) );
+   FC_ASSERT( false, "Couldn't apply properties in ${n} blocks", ("n", 2*VOILK_MAX_WITNESSES+1) );
 }
 
 const asset& database_fixture::get_balance( const string& account_name )const
@@ -629,7 +629,7 @@ vector< operation > database_fixture::get_last_operations( uint32_t num_ops )
       std::vector<char> serialized_op;
       serialized_op.reserve( _serialized_op.size() );
       std::copy( _serialized_op.begin(), _serialized_op.end(), std::back_inserter( serialized_op ) );
-      ops.push_back( fc::raw::unpack_from_vector< bears::chain::operation >( serialized_op ) );
+      ops.push_back( fc::raw::unpack_from_vector< voilk::chain::operation >( serialized_op ) );
    }
 
    return ops;
@@ -640,14 +640,14 @@ void database_fixture::validate_database()
    try
    {
       db->validate_invariants();
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
       db->validate_smt_invariants();
 #endif
    }
    FC_LOG_AND_RETHROW();
 }
 
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
 
 template< typename T >
 asset_symbol_type t_smt_database_fixture< T >::create_smt( const string& account_name, const fc::ecc::private_key& key,
@@ -669,7 +669,7 @@ asset_symbol_type t_smt_database_fixture< T >::create_smt( const string& account
       op.control_account = account_name;
 
       tx.operations.push_back( op );
-      tx.set_expiration( this->db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( this->db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.sign( key, this->db->get_chain_id(), fc::ecc::bip_0062 );
 
       this->db->push_transaction( tx, 0 );
@@ -723,7 +723,7 @@ std::array<asset_symbol_type, 3> t_smt_database_fixture< T >::create_smt_3(const
       tx.operations.push_back( op0 );
       tx.operations.push_back( op1 );
       tx.operations.push_back( op2 );
-      tx.set_expiration( this->db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( this->db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       tx.sign( key, this->db->get_chain_id(), fc::ecc::bip_0062 );
       this->db->push_transaction( tx, 0 );
 
@@ -742,9 +742,9 @@ void push_invalid_operation(const operation& invalid_op, const fc::ecc::private_
 {
    signed_transaction tx;
    tx.operations.push_back( invalid_op );
-   tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+   tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
    tx.sign( key, db->get_chain_id(), fc::ecc::bip_0062 );
-   BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), fc::assert_exception );
+   VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), fc::assert_exception );
 }
 
 template< typename T >
@@ -752,7 +752,7 @@ void t_smt_database_fixture< T >::create_invalid_smt( const char* control_accoun
 {
    // Fail due to precision too big.
    smt_create_operation op_precision;
-   BEARS_REQUIRE_THROW( set_create_op(this->db, &op_precision, control_account_name, BEARS_ASSET_MAX_DECIMALS + 1), fc::assert_exception );
+   VOILK_REQUIRE_THROW( set_create_op(this->db, &op_precision, control_account_name, VOILK_ASSET_MAX_DECIMALS + 1), fc::assert_exception );
 }
 
 template< typename T >
@@ -770,11 +770,11 @@ void t_smt_database_fixture< T >::create_conflicting_smt( const asset_symbol_typ
 }
 
 template< typename T >
-smt_generation_unit t_smt_database_fixture< T >::get_generation_unit( const units& bears_unit, const units& token_unit )
+smt_generation_unit t_smt_database_fixture< T >::get_generation_unit( const units& voilk_unit, const units& token_unit )
 {
    smt_generation_unit ret;
 
-   ret.bears_unit = bears_unit;
+   ret.voilk_unit = voilk_unit;
    ret.token_unit = token_unit;
 
    return ret;
@@ -793,8 +793,8 @@ smt_cap_commitment t_smt_database_fixture< T >::get_cap_commitment( share_type a
       reveal.nonce = nonce;
 
       ret.hash = fc::sha256::hash( reveal );
-      ret.lower_bound = SMT_MIN_HARD_CAP_BEARS_UNITS; // See smt_capped_generation_policy::validate
-      ret.upper_bound = BEARS_MAX_SHARE_SUPPLY/10;    // See smt_capped_generation_policy::validate
+      ret.lower_bound = SMT_MIN_HARD_CAP_VOILK_UNITS; // See smt_capped_generation_policy::validate
+      ret.upper_bound = VOILK_MAX_SHARE_SUPPLY/10;    // See smt_capped_generation_policy::validate
    }
 
    return ret;
@@ -805,8 +805,8 @@ smt_capped_generation_policy t_smt_database_fixture< T >::get_capped_generation_
 (
    const smt_generation_unit& pre_soft_cap_unit,
    const smt_generation_unit& post_soft_cap_unit,
-   const smt_cap_commitment& min_bears_units_commitment,
-   const smt_cap_commitment& hard_cap_bears_units_commitment,
+   const smt_cap_commitment& min_voilk_units_commitment,
+   const smt_cap_commitment& hard_cap_voilk_units_commitment,
    uint16_t soft_cap_percent,
    uint32_t min_unit_ratio,
    uint32_t max_unit_ratio
@@ -817,8 +817,8 @@ smt_capped_generation_policy t_smt_database_fixture< T >::get_capped_generation_
    ret.pre_soft_cap_unit = pre_soft_cap_unit;
    ret.post_soft_cap_unit = post_soft_cap_unit;
 
-   ret.min_bears_units_commitment = min_bears_units_commitment;
-   ret.hard_cap_bears_units_commitment = hard_cap_bears_units_commitment;
+   ret.min_voilk_units_commitment = min_voilk_units_commitment;
+   ret.hard_cap_voilk_units_commitment = hard_cap_voilk_units_commitment;
 
    ret.soft_cap_percent = soft_cap_percent;
 
@@ -836,14 +836,14 @@ template void t_smt_database_fixture< clean_database_fixture >::create_invalid_s
 template void t_smt_database_fixture< clean_database_fixture >::create_conflicting_smt( const asset_symbol_type existing_smt, const char* control_account_name, const fc::ecc::private_key& key );
 template std::array<asset_symbol_type, 3> t_smt_database_fixture< clean_database_fixture >::create_smt_3( const char* control_account_name, const fc::ecc::private_key& key );
 
-template smt_generation_unit t_smt_database_fixture< clean_database_fixture >::get_generation_unit( const units& bears_unit, const units& token_unit );
+template smt_generation_unit t_smt_database_fixture< clean_database_fixture >::get_generation_unit( const units& voilk_unit, const units& token_unit );
 template smt_cap_commitment t_smt_database_fixture< clean_database_fixture >::get_cap_commitment( share_type amount, uint128_t nonce );
 template smt_capped_generation_policy t_smt_database_fixture< clean_database_fixture >::get_capped_generation_policy
 (
    const smt_generation_unit& pre_soft_cap_unit,
    const smt_generation_unit& post_soft_cap_unit,
-   const smt_cap_commitment& min_bears_units_commitment,
-   const smt_cap_commitment& hard_cap_bears_units_commitment,
+   const smt_cap_commitment& min_voilk_units_commitment,
+   const smt_cap_commitment& hard_cap_voilk_units_commitment,
    uint16_t soft_cap_percent,
    uint32_t min_unit_ratio,
    uint32_t max_unit_ratio
@@ -865,27 +865,27 @@ json_rpc_database_fixture::json_rpc_database_fixture()
          std::cout << "running test " << boost::unit_test::framework::current_test_case().p_name << std::endl;
    }
 
-   appbase::app().register_plugin< bears::plugins::account_history::account_history_plugin >();
-   db_plugin = &appbase::app().register_plugin< bears::plugins::debug_node::debug_node_plugin >();
-   appbase::app().register_plugin< bears::plugins::witness::witness_plugin >();
-   rpc_plugin = &appbase::app().register_plugin< bears::plugins::json_rpc::json_rpc_plugin >();
-   appbase::app().register_plugin< bears::plugins::block_api::block_api_plugin >();
-   appbase::app().register_plugin< bears::plugins::database_api::database_api_plugin >();
-   appbase::app().register_plugin< bears::plugins::condenser_api::condenser_api_plugin >();
+   appbase::app().register_plugin< voilk::plugins::account_history::account_history_plugin >();
+   db_plugin = &appbase::app().register_plugin< voilk::plugins::debug_node::debug_node_plugin >();
+   appbase::app().register_plugin< voilk::plugins::witness::witness_plugin >();
+   rpc_plugin = &appbase::app().register_plugin< voilk::plugins::json_rpc::json_rpc_plugin >();
+   appbase::app().register_plugin< voilk::plugins::block_api::block_api_plugin >();
+   appbase::app().register_plugin< voilk::plugins::database_api::database_api_plugin >();
+   appbase::app().register_plugin< voilk::plugins::condenser_api::condenser_api_plugin >();
 
    db_plugin->logging = false;
    appbase::app().initialize<
-      bears::plugins::account_history::account_history_plugin,
-      bears::plugins::debug_node::debug_node_plugin,
-      bears::plugins::json_rpc::json_rpc_plugin,
-      bears::plugins::block_api::block_api_plugin,
-      bears::plugins::database_api::database_api_plugin,
-      bears::plugins::condenser_api::condenser_api_plugin
+      voilk::plugins::account_history::account_history_plugin,
+      voilk::plugins::debug_node::debug_node_plugin,
+      voilk::plugins::json_rpc::json_rpc_plugin,
+      voilk::plugins::block_api::block_api_plugin,
+      voilk::plugins::database_api::database_api_plugin,
+      voilk::plugins::condenser_api::condenser_api_plugin
       >( argc, argv );
 
-   appbase::app().get_plugin< bears::plugins::condenser_api::condenser_api_plugin >().plugin_startup();
+   appbase::app().get_plugin< voilk::plugins::condenser_api::condenser_api_plugin >().plugin_startup();
 
-   db = &appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
+   db = &appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db();
    BOOST_REQUIRE( db );
 
    init_account_pub_key = init_account_priv_key.get_public_key();
@@ -893,17 +893,17 @@ json_rpc_database_fixture::json_rpc_database_fixture()
    open_database();
 
    generate_block();
-   db->set_hardfork( BEARS_BLOCKCHAIN_VERSION.minor() );
+   db->set_hardfork( VOILK_BLOCKCHAIN_VERSION.minor() );
    generate_block();
 
-   coin( "bearshare", 10000 );
+   coin( "voilkhare", 10000 );
 
    // Fill up the rest of the required miners
-   for( int i = BEARS_NUM_INIT_MINERS; i < BEARS_MAX_WITNESSES; i++ )
+   for( int i = VOILK_NUM_INIT_MINERS; i < VOILK_MAX_WITNESSES; i++ )
    {
-      account_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
-      fund( BEARS_INIT_MINER_NAME + fc::to_string( i ), BEARS_MIN_PRODUCER_REWARD.amount.value );
-      witness_create( BEARS_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, BEARS_MIN_PRODUCER_REWARD.amount );
+      account_create( VOILK_INIT_MINER_NAME + fc::to_string( i ), init_account_pub_key );
+      fund( VOILK_INIT_MINER_NAME + fc::to_string( i ), VOILK_MIN_PRODUCER_REWARD.amount.value );
+      witness_create( VOILK_INIT_MINER_NAME + fc::to_string( i ), init_account_priv_key, "foo.bar", init_account_pub_key, VOILK_MIN_PRODUCER_REWARD.amount );
    }
 
    validate_database();
@@ -1046,6 +1046,6 @@ void _push_transaction( database& db, const signed_transaction& tx, uint32_t ski
    db.push_transaction( tx, skip_flags );
 } FC_CAPTURE_AND_RETHROW((tx)) }
 
-} // bears::chain::test
+} // voilk::chain::test
 
-} } // bears::chain
+} } // voilk::chain

@@ -1,7 +1,7 @@
-#include <bears/plugins/json_rpc/json_rpc_plugin.hpp>
-#include <bears/plugins/json_rpc/utility.hpp>
+#include <voilk/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <voilk/plugins/json_rpc/utility.hpp>
 
-#include <bears/plugins/statsd/utility.hpp>
+#include <voilk/plugins/statsd/utility.hpp>
 
 #include <boost/algorithm/string.hpp>
 
@@ -14,7 +14,7 @@
 
 #define ENABLE_JSON_RPC_LOG
 
-namespace bears { namespace plugins { namespace json_rpc {
+namespace voilk { namespace plugins { namespace json_rpc {
 
 namespace detail
 {
@@ -492,9 +492,9 @@ string json_rpc_plugin::call( const string& message )
 
 }
 
-} } } // bears::plugins::json_rpc
+} } } // voilk::plugins::json_rpc
 
-FC_REFLECT( bears::plugins::json_rpc::detail::json_rpc_error, (code)(message)(data) )
-FC_REFLECT( bears::plugins::json_rpc::detail::json_rpc_response, (jsonrpc)(result)(error)(id) )
+FC_REFLECT( voilk::plugins::json_rpc::detail::json_rpc_error, (code)(message)(data) )
+FC_REFLECT( voilk::plugins::json_rpc::detail::json_rpc_response, (jsonrpc)(result)(error)(id) )
 
-FC_REFLECT( bears::plugins::json_rpc::detail::get_signature_args, (method) )
+FC_REFLECT( voilk::plugins::json_rpc::detail::get_signature_args, (method) )

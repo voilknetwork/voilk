@@ -8,26 +8,26 @@
 #include <fc/reflect/reflect.hpp>
 #include <fc/variant.hpp>
 
-#include <bears/utilities/key_conversion.hpp>
+#include <voilk/utilities/key_conversion.hpp>
 
-#include <bears/protocol/transaction.hpp>
-#include <bears/protocol/types.hpp>
+#include <voilk/protocol/transaction.hpp>
+#include <voilk/protocol/types.hpp>
 
 #define CHAIN_ID_PARAM "--chain-id"
 
 struct tx_signing_request
 {
-   bears::protocol::transaction     tx;
+   voilk::protocol::transaction     tx;
    std::string                      wif;
 };
 
 struct tx_signing_result
 {
-   bears::protocol::transaction     tx;
+   voilk::protocol::transaction     tx;
    fc::sha256                       digest;
    fc::sha256                       sig_digest;
-   bears::protocol::public_key_type key;
-   bears::protocol::signature_type  sig;
+   voilk::protocol::public_key_type key;
+   voilk::protocol::signature_type  sig;
 };
 
 struct error_result
@@ -43,7 +43,7 @@ int main(int argc, char** argv, char** envp)
 {
    fc::sha256 chainId;
 
-   chainId = BEARS_CHAIN_ID;
+   chainId = VOILK_CHAIN_ID;
 
    const size_t chainIdLen = strlen(CHAIN_ID_PARAM);
 
@@ -120,12 +120,12 @@ int main(int argc, char** argv, char** envp)
          sres.digest = sreq.tx.digest();
          sres.sig_digest = sreq.tx.sig_digest(chainId);
 
-         auto priv_key = bears::utilities::wif_to_key( sreq.wif );
+         auto priv_key = voilk::utilities::wif_to_key( sreq.wif );
 
          if(priv_key)
          {
             sres.sig = priv_key->sign_compact( sres.sig_digest );
-            sres.key = bears::protocol::public_key_type( priv_key->get_public_key() );
+            sres.key = voilk::protocol::public_key_type( priv_key->get_public_key() );
             std::string sres_str = fc::json::to_string( sres );
             std::cout << "{\"result\":" << sres_str << "}" << std::endl;
          }

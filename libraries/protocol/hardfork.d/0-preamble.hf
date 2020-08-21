@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include <bears/protocol/version.hpp>
+#include <voilk/protocol/version.hpp>
 #include <set>
 
 #ifdef IS_TEST_NET
-#define BEARS_NUM_HARDFORKS 21
+#define VOILK_NUM_HARDFORKS 21
 #else
-#define BEARS_NUM_HARDFORKS 20
+#define VOILK_NUM_HARDFORKS 20
 
 #endif

@@ -2,13 +2,13 @@
 #define BOOST_THREAD_PROVIDES_EXECUTORS
 #define BOOST_THREAD_PROVIDES_FUTURE
 
-#include <bears/plugins/block_data_export/block_data_export_plugin.hpp>
-#include <bears/plugins/block_data_export/exportable_block_data.hpp>
+#include <voilk/plugins/block_data_export/block_data_export_plugin.hpp>
+#include <voilk/plugins/block_data_export/exportable_block_data.hpp>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/database.hpp>
-#include <bears/chain/global_property_object.hpp>
-#include <bears/chain/index.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/global_property_object.hpp>
+#include <voilk/chain/index.hpp>
 
 #include <boost/thread/future.hpp>
 #include <boost/thread/sync_bounded_queue.hpp>
@@ -18,12 +18,12 @@
 #include <queue>
 #include <sstream>
 
-namespace bears { namespace plugins { namespace block_data_export {
+namespace voilk { namespace plugins { namespace block_data_export {
 
-using bears::chain::block_notification;
-using bears::chain::database;
+using voilk::chain::block_notification;
+using voilk::chain::database;
 
-using bears::protocol::block_id_type;
+using voilk::protocol::block_id_type;
 
 namespace detail {
 
@@ -44,9 +44,9 @@ struct api_export_data_object
 
 } } } }
 
-FC_REFLECT( bears::plugins::block_data_export::detail::api_export_data_object, (block_id)(previous)(export_data) )
+FC_REFLECT( voilk::plugins::block_data_export::detail::api_export_data_object, (block_id)(previous)(export_data) )
 
-namespace bears { namespace plugins { namespace block_data_export { namespace detail {
+namespace voilk { namespace plugins { namespace block_data_export { namespace detail {
 
 struct work_item
 {
@@ -59,7 +59,7 @@ class block_data_export_plugin_impl
 {
    public:
       block_data_export_plugin_impl( block_data_export_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ),
          _data_queue( _max_queue_size ),
          _output_queue( _max_queue_size ) {}
@@ -304,4 +304,4 @@ void block_data_export_plugin::plugin_shutdown()
 exportable_block_data::exportable_block_data() {}
 exportable_block_data::~exportable_block_data() {}
 
-} } } // bears::plugins::block_data_export
+} } } // voilk::plugins::block_data_export

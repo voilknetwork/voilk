@@ -38,7 +38,7 @@
 #
 # Copyright (c) 2007, Pau Garcia i Quiles, <pgquiles@elpauer.org>
 #
-# Redistribution and use is allowed according to the terms of the BSD license.
+# Redistribution and use is allowed according to the terms of the VSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
 FIND_PATH( Wt_INCLUDE_DIR NAMES Wt/WObject PATHS ENV PATH PATH_SUFFIXES include wt )

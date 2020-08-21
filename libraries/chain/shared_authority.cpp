@@ -1,6 +1,6 @@
-#include <bears/chain/shared_authority.hpp>
+#include <voilk/chain/shared_authority.hpp>
 
-namespace bears { namespace chain {
+namespace voilk { namespace chain {
 
 shared_authority::operator authority()const
 {
@@ -90,4 +90,4 @@ bool operator == ( const shared_authority& a, const authority& b )
    return authority( a ) == b;
 }
 
-} } // bears::chain
+} } // voilk::chain

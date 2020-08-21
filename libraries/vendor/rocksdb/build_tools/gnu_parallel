@@ -236,8 +236,8 @@ sub find_split_positions {
     my($file, $block, $headerlen) = @_;
     my $size = -s $file;
     $block = int $block;
-    # The optimal dd blocksize for mint, redhat, solaris, openbsd = 2^17..2^20
-    # The optimal dd blocksize for freebsd = 2^15..2^17
+    # The optimal dd blocksize for mint, redhat, solaris, openvsd = 2^17..2^20
+    # The optimal dd blocksize for freevsd = 2^15..2^17
     my $dd_block_size = 131072; # 2^17
     my @pos;
     my ($recstart,$recend) = recstartrecend();
@@ -1307,8 +1307,8 @@ sub read_options {
 	if($opt::shebang_wrap) {
             my @options;
 	    my @parser;
-	    if ($^O eq 'freebsd') {
-		# FreeBSD's #! puts different values in @ARGV than Linux' does.
+	    if ($^O eq 'freevsd') {
+		# FreeVSD's #! puts different values in @ARGV than Linux' does.
 		my @nooptions = @ARGV;
 		get_options_from_array(\@nooptions);
 		while($#ARGV > $#nooptions) {
@@ -3128,24 +3128,24 @@ sub which {
 	    # Filter for SysV-style `ps`
 	    my $sysv = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}//; print "@F[1,2] $_"' );
-	    # BSD-style `ps`
-	    my $bsd = q(ps -o pid,ppid,command -ax);
+	    # VSD-style `ps`
+	    my $vsd = q(ps -o pid,ppid,command -ax);
 	    %pid_parentpid_cmd =
 	    (
 	     'aix' => $sysv,
 	     'cygwin' => $sysv,
 	     'msys' => $sysv,
 	     'dec_osf' => $sysv,
-	     'darwin' => $bsd,
-	     'dragonfly' => $bsd,
-	     'freebsd' => $bsd,
+	     'darwin' => $vsd,
+	     'dragonfly' => $vsd,
+	     'freevsd' => $vsd,
 	     'gnu' => $sysv,
 	     'hpux' => $sysv,
 	     'linux' => $sysv,
-	     'mirbsd' => $bsd,
-	     'netbsd' => $bsd,
+	     'mirvsd' => $vsd,
+	     'netvsd' => $vsd,
 	     'nto' => $sysv,
-	     'openbsd' => $bsd,
+	     'openvsd' => $vsd,
 	     'solaris' => $sysv,
 	     'svr5' => $sysv,
 	    );
@@ -3614,37 +3614,37 @@ sub swap_activity {
 		#  0  0 334125 241569   0   0   0   0    0   0  37 5368 184  0  9 86  5
 		'aix' => ['vmstat 1 2 | tail -n1', '$6*$7'],
 
-		# freebsd: $8*$9
+		# freevsd: $8*$9
 		# $ vmstat -H 1 2
 		#  procs      memory      page                    disks     faults         cpu
 		#  r b w     avm    fre   flt  re  pi  po    fr  sr ad0 ad1   in   sy   cs us sy id
 		#  1 0 0  596716   19560    32   0   0   0    33   8   0   0   11  220  277  0  0 99
 		#  0 0 0  596716   19560     2   0   0   0     0   0   0   0   11  144  263  0  1 99
-		'freebsd' => ['vmstat -H 1 2 | tail -n1', '$8*$9'],
+		'freevsd' => ['vmstat -H 1 2 | tail -n1', '$8*$9'],
 
-		# mirbsd: $8*$9
+		# mirvsd: $8*$9
 		# $ vmstat 1 2
 		#  procs   memory        page                    disks     traps         cpu
 		#  r b w    avm    fre   flt  re  pi  po  fr  sr wd0 cd0  int   sys   cs us sy id
 		#  0 0 0  25776 164968    34   0   0   0   0   0   0   0  230   259   38  4  0 96
 		#  0 0 0  25776 164968    24   0   0   0   0   0   0   0  237   275   37  0  0 100
-		'mirbsd' => ['vmstat 1 2 | tail -n1', '$8*$9'],
+		'mirvsd' => ['vmstat 1 2 | tail -n1', '$8*$9'],
 
-		# netbsd: $7*$8
+		# netvsd: $7*$8
 		# $ vmstat 1 2
 		#  procs    memory      page                       disks   faults      cpu
 		#  r b      avm    fre  flt  re  pi   po   fr   sr w0 w1   in   sy  cs us sy id
 		#  0 0   138452   6012   54   0   0    0    1    2  3  0    4  100  23  0  0 100
 		#  0 0   138456   6008    1   0   0    0    0    0  0  0    7   26  19  0 0 100
-		'netbsd' => ['vmstat 1 2 | tail -n1', '$7*$8'],
+		'netvsd' => ['vmstat 1 2 | tail -n1', '$7*$8'],
 
-		# openbsd: $8*$9
+		# openvsd: $8*$9
 		# $ vmstat 1 2
 		#  procs    memory       page                    disks    traps          cpu
 		#  r b w    avm     fre  flt  re  pi  po  fr  sr wd0 wd1  int   sys   cs us sy id
 		#  0 0 0  76596  109944   73   0   0   0   0   0   0   1    5   259   22  0  1 99
 		#  0 0 0  76604  109936   24   0   0   0   0   0   0   0    7   114   20  0  1 99
-		'openbsd' => ['vmstat 1 2 | tail -n1', '$8*$9'],
+		'openvsd' => ['vmstat 1 2 | tail -n1', '$8*$9'],
 
 		# hpux: $8*$9
 		# $ vmstat 1 2
@@ -4206,12 +4206,12 @@ sub no_of_cpus {
     my $no_of_cpus;
     if ($^O eq 'linux') {
         $no_of_cpus = no_of_cpus_gnu_linux() || no_of_cores_gnu_linux();
-    } elsif ($^O eq 'freebsd') {
-        $no_of_cpus = no_of_cpus_freebsd();
-    } elsif ($^O eq 'netbsd') {
-        $no_of_cpus = no_of_cpus_netbsd();
-    } elsif ($^O eq 'openbsd') {
-        $no_of_cpus = no_of_cpus_openbsd();
+    } elsif ($^O eq 'freevsd') {
+        $no_of_cpus = no_of_cpus_freevsd();
+    } elsif ($^O eq 'netvsd') {
+        $no_of_cpus = no_of_cpus_netvsd();
+    } elsif ($^O eq 'openvsd') {
+        $no_of_cpus = no_of_cpus_openvsd();
     } elsif ($^O eq 'gnu') {
         $no_of_cpus = no_of_cpus_hurd();
     } elsif ($^O eq 'darwin') {
@@ -4232,9 +4232,9 @@ sub no_of_cpus {
         $no_of_cpus = no_of_cpus_tru64();
     } else {
 	$no_of_cpus = (no_of_cpus_gnu_linux()
-		       || no_of_cpus_freebsd()
-		       || no_of_cpus_netbsd()
-		       || no_of_cpus_openbsd()
+		       || no_of_cpus_freevsd()
+		       || no_of_cpus_netvsd()
+		       || no_of_cpus_openvsd()
 		       || no_of_cpus_hurd()
 		       || no_of_cpus_darwin()
 		       || no_of_cpus_solaris()
@@ -4264,12 +4264,12 @@ sub no_of_cores {
     my $no_of_cores;
     if ($^O eq 'linux') {
 	$no_of_cores = no_of_cores_gnu_linux();
-    } elsif ($^O eq 'freebsd') {
-        $no_of_cores = no_of_cores_freebsd();
-    } elsif ($^O eq 'netbsd') {
-        $no_of_cores = no_of_cores_netbsd();
-    } elsif ($^O eq 'openbsd') {
-        $no_of_cores = no_of_cores_openbsd();
+    } elsif ($^O eq 'freevsd') {
+        $no_of_cores = no_of_cores_freevsd();
+    } elsif ($^O eq 'netvsd') {
+        $no_of_cores = no_of_cores_netvsd();
+    } elsif ($^O eq 'openvsd') {
+        $no_of_cores = no_of_cores_openvsd();
     } elsif ($^O eq 'gnu') {
         $no_of_cores = no_of_cores_hurd();
     } elsif ($^O eq 'darwin') {
@@ -4290,9 +4290,9 @@ sub no_of_cores {
         $no_of_cores = no_of_cores_tru64();
     } else {
 	$no_of_cores = (no_of_cores_gnu_linux()
-			|| no_of_cores_freebsd()
-			|| no_of_cores_netbsd()
-			|| no_of_cores_openbsd()
+			|| no_of_cores_freevsd()
+			|| no_of_cores_netvsd()
+			|| no_of_cores_openvsd()
 			|| no_of_cores_hurd()
 			|| no_of_cores_darwin()
 			|| no_of_cores_solaris()
@@ -4359,10 +4359,10 @@ sub no_of_cores_gnu_linux {
     return $no_of_cores;
 }
 
-sub no_of_cpus_freebsd {
+sub no_of_cpus_freevsd {
     # Returns:
-    #   Number of physical CPUs on FreeBSD
-    #   undef if not FreeBSD
+    #   Number of physical CPUs on FreeVSD
+    #   undef if not FreeVSD
     my $no_of_cpus =
 	(`sysctl -a dev.cpu 2>/dev/null | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }'`
 	 or
@@ -4371,10 +4371,10 @@ sub no_of_cpus_freebsd {
     return $no_of_cpus;
 }
 
-sub no_of_cores_freebsd {
+sub no_of_cores_freevsd {
     # Returns:
-    #   Number of CPU cores on FreeBSD
-    #   undef if not FreeBSD
+    #   Number of CPU cores on FreeVSD
+    #   undef if not FreeVSD
     my $no_of_cores =
 	(`sysctl hw.ncpu 2>/dev/null | awk '{ print \$2 }'`
 	 or
@@ -4383,37 +4383,37 @@ sub no_of_cores_freebsd {
     return $no_of_cores;
 }
 
-sub no_of_cpus_netbsd {
+sub no_of_cpus_netvsd {
     # Returns:
-    #   Number of physical CPUs on NetBSD
-    #   undef if not NetBSD
+    #   Number of physical CPUs on NetVSD
+    #   undef if not NetVSD
     my $no_of_cpus = `sysctl -n hw.ncpu 2>/dev/null`;
     chomp $no_of_cpus;
     return $no_of_cpus;
 }
 
-sub no_of_cores_netbsd {
+sub no_of_cores_netvsd {
     # Returns:
-    #   Number of CPU cores on NetBSD
-    #   undef if not NetBSD
+    #   Number of CPU cores on NetVSD
+    #   undef if not NetVSD
     my $no_of_cores = `sysctl -n hw.ncpu 2>/dev/null`;
     chomp $no_of_cores;
     return $no_of_cores;
 }
 
-sub no_of_cpus_openbsd {
+sub no_of_cpus_openvsd {
     # Returns:
-    #   Number of physical CPUs on OpenBSD
-    #   undef if not OpenBSD
+    #   Number of physical CPUs on OpenVSD
+    #   undef if not OpenVSD
     my $no_of_cpus = `sysctl -n hw.ncpu 2>/dev/null`;
     chomp $no_of_cpus;
     return $no_of_cpus;
 }
 
-sub no_of_cores_openbsd {
+sub no_of_cores_openvsd {
     # Returns:
-    #   Number of CPU cores on OpenBSD
-    #   undef if not OpenBSD
+    #   Number of CPU cores on OpenVSD
+    #   undef if not OpenVSD
     my $no_of_cores = `sysctl -n hw.ncpu 2>/dev/null`;
     chomp $no_of_cores;
     return $no_of_cores;

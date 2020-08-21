@@ -1,23 +1,23 @@
-#include <bears/plugins/reputation/reputation_plugin.hpp>
-#include <bears/plugins/reputation/reputation_objects.hpp>
+#include <voilk/plugins/reputation/reputation_plugin.hpp>
+#include <voilk/plugins/reputation/reputation_objects.hpp>
 
-#include <bears/chain/util/impacted.hpp>
+#include <voilk/chain/util/impacted.hpp>
 
-#include <bears/protocol/config.hpp>
+#include <voilk/protocol/config.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/chain/index.hpp>
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/comment_object.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/index.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
 #include <memory>
 
-namespace bears { namespace plugins { namespace reputation {
+namespace voilk { namespace plugins { namespace reputation {
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 
 namespace detail {
 
@@ -25,7 +25,7 @@ class reputation_plugin_impl
 {
    public:
       reputation_plugin_impl( reputation_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
       ~reputation_plugin_impl() {}
 
@@ -215,4 +215,4 @@ void reputation_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // bears::plugins::reputation
+} } } // voilk::plugins::reputation

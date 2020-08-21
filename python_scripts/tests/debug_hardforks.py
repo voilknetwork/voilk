@@ -9,8 +9,8 @@ from pathlib import Path
 from time import sleep
 
 # local imports
-from bearsdebugnode import DebugNode
-from bearsapi.bearsnoderpc import BearsNodeRPC
+from voilkdebugnode import DebugNode
+from voilkapi.voilknoderpc import VoilkNodeRPC
 
 WAITING = True
 
@@ -20,9 +20,9 @@ def main( ):
       print( "This script only works on POSIX systems" )
       return
 
-   parser = ArgumentParser( description='Run a bearsd debug node on an existing chain, trigger a hardfork' \
+   parser = ArgumentParser( description='Run a voilkd debug node on an existing chain, trigger a hardfork' \
                               ' and verify hardfork does not break invariants or block production' )
-   parser.add_argument( '--bearsd', '-s', type=str, required=True, help='The location of a bearsd binary to run the debug node' )
+   parser.add_argument( '--voilkd', '-s', type=str, required=True, help='The location of a voilkd binary to run the debug node' )
    parser.add_argument( '--data-dir', '-d', type=str, required=True, help='The location of an existing data directory. ' + \
                         'The debug node will pull blocks from this directory when replaying the chain. The directory ' + \
                         'will not be changed.' )
@@ -31,19 +31,19 @@ def main( ):
 
    args = parser.parse_args()
 
-   bearsd = Path( args.bearsd )
-   if( not bearsd.exists() ):
-      print( 'Error: bearsd does not exist.' )
+   voilkd = Path( args.voilkd )
+   if( not voilkd.exists() ):
+      print( 'Error: voilkd does not exist.' )
       return
 
-   bearsd = bearsd.resolve()
-   if( not bearsd.is_file() ):
-      print( 'Error: bearsd is not a file.' )
+   voilkd = voilkd.resolve()
+   if( not voilkd.is_file() ):
+      print( 'Error: voilkd is not a file.' )
       return
 
    data_dir = Path( args.data_dir )
    if( not data_dir.exists() ):
-      print( 'Error: data_dir does not exist or is not a properly constructed bearsd data directory' )
+      print( 'Error: data_dir does not exist or is not a properly constructed voilkd data directory' )
 
    data_dir = data_dir.resolve()
    if( not data_dir.is_dir() ):
@@ -51,11 +51,11 @@ def main( ):
 
    signal.signal( signal.SIGINT, sigint_handler )
 
-   debug_node = DebugNode( str( bearsd ), str( data_dir ) )
+   debug_node = DebugNode( str( voilkd ), str( data_dir ) )
 
    with debug_node :
 
-      run_bearsd_tests( debug_node )
+      run_voilkd_tests( debug_node )
 
       if( args.pause_node ):
          print( "Letting the node hang for manual inspection..." )
@@ -66,8 +66,8 @@ def main( ):
          sleep( 1 )
 
 
-def run_bearsd_tests( debug_node ):
-   from bearsapi.bearsnoderpc import BearsNodeRPC
+def run_voilkd_tests( debug_node ):
+   from voilkapi.voilknoderpc import VoilkNodeRPC
 
    try:
       print( 'Replaying blocks...', )

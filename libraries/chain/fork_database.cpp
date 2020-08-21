@@ -1,8 +1,8 @@
-#include <bears/chain/fork_database.hpp>
+#include <voilk/chain/fork_database.hpp>
 
-#include <bears/chain/database_exceptions.hpp>
+#include <voilk/chain/database_exceptions.hpp>
 
-namespace bears { namespace chain {
+namespace voilk { namespace chain {
 
 fork_database::fork_database()
 {
@@ -61,7 +61,7 @@ void  fork_database::_push_block(const item_ptr& item)
    {
       auto& index = _index.get<block_id>();
       auto itr = index.find(item->previous_id());
-      BEARS_ASSERT(itr != index.end(), unlinkable_block_exception, "block does not link to known chain");
+      VOILK_ASSERT(itr != index.end(), unlinkable_block_exception, "block does not link to known chain");
       FC_ASSERT(!(*itr)->invalid);
       item->prev = *itr;
    }
@@ -241,4 +241,4 @@ void fork_database::remove(block_id_type id)
    _index.get<block_id>().erase(id);
 }
 
-} } // bears::chain
+} } // voilk::chain

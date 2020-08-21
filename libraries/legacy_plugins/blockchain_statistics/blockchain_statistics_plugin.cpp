@@ -1,20 +1,20 @@
-#include <bears/blockchain_statistics/blockchain_statistics_api.hpp>
+#include <voilk/blockchain_statistics/blockchain_statistics_api.hpp>
 
-#include <bears/app/impacted.hpp>
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/comment_object.hpp>
-#include <bears/chain/history_object.hpp>
+#include <voilk/app/impacted.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/comment_object.hpp>
+#include <voilk/chain/history_object.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/chain/index.hpp>
-#include <bears/chain/operation_notification.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/index.hpp>
+#include <voilk/chain/operation_notification.hpp>
 
-namespace bears { namespace blockchain_statistics {
+namespace voilk { namespace blockchain_statistics {
 
 namespace detail
 {
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 
 class blockchain_statistics_plugin_impl
 {
@@ -53,10 +53,10 @@ struct operation_process
       {
          b.transfers++;
 
-         if( op.amount.symbol == BEARS_SYMBOL )
-            b.bears_transferred += op.amount.amount;
+         if( op.amount.symbol == VOILK_SYMBOL )
+            b.voilk_transferred += op.amount.amount;
          else
-            b.bsd_transferred += op.amount.amount;
+            b.vsd_transferred += op.amount.amount;
       });
    }
 
@@ -64,7 +64,7 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.bsd_paid_as_interest += op.interest.amount;
+         b.vsd_paid_as_interest += op.interest.amount;
       });
    }
 
@@ -154,7 +154,7 @@ struct operation_process
       _db.modify( _bucket, [&]( bucket_object& b )
       {
          b.payouts++;
-         b.bsd_paid_to_authors += op.bsd_payout.amount;
+         b.vsd_paid_to_authors += op.vsd_payout.amount;
          b.coins_paid_to_authors += op.coining_payout.amount;
       });
    }
@@ -180,7 +180,7 @@ struct operation_process
       _db.modify( _bucket, [&]( bucket_object& b )
       {
          b.transfers_to_coining++;
-         b.bears_coined += op.amount.amount;
+         b.voilk_coined += op.amount.amount;
       });
    }
 
@@ -191,7 +191,7 @@ struct operation_process
       _db.modify( _bucket, [&]( bucket_object& b )
       {
          b.coining_withdrawals_processed++;
-         if( op.deposited.symbol == BEARS_SYMBOL )
+         if( op.deposited.symbol == VOILK_SYMBOL )
             b.coins_withdrawn += op.withdrawn.amount;
          else
             b.coins_transferred += op.withdrawn.amount;
@@ -229,8 +229,8 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.bsd_conversion_requests_created++;
-         b.bsd_to_be_converted += op.amount.amount;
+         b.vsd_conversion_requests_created++;
+         b.vsd_to_be_converted += op.amount.amount;
       });
    }
 
@@ -238,8 +238,8 @@ struct operation_process
    {
       _db.modify( _bucket, [&]( bucket_object& b )
       {
-         b.bsd_conversion_requests_filled++;
-         b.bears_converted += op.amount_out.amount;
+         b.vsd_conversion_requests_filled++;
+         b.voilk_converted += op.amount_out.amount;
       });
    }
 };
@@ -357,11 +357,11 @@ void blockchain_statistics_plugin_impl::pre_operation( const operation_notificat
          auto& account = db.get_account( op.account );
          const auto& bucket = db.get(bucket_id);
 
-         auto new_coining_withdrawal_rate = op.coining_shares.amount / BEARS_COINING_WITHDRAW_INTERVALS;
+         auto new_coining_withdrawal_rate = op.coining_shares.amount / VOILK_COINING_WITHDRAW_INTERVALS;
          if( op.coining_shares.amount > 0 && new_coining_withdrawal_rate == 0 )
             new_coining_withdrawal_rate = 1;
 
-         if( !db.has_hardfork( BEARS_HARDFORK_0_1 ) )
+         if( !db.has_hardfork( VOILK_HARDFORK_0_1 ) )
             new_coining_withdrawal_rate *= 1000000;
 
          db.modify( bucket, [&]( bucket_object& b )
@@ -468,6 +468,6 @@ uint32_t blockchain_statistics_plugin::get_max_history_per_bucket() const
    return _my->_maximum_history_per_bucket_size;
 }
 
-} } // bears::blockchain_statistics
+} } // voilk::blockchain_statistics
 
-BEARS_DEFINE_PLUGIN( blockchain_statistics, bears::blockchain_statistics::blockchain_statistics_plugin );
+VOILK_DEFINE_PLUGIN( blockchain_statistics, voilk::blockchain_statistics::blockchain_statistics_plugin );

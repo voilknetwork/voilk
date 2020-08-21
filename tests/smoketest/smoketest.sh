@@ -15,9 +15,9 @@ pushd () { command pushd "$@" > /dev/null; }
 popd () { command popd "$@" > /dev/null; }
 
 function print_help_and_quit {
-   echo "Usage: path_to_tested_bearsd path_to_reference_bearsd path_to_test_blockchain_directory"
+   echo "Usage: path_to_tested_voilkd path_to_reference_voilkd path_to_test_blockchain_directory"
    echo "       path_to_reference_blockchain_directory number_of_blocks_to_replay [number_of_jobs [--dont-copy-config]]"
-   echo "Example: ~/work/bearshares/bears/build/Release/programs/bearsd/bearsd ~/master/bearshares/bears/build/Release/programs/bearsd/bearsd ~/bearshares/bears/work1 ~/bearshares/bears/work2 5000000"
+   echo "Example: ~/work/voilknetwork/voilk/build/Release/programs/voilkd/voilkd ~/master/voilknetwork/voilk/build/Release/programs/voilkd/voilkd ~/voilknetwork/voilk/work1 ~/voilknetwork/voilk/work2 5000000"
    echo "         Pass absolute, not relative paths;"
    echo "         if <number_of_jobs> not passed or if is less or zero equal <nproc> will be used;"
    echo "         if --dont-copy-config is passed config.init files are not copied from test directories."
@@ -29,8 +29,8 @@ then
    print_help_and_quit
 fi
 
-TEST_BEARSD_PATH=$1
-REF_BEARSD_PATH=$2
+TEST_VOILKD_PATH=$1
+REF_VOILKD_PATH=$2
 TEST_WORK_PATH=$3
 REF_WORK_PATH=$4
 BLOCK_LIMIT=$5
@@ -53,7 +53,7 @@ then
    print_help_and_quit
 fi
 
-function check_bearsd_path {
+function check_voilkd_path {
    echo Checking $1...
    if [ -x "$1" ] && file "$1" | grep -q "executable"
    then
@@ -84,8 +84,8 @@ function run_test_group {
       return
    fi
 
-   echo Running ./$GROUP_TEST_SCRIPT $JOBS $TEST_BEARSD_PATH $REF_BEARSD_PATH $TEST_WORK_PATH $REF_WORK_PATH $BLOCK_LIMIT $COPY_CONFIG
-   ./$GROUP_TEST_SCRIPT $JOBS $TEST_BEARSD_PATH $REF_BEARSD_PATH $TEST_WORK_PATH $REF_WORK_PATH $BLOCK_LIMIT $COPY_CONFIG
+   echo Running ./$GROUP_TEST_SCRIPT $JOBS $TEST_VOILKD_PATH $REF_VOILKD_PATH $TEST_WORK_PATH $REF_WORK_PATH $BLOCK_LIMIT $COPY_CONFIG
+   ./$GROUP_TEST_SCRIPT $JOBS $TEST_VOILKD_PATH $REF_VOILKD_PATH $TEST_WORK_PATH $REF_WORK_PATH $BLOCK_LIMIT $COPY_CONFIG
    EXIT_CODE=$?
    if [ $EXIT_CODE -ne 0 ]
    then
@@ -106,8 +106,8 @@ function cleanup {
 
 trap cleanup SIGINT SIGPIPE
 
-check_bearsd_path $TEST_BEARSD_PATH
-check_bearsd_path $REF_BEARSD_PATH
+check_voilkd_path $TEST_VOILKD_PATH
+check_voilkd_path $REF_VOILKD_PATH
 
 check_work_path $TEST_WORK_PATH
 check_work_path $REF_WORK_PATH

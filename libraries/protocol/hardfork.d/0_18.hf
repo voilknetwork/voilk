@@ -1,8 +1,8 @@
-#ifndef BEARS_HARDFORK_0_18
-#define BEARS_HARDFORK_0_18 18
+#ifndef VOILK_HARDFORK_0_18
+#define VOILK_HARDFORK_0_18 18
 
-#define BEARS_HARDFORK_0_18_TIME 1597572200 
+#define VOILK_HARDFORK_0_18_TIME 1597572200 
 
-#define BEARS_HARDFORK_0_18_VERSION hardfork_version( 0, 18 )
+#define VOILK_HARDFORK_0_18_VERSION hardfork_version( 0, 18 )
 
 #endif

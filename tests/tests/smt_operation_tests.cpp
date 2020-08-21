@@ -1,21 +1,21 @@
 #include <fc/macros.hpp>
 
-#if defined IS_TEST_NET && defined BEARS_ENABLE_SMT
+#if defined IS_TEST_NET && defined VOILK_ENABLE_SMT
 
 #include <boost/test/unit_test.hpp>
 
-#include <bears/protocol/exceptions.hpp>
-#include <bears/protocol/hardfork.hpp>
+#include <voilk/protocol/exceptions.hpp>
+#include <voilk/protocol/hardfork.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/chain/database_exceptions.hpp>
-#include <bears/chain/bears_objects.hpp>
-#include <bears/chain/smt_objects.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/database_exceptions.hpp>
+#include <voilk/chain/voilk_objects.hpp>
+#include <voilk/chain/smt_objects.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace bears::chain;
-using namespace bears::protocol;
+using namespace voilk::chain;
+using namespace voilk::protocol;
 using fc::string;
 using boost::container::flat_set;
 
@@ -41,13 +41,13 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_authorities )
       op.owner = "alice";
       op.amount_to_sell = ASSET( "1.000 TESTS" );
       op.min_to_receive = asset( 1000, alice_symbol );
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_TIME_UNTIL_EXPIRATION );
 
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
 
       BOOST_TEST_MESSAGE( "--- Test failure when no signature." );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       BOOST_TEST_MESSAGE( "--- Test success with account signature" );
       sign( tx, alice_private_key );
@@ -55,18 +55,18 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_authorities )
 
       BOOST_TEST_MESSAGE( "--- Test failure with duplicate signature" );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with additional incorrect signature" );
       tx.signatures.clear();
       sign( tx, alice_private_key );
       sign( tx, bob_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with incorrect signature" );
       tx.signatures.clear();
       sign( tx, alice_post_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       validate_database();
    }
@@ -93,13 +93,13 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_authorities )
       op.owner = "alice";
       op.amount_to_sell = ASSET( "1.000 TESTS" );
       op.exchange_rate = price( ASSET( "1.000 TESTS" ), asset( 1000, alice_symbol ) );
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
 
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
 
       BOOST_TEST_MESSAGE( "--- Test failure when no signature." );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       BOOST_TEST_MESSAGE( "--- Test success with account signature" );
       sign( tx, alice_private_key );
@@ -107,18 +107,18 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_authorities )
 
       BOOST_TEST_MESSAGE( "--- Test failure with duplicate signature" );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with additional incorrect signature" );
       tx.signatures.clear();
       sign( tx, alice_private_key );
       sign( tx, bob_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with incorrect signature" );
       tx.signatures.clear();
       sign( tx, alice_post_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       validate_database();
    }
@@ -169,14 +169,14 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       op.amount_to_sell = ASSET( "10.000 TESTS" );
       op.min_to_receive = asset( 10000, alice_symbol );
       op.fill_or_kill = false;
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, bob_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
       validate_database();
 
@@ -188,10 +188,10 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
       validate_database();
 
@@ -203,26 +203,26 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when expiration is too long" );
       op.amount_to_sell = ASSET( "10.000 TESTS" );
       op.min_to_receive = ASSET( "15.000 TBD" );
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION + 1 );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION + 1 );
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- Test success creating limit order that will not be filled" );
 
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
       op.amount_to_sell = ASSET( "10.000 TESTS" );
       op.min_to_receive = asset( 15000, alice_symbol );
       tx.operations.clear();
@@ -239,9 +239,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == op.amount_to_sell.amount );
       BOOST_REQUIRE( limit_order->sell_price == price( op.amount_to_sell / op.min_to_receive ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure creating limit order with duplicate id" );
@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       limit_order = limit_order_idx.find( std::make_tuple( "alice", op.orderid ) );
       BOOST_REQUIRE( limit_order != limit_order_idx.end() );
@@ -259,9 +259,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 10000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "10.000 TESTS" ), op.min_to_receive ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test sucess killing an order that will not be filled" );
@@ -272,16 +272,16 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       validate_database();
 
       // BOOST_TEST_MESSAGE( "--- Test having a partial match to limit order" );
       // // Alice has order for 15 SMT at a price of 2:3
-      // // Fill 5 BEARS for 7.5 SMT
+      // // Fill 5 VOILK for 7.5 SMT
 
       op.owner = "bob";
       op.orderid = 1;
@@ -307,12 +307,12 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 5000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "10.000 TESTS" ), asset( 15000, alice_symbol ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 1 );
       BOOST_REQUIRE( fill_order_op.open_pays.amount.value == ASSET( "5.000 TESTS").amount.value );
@@ -341,12 +341,12 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == 1 );
       BOOST_REQUIRE( limit_order->for_sale.value == 7500 );
       BOOST_REQUIRE( limit_order->sell_price == price( asset( 15000, alice_symbol ), ASSET( "10.000 TESTS" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling an existing order and new order fully" );
@@ -368,9 +368,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 3 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is better." );
@@ -407,11 +407,11 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == 4 );
       BOOST_REQUIRE( limit_order->for_sale.value == 1000 );
       BOOST_REQUIRE( limit_order->sell_price == price( asset( 12000, alice_symbol ), ASSET( "10.000 TESTS" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
 
       limit_order_cancel_operation can;
@@ -426,7 +426,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is worse." );
 
       //auto gpo = db->get_dynamic_global_properties();
-      //auto start_bsd = gpo.current_bsd_supply;
+      //auto start_vsd = gpo.current_vsd_supply;
 
       op.owner = "alice";
       op.orderid = 5;
@@ -461,11 +461,11 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == 5 );
       BOOST_REQUIRE( limit_order->for_sale.value == 9091 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "20.000 TESTS" ), asset( 22000, alice_symbol ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -493,10 +493,10 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_authorities )
       c.orderid = 1;
       c.amount_to_sell = ASSET( "1.000 TESTS" );
       c.min_to_receive = asset( 1000, alice_symbol );
-      c.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      c.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
 
       tx.operations.push_back( c );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_authorities )
       tx.operations.push_back( op );
 
       BOOST_TEST_MESSAGE( "--- Test failure when no signature." );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       BOOST_TEST_MESSAGE( "--- Test success with account signature" );
       sign( tx, alice_private_key );
@@ -517,18 +517,18 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_authorities )
 
       BOOST_TEST_MESSAGE( "--- Test failure with duplicate signature" );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with additional incorrect signature" );
       tx.signatures.clear();
       sign( tx, alice_private_key );
       sign( tx, bob_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with incorrect signature" );
       tx.signatures.clear();
       sign( tx, alice_post_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       validate_database();
    }
@@ -566,9 +566,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_apply )
       op.owner = "alice";
       op.orderid = 5;
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- Test cancel order" );
 
@@ -577,7 +577,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_apply )
       create.orderid = 5;
       create.amount_to_sell = ASSET( "5.000 TESTS" );
       create.min_to_receive = asset( 7500, alice_symbol );
-      create.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      create.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( create );
@@ -594,7 +594,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 5 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -643,14 +643,14 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       op.amount_to_sell = ASSET( "10.000 TESTS" );
       op.exchange_rate = price( ASSET( "1.000 TESTS" ), asset( 1000, alice_symbol ) );
       op.fill_or_kill = false;
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + BEARS_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + VOILK_MAX_TIME_UNTIL_EXPIRATION );
       sign( tx, bob_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
       validate_database();
 
@@ -663,10 +663,10 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
       validate_database();
 
@@ -678,26 +678,26 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when expiration is too long" );
       op.amount_to_sell = ASSET( "10.000 TESTS" );
       op.exchange_rate = price( ASSET( "2.000 TESTS" ), ASSET( "3.000 TBD" ) );
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION + 1 );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION + 1 );
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- Test success creating limit order that will not be filled" );
 
-      op.expiration = db->head_block_time() + fc::seconds( BEARS_MAX_LIMIT_ORDER_EXPIRATION );
+      op.expiration = db->head_block_time() + fc::seconds( VOILK_MAX_LIMIT_ORDER_EXPIRATION );
       op.amount_to_sell = ASSET( "10.000 TESTS" );
       op.exchange_rate = price( ASSET( "2.000 TESTS" ), asset( 3000, alice_symbol ) );
       tx.operations.clear();
@@ -714,9 +714,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == op.amount_to_sell.amount );
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure creating limit order with duplicate id" );
@@ -726,7 +726,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       limit_order = limit_order_idx.find( std::make_tuple( "alice", op.orderid ) );
       BOOST_REQUIRE( limit_order != limit_order_idx.end() );
@@ -734,9 +734,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 10000 );
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test sucess killing an order that will not be filled" );
@@ -747,16 +747,16 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.signatures.clear();
       tx.operations.push_back( op );
       sign( tx, alice_private_key );
-      BEARS_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
+      VOILK_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       validate_database();
 
       // BOOST_TEST_MESSAGE( "--- Test having a partial match to limit order" );
       // // Alice has order for 15 SMT at a price of 2:3
-      // // Fill 5 BEARS for 7.5 SMT
+      // // Fill 5 VOILK for 7.5 SMT
 
       op.owner = "bob";
       op.orderid = 1;
@@ -782,12 +782,12 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 5000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "2.000 TESTS" ), asset( 3000, alice_symbol ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 1 );
       BOOST_REQUIRE( fill_order_op.open_pays.amount.value == ASSET( "5.000 TESTS").amount.value );
@@ -816,12 +816,12 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == 1 );
       BOOST_REQUIRE( limit_order->for_sale.value == 7500 );
       BOOST_REQUIRE( limit_order->sell_price == price( asset( 3000, alice_symbol ), ASSET( "2.000 TESTS" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling an existing order and new order fully" );
@@ -843,9 +843,9 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 3 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is better." );
@@ -882,11 +882,11 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == 4 );
       BOOST_REQUIRE( limit_order->for_sale.value == 1000 );
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
 
       limit_order_cancel_operation can;
@@ -901,7 +901,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is worse." );
 
       //auto gpo = db->get_dynamic_global_properties();
-      //auto start_bsd = gpo.current_bsd_supply;
+      //auto start_vsd = gpo.current_vsd_supply;
 
       op.owner = "alice";
       op.orderid = 5;
@@ -936,11 +936,11 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == 5 );
       BOOST_REQUIRE( limit_order->for_sale.value == 9091 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "1.000 TESTS" ), asset( 1100, alice_symbol ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, BEARS_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( alice_symbol, VOILK_SYMBOL ) );
       BOOST_REQUIRE( db->get_balance( alice_account, alice_symbol ).amount.value == alice_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( alice_account, BEARS_SYMBOL ).amount.value == alice_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( alice_account, VOILK_SYMBOL ).amount.value == alice_balance.amount.value );
       BOOST_REQUIRE( db->get_balance( bob_account, alice_symbol ).amount.value == bob_smt_balance.amount.value );
-      BOOST_REQUIRE( db->get_balance( bob_account, BEARS_SYMBOL ).amount.value == bob_balance.amount.value );
+      BOOST_REQUIRE( db->get_balance( bob_account, VOILK_SYMBOL ).amount.value == bob_balance.amount.value );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -964,28 +964,28 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_validate )
       const auto& smt3 = smts[2];
 
       BOOST_TEST_MESSAGE( "Testing empty rewards" );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
 
       BOOST_TEST_MESSAGE( "Testing ineffective rewards" );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       // Manually inserted.
       op.reward_tokens.push_back( ASSET( "0.000 TESTS" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( ASSET( "0.000 TBD" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( ASSET( "0.000000 COINS" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( 0, smt1 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( 0, smt2 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( 0, smt3 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
 
       BOOST_TEST_MESSAGE( "Testing single reward claims" );
@@ -1025,41 +1025,41 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_validate )
 
       BOOST_TEST_MESSAGE( "Testing invalid rewards" );
       op.reward_tokens.push_back( ASSET( "-1.000 TESTS" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( ASSET( "-1.000 TBD" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( ASSET( "-1.000000 COINS" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( -1, smt1 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( -1, smt2 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( -1, smt3 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
 
       BOOST_TEST_MESSAGE( "Testing duplicated reward tokens." );
       op.reward_tokens.push_back( asset( 1, smt3 ) );
       op.reward_tokens.push_back( asset( 1, smt3 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
 
       BOOST_TEST_MESSAGE( "Testing inconsistencies of manually inserted reward tokens." );
       op.reward_tokens.push_back( ASSET( "1.000 TESTS" ) );
       op.reward_tokens.push_back( ASSET( "1.000 TBD" ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.push_back( asset( 1, smt3 ) );
       op.reward_tokens.push_back( asset( 1, smt1 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.reward_tokens.clear();
       op.reward_tokens.push_back( asset( 1, smt1 ) );
       op.reward_tokens.push_back( asset( -1, smt3 ) );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -1112,27 +1112,27 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_apply )
       {
          db.modify( db.get_account( "alice" ), []( account_object& a )
          {
-            a.reward_bsd_balance = ASSET( "10.000 TBD" );
-            a.reward_bears_balance = ASSET( "10.000 TESTS" );
+            a.reward_vsd_balance = ASSET( "10.000 TBD" );
+            a.reward_voilk_balance = ASSET( "10.000 TESTS" );
             a.reward_coining_balance = ASSET( "10.000000 COINS" );
-            a.reward_coining_bears = ASSET( "10.000 TESTS" );
+            a.reward_coining_voilk = ASSET( "10.000 TESTS" );
          });
 
          db.modify( db.get_dynamic_global_properties(), []( dynamic_global_property_object& gpo )
          {
-            gpo.current_bsd_supply += ASSET( "10.000 TBD" );
+            gpo.current_vsd_supply += ASSET( "10.000 TBD" );
             gpo.current_supply += ASSET( "20.000 TESTS" );
             gpo.virtual_supply += ASSET( "20.000 TESTS" );
             gpo.pending_rewarded_coining_shares += ASSET( "10.000000 COINS" );
-            gpo.pending_rewarded_coining_bears += ASSET( "10.000 TESTS" );
+            gpo.pending_rewarded_coining_voilk += ASSET( "10.000 TESTS" );
          });
       });
 
       generate_block();
       validate_database();
 
-      auto alice_bears = db->get_account( "alice" ).balance;
-      auto alice_bsd = db->get_account( "alice" ).bsd_balance;
+      auto alice_voilk = db->get_account( "alice" ).balance;
+      auto alice_vsd = db->get_account( "alice" ).vsd_balance;
       auto alice_coins = db->get_account( "alice" ).coining_shares;
       auto alice_smt1 = db->get_balance( "alice", smt1 );
       auto alice_smt2 = db->get_balance( "alice", smt2 );
@@ -1162,13 +1162,13 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_apply )
       op.reward_tokens.push_back( ASSET( "0.000 TESTS" ) );
       op.reward_tokens.push_back( partial_coins );
       PUSH_OP(op, alice_private_key);
-      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_bears + ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_bears_balance == ASSET( "10.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance == alice_bsd + ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_bsd_balance == ASSET( "10.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_voilk + ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_voilk_balance == ASSET( "10.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance == alice_vsd + ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_vsd_balance == ASSET( "10.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).coining_shares == alice_coins + partial_coins );
       BOOST_REQUIRE( db->get_account( "alice" ).reward_coining_balance == ASSET( "5.000000 COINS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_coining_bears == ASSET( "5.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_coining_voilk == ASSET( "5.000 TESTS" ) );
       validate_database();
       alice_coins += partial_coins;
       op.reward_tokens.clear();
@@ -1187,19 +1187,19 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_apply )
 
       BOOST_TEST_MESSAGE( "--- Claiming the full reward balance" );
       // Legacy symbols
-      asset full_bears = ASSET( "10.000 TESTS" );
-      asset full_bsd = ASSET( "10.000 TBD" );
-      op.reward_tokens.push_back( full_bsd );
-      op.reward_tokens.push_back( full_bears );
+      asset full_voilk = ASSET( "10.000 TESTS" );
+      asset full_vsd = ASSET( "10.000 TBD" );
+      op.reward_tokens.push_back( full_vsd );
+      op.reward_tokens.push_back( full_voilk );
       op.reward_tokens.push_back( partial_coins );
       PUSH_OP(op, alice_private_key);
-      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_bears + full_bears );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_bears_balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).bsd_balance == alice_bsd + full_bsd );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_bsd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_voilk + full_voilk );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_voilk_balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).vsd_balance == alice_vsd + full_vsd );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_vsd_balance == ASSET( "0.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).coining_shares == alice_coins + partial_coins );
       BOOST_REQUIRE( db->get_account( "alice" ).reward_coining_balance == ASSET( "0.000000 COINS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_coining_bears == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_coining_voilk == ASSET( "0.000 TESTS" ) );
       validate_database();
       op.reward_tokens.clear();
       // SMTs
@@ -1239,27 +1239,27 @@ BOOST_AUTO_TEST_CASE( smt_transfer_to_coining_validate )
 
       // Fail on invalid 'from' account name
       op.from = "@@@@@";
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.from = "alice";
 
       // Fail on invalid 'to' account name
       op.to = "@@@@@";
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.to = "";
 
       // Fail on coining symbol (instead of liquid)
       op.amount = asset( 20, smt1.get_paired_symbol() );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.amount = asset( 20, smt1 );
 
       // Fail on 0 amount
       op.amount = asset( 0, smt1 );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.amount = asset( 20, smt1 );
 
       // Fail on negative amount
       op.amount = asset( -20, smt1 );
-      BEARS_REQUIRE_THROW( op.validate(), fc::assert_exception );
+      VOILK_REQUIRE_THROW( op.validate(), fc::assert_exception );
       op.amount = asset( 20, smt1 );
 
       validate_database();

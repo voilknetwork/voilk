@@ -1,16 +1,16 @@
-#include <bears/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <bears/plugins/account_by_key_api/account_by_key_api.hpp>
+#include <voilk/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <voilk/plugins/account_by_key_api/account_by_key_api.hpp>
 
-#include <bears/plugins/account_by_key/account_by_key_objects.hpp>
+#include <voilk/plugins/account_by_key/account_by_key_objects.hpp>
 
-namespace bears { namespace plugins { namespace account_by_key {
+namespace voilk { namespace plugins { namespace account_by_key {
 
 namespace detail {
 
 class account_by_key_api_impl
 {
    public:
-      account_by_key_api_impl() : _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ) {}
+      account_by_key_api_impl() : _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ) {}
 
       get_key_references_return get_key_references( const get_key_references_args& args )const;
 
@@ -26,7 +26,7 @@ get_key_references_return account_by_key_api_impl::get_key_references( const get
 
    for( auto& key : args.keys )
    {
-      std::vector< bears::protocol::account_name_type > result;
+      std::vector< voilk::protocol::account_name_type > result;
       auto lookup_itr = key_idx.lower_bound( key );
 
       while( lookup_itr != key_idx.end() && lookup_itr->key == key )
@@ -45,11 +45,11 @@ get_key_references_return account_by_key_api_impl::get_key_references( const get
 
 account_by_key_api::account_by_key_api(): my( new detail::account_by_key_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_ACCOUNT_BY_KEY_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_ACCOUNT_BY_KEY_API_PLUGIN_NAME );
 }
 
 account_by_key_api::~account_by_key_api() {}
 
 DEFINE_READ_APIS( account_by_key_api, (get_key_references) )
 
-} } } // bears::plugins::account_by_key
+} } } // voilk::plugins::account_by_key

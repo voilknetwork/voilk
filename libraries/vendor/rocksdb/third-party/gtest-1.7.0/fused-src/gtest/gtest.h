@@ -217,14 +217,14 @@
 //
 //   GTEST_OS_AIX      - IBM AIX
 //   GTEST_OS_CYGWIN   - Cygwin
-//   GTEST_OS_FREEBSD  - FreeBSD
+//   GTEST_OS_FREEVSD  - FreeVSD
 //   GTEST_OS_HPUX     - HP-UX
 //   GTEST_OS_LINUX    - Linux
 //     GTEST_OS_LINUX_ANDROID - Google Android
 //   GTEST_OS_MAC      - Mac OS X
 //     GTEST_OS_IOS    - iOS
 //   GTEST_OS_NACL     - Google Native Client (NaCl)
-//   GTEST_OS_OPENBSD  - OpenBSD
+//   GTEST_OS_OPENVSD  - OpenVSD
 //   GTEST_OS_QNX      - QNX
 //   GTEST_OS_SOLARIS  - Sun Solaris
 //   GTEST_OS_SYMBIAN  - Symbian
@@ -419,8 +419,8 @@
 # if TARGET_OS_IPHONE
 #  define GTEST_OS_IOS 1
 # endif
-#elif defined __FreeBSD__
-# define GTEST_OS_FREEBSD 1
+#elif defined __FreeVSD__
+# define GTEST_OS_FREEVSD 1
 #elif defined __linux__
 # define GTEST_OS_LINUX 1
 # if defined __ANDROID__
@@ -436,8 +436,8 @@
 # define GTEST_OS_HPUX 1
 #elif defined __native_client__
 # define GTEST_OS_NACL 1
-#elif defined __OpenBSD__
-# define GTEST_OS_OPENBSD 1
+#elif defined __OpenVSD__
+# define GTEST_OS_OPENVSD 1
 #elif defined __QNX__
 # define GTEST_OS_QNX 1
 #endif  // __CYGWIN__
@@ -737,7 +737,7 @@ struct _RTL_CRITICAL_SECTION;
 // To disable threading support in Google Test, add -DGTEST_HAS_PTHREAD=0
 // to your compiler flags.
 # define GTEST_HAS_PTHREAD (GTEST_OS_LINUX || GTEST_OS_MAC || GTEST_OS_HPUX \
-    || GTEST_OS_QNX || GTEST_OS_FREEBSD || GTEST_OS_NACL)
+    || GTEST_OS_QNX || GTEST_OS_FREEVSD || GTEST_OS_NACL)
 #endif  // GTEST_HAS_PTHREAD
 
 #if GTEST_HAS_PTHREAD
@@ -1936,7 +1936,7 @@ using ::std::tuple_size;
      (GTEST_OS_MAC && !GTEST_OS_IOS) || \
      (GTEST_OS_WINDOWS_DESKTOP && _MSC_VER >= 1400) || \
      GTEST_OS_WINDOWS_MINGW || GTEST_OS_AIX || GTEST_OS_HPUX || \
-     GTEST_OS_OPENBSD || GTEST_OS_QNX || GTEST_OS_FREEBSD)
+     GTEST_OS_OPENVSD || GTEST_OS_QNX || GTEST_OS_FREEVSD)
 # define GTEST_HAS_DEATH_TEST 1
 # include <vector>  // NOLINT
 #endif

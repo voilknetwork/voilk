@@ -1,8 +1,8 @@
-#include <bears/plugins/witness_api/witness_api_plugin.hpp>
-#include <bears/plugins/witness_api/witness_api.hpp>
+#include <voilk/plugins/witness_api/witness_api_plugin.hpp>
+#include <voilk/plugins/witness_api/witness_api.hpp>
 
 
-namespace bears { namespace plugins { namespace witness {
+namespace voilk { namespace plugins { namespace witness {
 
 witness_api_plugin::witness_api_plugin() {}
 witness_api_plugin::~witness_api_plugin() {}
@@ -17,4 +17,4 @@ void witness_api_plugin::plugin_initialize( const variables_map& options )
 void witness_api_plugin::plugin_startup() {}
 void witness_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::witness
+} } } // voilk::plugins::witness

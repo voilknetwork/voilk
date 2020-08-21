@@ -1,4 +1,4 @@
-#include <bears/protocol/asset.hpp>
+#include <voilk/protocol/asset.hpp>
 
 #include <fc/io/json.hpp>
 
@@ -15,7 +15,7 @@ index : field
    7  : \0
 */
 
-namespace bears { namespace protocol {
+namespace voilk { namespace protocol {
 
 std::string asset_symbol_type::to_string()const
 {
@@ -29,7 +29,7 @@ asset_symbol_type asset_symbol_type::from_string( const std::string& str )
 
 void asset_symbol_type::to_nai_string( char* buf )const
 {
-   static_assert( BEARS_ASSET_SYMBOL_NAI_STRING_LENGTH >= 12, "This code will overflow a short buffer" );
+   static_assert( VOILK_ASSET_SYMBOL_NAI_STRING_LENGTH >= 12, "This code will overflow a short buffer" );
    uint32_t x = to_nai();
    buf[11] = '\0';
    buf[10] = ((x%10)+'0');  x /= 10;
@@ -177,17 +177,17 @@ uint32_t asset_symbol_type::asset_num_from_nai( uint32_t nai, uint8_t decimal_pl
 
    switch( nai_data_digits )
    {
-      case BEARS_NAI_BEARS:
-         FC_ASSERT( decimal_places == BEARS_PRECISION_BEARS );
-         return BEARS_ASSET_NUM_BEARS;
-      case BEARS_NAI_BSD:
-         FC_ASSERT( decimal_places == BEARS_PRECISION_BSD );
-         return BEARS_ASSET_NUM_BSD;
-      case BEARS_NAI_COINS:
-         FC_ASSERT( decimal_places == BEARS_PRECISION_COINS );
-         return BEARS_ASSET_NUM_COINS;
+      case VOILK_NAI_VOILK:
+         FC_ASSERT( decimal_places == VOILK_PRECISION_VOILK );
+         return VOILK_ASSET_NUM_VOILK;
+      case VOILK_NAI_VSD:
+         FC_ASSERT( decimal_places == VOILK_PRECISION_VSD );
+         return VOILK_ASSET_NUM_VSD;
+      case VOILK_NAI_COINS:
+         FC_ASSERT( decimal_places == VOILK_PRECISION_COINS );
+         return VOILK_ASSET_NUM_COINS;
       default:
-         FC_ASSERT( decimal_places <= BEARS_ASSET_MAX_DECIMALS, "Invalid decimal_places" );
+         FC_ASSERT( decimal_places <= VOILK_ASSET_MAX_DECIMALS, "Invalid decimal_places" );
          return (nai_data_digits << 5) | 0x10 | decimal_places;
    }
 }
@@ -199,14 +199,14 @@ uint32_t asset_symbol_type::to_nai()const
    // Can be replaced with some clever bitshifting
    switch( asset_num )
    {
-      case BEARS_ASSET_NUM_BEARS:
-         nai_data_digits = BEARS_NAI_BEARS;
+      case VOILK_ASSET_NUM_VOILK:
+         nai_data_digits = VOILK_NAI_VOILK;
          break;
-      case BEARS_ASSET_NUM_BSD:
-         nai_data_digits = BEARS_NAI_BSD;
+      case VOILK_ASSET_NUM_VSD:
+         nai_data_digits = VOILK_NAI_VSD;
          break;
-      case BEARS_ASSET_NUM_COINS:
-         nai_data_digits = BEARS_NAI_COINS;
+      case VOILK_ASSET_NUM_COINS:
+         nai_data_digits = VOILK_NAI_COINS;
          break;
       default:
          FC_ASSERT( space() == smt_nai_space );
@@ -225,12 +225,12 @@ bool asset_symbol_type::is_coining() const
       {
          switch( asset_num )
          {
-            case BEARS_ASSET_NUM_BEARS:
+            case VOILK_ASSET_NUM_VOILK:
                return false;
-            case BEARS_ASSET_NUM_BSD:
-               // BSD is certainly liquid.
+            case VOILK_ASSET_NUM_VSD:
+               // VSD is certainly liquid.
                return false;
-            case BEARS_ASSET_NUM_COINS:
+            case VOILK_ASSET_NUM_COINS:
                return true;
             default:
                FC_ASSERT( false, "Unknown asset symbol" );
@@ -252,12 +252,12 @@ asset_symbol_type asset_symbol_type::get_paired_symbol() const
       {
          switch( asset_num )
          {
-            case BEARS_ASSET_NUM_BEARS:
-               return from_asset_num( BEARS_ASSET_NUM_COINS );
-            case BEARS_ASSET_NUM_BSD:
+            case VOILK_ASSET_NUM_VOILK:
+               return from_asset_num( VOILK_ASSET_NUM_COINS );
+            case VOILK_ASSET_NUM_VSD:
                return *this;
-            case BEARS_ASSET_NUM_COINS:
-               return from_asset_num( BEARS_ASSET_NUM_BEARS );
+            case VOILK_ASSET_NUM_COINS:
+               return from_asset_num( VOILK_ASSET_NUM_VOILK );
             default:
                FC_ASSERT( false, "Unknown asset symbol" );
          }
@@ -278,9 +278,9 @@ asset_symbol_type::asset_symbol_space asset_symbol_type::space()const
    asset_symbol_type::asset_symbol_space s = legacy_space;
    switch( asset_num )
    {
-      case BEARS_ASSET_NUM_BEARS:
-      case BEARS_ASSET_NUM_BSD:
-      case BEARS_ASSET_NUM_COINS:
+      case VOILK_ASSET_NUM_VOILK:
+      case VOILK_ASSET_NUM_VSD:
+      case VOILK_ASSET_NUM_COINS:
          s = legacy_space;
          break;
       default:
@@ -293,9 +293,9 @@ void asset_symbol_type::validate()const
 {
    switch( asset_num )
    {
-      case BEARS_ASSET_NUM_BEARS:
-      case BEARS_ASSET_NUM_BSD:
-      case BEARS_ASSET_NUM_COINS:
+      case VOILK_ASSET_NUM_VOILK:
+      case VOILK_ASSET_NUM_VSD:
+      case VOILK_ASSET_NUM_COINS:
          break;
       default:
       {
@@ -305,19 +305,19 @@ void asset_symbol_type::validate()const
          FC_ASSERT( (nai_data_digits >= SMT_MIN_NAI) &
                     (nai_data_digits <= SMT_MAX_NAI) &
                     (nai_1bit == 0x10) &
-                    (nai_decimal_places <= BEARS_ASSET_MAX_DECIMALS),
+                    (nai_decimal_places <= VOILK_ASSET_MAX_DECIMALS),
                     "Cannot determine space for asset ${n}", ("n", asset_num) );
       }
    }
    // this assert is duplicated by above code in all cases
-   // FC_ASSERT( decimals() <= BEARS_ASSET_MAX_DECIMALS );
+   // FC_ASSERT( decimals() <= VOILK_ASSET_MAX_DECIMALS );
 }
 
 void asset::validate()const
 {
    symbol.validate();
    FC_ASSERT( amount.value >= 0 );
-   FC_ASSERT( amount.value <= BEARS_MAX_SATOSHIS );
+   FC_ASSERT( amount.value <= VOILK_MAX_SATOSHIS );
 }
 
 #define BQ(a) \
@@ -367,8 +367,8 @@ DEFINE_PRICE_COMPARISON_OPERATOR( >= )
          return price{ base, quote };
       } FC_CAPTURE_AND_RETHROW( (base)(quote) ) }
 
-      price price::max( asset_symbol_type base, asset_symbol_type quote ) { return asset( share_type(BEARS_MAX_SATOSHIS), base ) / asset( share_type(1), quote); }
-      price price::min( asset_symbol_type base, asset_symbol_type quote ) { return asset( 1, base ) / asset( BEARS_MAX_SATOSHIS, quote); }
+      price price::max( asset_symbol_type base, asset_symbol_type quote ) { return asset( share_type(VOILK_MAX_SATOSHIS), base ) / asset( share_type(1), quote); }
+      price price::min( asset_symbol_type base, asset_symbol_type quote ) { return asset( 1, base ) / asset( VOILK_MAX_SATOSHIS, quote); }
 
       bool price::is_null() const { return *this == price(); }
 
@@ -380,10 +380,10 @@ DEFINE_PRICE_COMPARISON_OPERATOR( >= )
       } FC_CAPTURE_AND_RETHROW( (base)(quote) ) }
 
 
-} } // bears::protocol
+} } // voilk::protocol
 
 namespace fc {
-   void to_variant( const bears::protocol::asset& var, fc::variant& vo )
+   void to_variant( const voilk::protocol::asset& var, fc::variant& vo )
    {
       try
       {
@@ -394,7 +394,7 @@ namespace fc {
       } FC_CAPTURE_AND_RETHROW()
    }
 
-   void from_variant( const fc::variant& var, bears::protocol::asset& vo )
+   void from_variant( const fc::variant& var, voilk::protocol::asset& vo )
    {
       try
       {
@@ -408,7 +408,7 @@ namespace fc {
 
          FC_ASSERT( v_object.contains( "precision" ), "Precision field doesn't exist." );
          FC_ASSERT( v_object.contains( "nai" ), "NAI field doesn't exist." );
-         vo.symbol = bears::protocol::asset_symbol_type::from_nai_string( v_object[ "nai" ].as< std::string >().c_str(), v_object[ "precision" ].as< uint8_t >() );
+         vo.symbol = voilk::protocol::asset_symbol_type::from_nai_string( v_object[ "nai" ].as< std::string >().c_str(), v_object[ "precision" ].as< uint8_t >() );
       } FC_CAPTURE_AND_RETHROW()
    }
 }

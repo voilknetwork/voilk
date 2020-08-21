@@ -1,7 +1,7 @@
-#include <bears/plugins/block_api/block_api.hpp>
-#include <bears/plugins/block_api/block_api_plugin.hpp>
+#include <voilk/plugins/block_api/block_api.hpp>
+#include <voilk/plugins/block_api/block_api_plugin.hpp>
 
-namespace bears { namespace plugins { namespace block_api {
+namespace voilk { namespace plugins { namespace block_api {
 
 block_api_plugin::block_api_plugin() {}
 block_api_plugin::~block_api_plugin() {}
@@ -19,4 +19,4 @@ void block_api_plugin::plugin_startup() {}
 
 void block_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::block_api
+} } } // voilk::plugins::block_api

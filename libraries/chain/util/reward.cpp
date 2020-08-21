@@ -1,8 +1,8 @@
 
-#include <bears/chain/util/reward.hpp>
-#include <bears/chain/util/uint256.hpp>
+#include <voilk/chain/util/reward.hpp>
+#include <voilk/chain/util/uint256.hpp>
 
-namespace bears { namespace chain { namespace util {
+namespace voilk { namespace chain { namespace util {
 
 uint8_t find_msb( const uint128_t& u )
 {
@@ -42,24 +42,24 @@ uint64_t get_rshare_reward( const comment_reward_context& ctx )
    FC_ASSERT( ctx.rshares > 0 );
    FC_ASSERT( ctx.total_reward_shares2 > 0 );
 
-   u256 rf(ctx.total_reward_fund_bears.amount.value);
+   u256 rf(ctx.total_reward_fund_voilk.amount.value);
    u256 total_claims = to256( ctx.total_reward_shares2 );
 
    //idump( (ctx) );
 
    u256 claim = to256( evaluate_reward_curve( ctx.rshares.value, ctx.reward_curve, ctx.content_constant ) );
-   claim = ( claim * ctx.reward_weight ) / BEARS_100_PERCENT;
+   claim = ( claim * ctx.reward_weight ) / VOILK_100_PERCENT;
 
    u256 payout_u256 = ( rf * claim ) / total_claims;
    FC_ASSERT( payout_u256 <= u256( uint64_t( std::numeric_limits<int64_t>::max() ) ) );
    uint64_t payout = static_cast< uint64_t >( payout_u256 );
 
-   if( is_comment_payout_dust( ctx.current_bears_price, payout ) )
+   if( is_comment_payout_dust( ctx.current_voilk_price, payout ) )
       payout = 0;
 
-   asset max_bears = to_bears( ctx.current_bears_price, ctx.max_bsd );
+   asset max_voilk = to_voilk( ctx.current_voilk_price, ctx.max_vsd );
 
-   payout = std::min( payout, uint64_t( max_bears.amount.value ) );
+   payout = std::min( payout, uint64_t( max_voilk.amount.value ) );
 
    return payout;
    } FC_CAPTURE_AND_RETHROW( (ctx) )
@@ -94,4 +94,4 @@ uint128_t evaluate_reward_curve( const uint128_t& rshares, const protocol::curve
    return result;
 }
 
-} } } // bears::chain::util
+} } } // voilk::chain::util

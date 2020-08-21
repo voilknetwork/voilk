@@ -1,8 +1,8 @@
-#include <bears/plugins/chain_api/chain_api_plugin.hpp>
-#include <bears/plugins/chain_api/chain_api.hpp>
+#include <voilk/plugins/chain_api/chain_api_plugin.hpp>
+#include <voilk/plugins/chain_api/chain_api.hpp>
 
 
-namespace bears { namespace plugins { namespace chain {
+namespace voilk { namespace plugins { namespace chain {
 
 chain_api_plugin::chain_api_plugin() {}
 chain_api_plugin::~chain_api_plugin() {}
@@ -17,4 +17,4 @@ void chain_api_plugin::plugin_initialize( const variables_map& options )
 void chain_api_plugin::plugin_startup() {}
 void chain_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::chain
+} } } // voilk::plugins::chain

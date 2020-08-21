@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Create list of all bears accounts in file.
+Create list of all voilk accounts in file.
 Usage: create_account_list.py <server_address> <output_filename>
 """
 import sys

@@ -1,7 +1,7 @@
 FROM phusion/baseimage:0.9.19
 
 ENV LANG=en_US.UTF-8
-ENV WDIR=/usr/local/bears
+ENV WDIR=/usr/local/voilk
 ENV SMOKETEST=$WDIR/smoketest
 
 RUN apt-get update
@@ -19,8 +19,8 @@ COPY . $WDIR/
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#reference: volume points to reference bearsd
-#tested: volume points to tested bearsd
+#reference: volume points to reference voilkd
+#tested: volume points to tested voilkd
 #ref_blockchain: volume points to reference folder, where blockchain folder exists
 #tested_blockchain: volume points to tested folder, where blockchain folder exists
 #logs_dir: location where non-empty logs will be copied
@@ -31,7 +31,7 @@ EXPOSE 6991
 
 #CMD pyresttest
 CMD cd $SMOKETEST && \
-   ./smoketest.sh /reference/bearsd /tested/bearsd /ref_blockchain /tested_blockchain $STOP_REPLAY_AT_BLOCK $JOBS $COPY_CONFIG 2>&1 | tee log.txt || \
+   ./smoketest.sh /reference/voilkd /tested/voilkd /ref_blockchain /tested_blockchain $STOP_REPLAY_AT_BLOCK $JOBS $COPY_CONFIG 2>&1 | tee log.txt || \
    find ./ -type f -path */logs/* -not -name logs | cpio -pd /logs_dir && \
    cp log.txt /logs_dir && \
    chmod -R a+rw /logs_dir

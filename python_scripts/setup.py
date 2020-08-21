@@ -1,12 +1,12 @@
 from setuptools import setup
 
-setup( name='bearsdebugnode',
+setup( name='voilkdebugnode',
        version='0.1',
-       description='A wrapper for launching and interacting with a Bears Debug Node',
-       url='http://github.com/bearshares/bears',
-       author='Bearshares, Inc.',
-       author_email='vandeberg@bearshares.com',
+       description='A wrapper for launching and interacting with a Voilk Debug Node',
+       url='http://github.com/voilknetwork/voilk',
+       author='Voilknetwork, Inc.',
+       author_email='vandeberg@voilknetwork.com',
        license='See LICENSE.md',
-       packages=['bearsdebugnode'],
-       #install_requires=['bearsapi'],
+       packages=['voilkdebugnode'],
+       #install_requires=['voilkapi'],
        zip_safe=False )

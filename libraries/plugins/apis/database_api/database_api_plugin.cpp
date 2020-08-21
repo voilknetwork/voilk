@@ -1,7 +1,7 @@
-#include <bears/plugins/database_api/database_api.hpp>
-#include <bears/plugins/database_api/database_api_plugin.hpp>
+#include <voilk/plugins/database_api/database_api.hpp>
+#include <voilk/plugins/database_api/database_api_plugin.hpp>
 
-namespace bears { namespace plugins { namespace database_api {
+namespace voilk { namespace plugins { namespace database_api {
 
 database_api_plugin::database_api_plugin() {}
 database_api_plugin::~database_api_plugin() {}
@@ -19,4 +19,4 @@ void database_api_plugin::plugin_startup() {}
 
 void database_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::database_api
+} } } // voilk::plugins::database_api

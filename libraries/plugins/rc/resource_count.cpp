@@ -1,13 +1,13 @@
 
-#include <bears/plugins/rc/resource_count.hpp>
-#include <bears/plugins/rc/resource_sizes.hpp>
+#include <voilk/plugins/rc/resource_count.hpp>
+#include <voilk/plugins/rc/resource_sizes.hpp>
 
-#include <bears/protocol/operations.hpp>
-#include <bears/protocol/transaction.hpp>
+#include <voilk/protocol/operations.hpp>
+#include <voilk/protocol/transaction.hpp>
 
-namespace bears { namespace plugins { namespace rc {
+namespace voilk { namespace plugins { namespace rc {
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 
 struct count_operation_visitor
 {
@@ -281,7 +281,7 @@ struct count_operation_visitor
       execution_time_count += _e.witness_set_properties_operation_exec_time;
    }
 
-#ifdef BEARS_ENABLE_SMT
+#ifdef VOILK_ENABLE_SMT
    void operator()( const claim_reward_balance2_operation& op )const
    {
       FC_TODO( "Change RC state bytes computation to take SMT's into account" )
@@ -397,4 +397,4 @@ void count_resources(
       + vtor.state_bytes_count;
 }
 
-} } } // bears::plugins::rc
+} } } // voilk::plugins::rc

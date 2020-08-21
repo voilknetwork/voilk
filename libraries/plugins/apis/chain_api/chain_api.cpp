@@ -1,7 +1,7 @@
-#include <bears/plugins/chain_api/chain_api_plugin.hpp>
-#include <bears/plugins/chain_api/chain_api.hpp>
+#include <voilk/plugins/chain_api/chain_api_plugin.hpp>
+#include <voilk/plugins/chain_api/chain_api.hpp>
 
-namespace bears { namespace plugins { namespace chain {
+namespace voilk { namespace plugins { namespace chain {
 
 namespace detail {
 
@@ -76,7 +76,7 @@ DEFINE_API_IMPL( chain_api_impl, push_transaction )
 
 chain_api::chain_api(): my( new detail::chain_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_CHAIN_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_CHAIN_API_PLUGIN_NAME );
 }
 
 chain_api::~chain_api() {}
@@ -86,4 +86,4 @@ DEFINE_LOCKLESS_APIS( chain_api,
    (push_transaction)
 )
 
-} } } //bears::plugins::chain
+} } } //voilk::plugins::chain

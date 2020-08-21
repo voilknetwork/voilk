@@ -1,7 +1,7 @@
-#include <bears/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
-#include <bears/plugins/network_broadcast_api/network_broadcast_api.hpp>
+#include <voilk/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
+#include <voilk/plugins/network_broadcast_api/network_broadcast_api.hpp>
 
-namespace bears { namespace plugins { namespace network_broadcast_api {
+namespace voilk { namespace plugins { namespace network_broadcast_api {
 
 network_broadcast_api_plugin::network_broadcast_api_plugin() {}
 network_broadcast_api_plugin::~network_broadcast_api_plugin() {}
@@ -18,4 +18,4 @@ void network_broadcast_api_plugin::plugin_initialize( const variables_map& optio
 void network_broadcast_api_plugin::plugin_startup() {}
 void network_broadcast_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::test_api
+} } } // voilk::plugins::test_api

@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/bears/plugins/statsd/*.hpp")
+file(GLOB HEADERS "include/voilk/plugins/statsd/*.hpp")
 
 add_library( statsd_plugin
              statsd_plugin.cpp

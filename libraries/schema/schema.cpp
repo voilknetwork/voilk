@@ -1,9 +1,9 @@
 
-#include <bears/schema/schema.hpp>
+#include <voilk/schema/schema.hpp>
 
 #include <set>
 
-namespace bears { namespace schema {
+namespace voilk { namespace schema {
 
 namespace detail {
 

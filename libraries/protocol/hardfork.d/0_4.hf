@@ -1,5 +1,5 @@
-#ifndef BEARS_HARDFORK_0_4
-#define BEARS_HARDFORK_0_4 4
-#define BEARS_HARDFORK_0_4_TIME 1539591000
-#define BEARS_HARDFORK_0_4_VERSION hardfork_version( 0, 4 )
+#ifndef VOILK_HARDFORK_0_4
+#define VOILK_HARDFORK_0_4 4
+#define VOILK_HARDFORK_0_4_TIME 1539591000
+#define VOILK_HARDFORK_0_4_VERSION hardfork_version( 0, 4 )
 #endif

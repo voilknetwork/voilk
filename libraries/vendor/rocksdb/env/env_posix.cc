@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Use of this source code is governed by a VSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors
 #include <dirent.h>
 #include <errno.h>
@@ -30,7 +30,7 @@
 #include <time.h>
 #include <algorithm>
 // Get nano time includes
-#if defined(OS_LINUX) || defined(OS_FREEBSD)
+#if defined(OS_LINUX) || defined(OS_FREEVSD)
 #elif defined(__MACH__)
 #include <mach/clock.h>
 #include <mach/mach.h>
@@ -160,7 +160,7 @@ class PosixEnv : public Env {
 #ifdef ROCKSDB_LITE
       return Status::IOError(fname, "Direct I/O not supported in RocksDB lite");
 #endif  // !ROCKSDB_LITE
-#if !defined(OS_MACOSX) && !defined(OS_OPENBSD) && !defined(OS_SOLARIS)
+#if !defined(OS_MACOSX) && !defined(OS_OPENVSD) && !defined(OS_SOLARIS)
       flags |= O_DIRECT;
 #endif
     }
@@ -209,7 +209,7 @@ class PosixEnv : public Env {
 #ifdef ROCKSDB_LITE
       return Status::IOError(fname, "Direct I/O not supported in RocksDB lite");
 #endif  // !ROCKSDB_LITE
-#if !defined(OS_MACOSX) && !defined(OS_OPENBSD) && !defined(OS_SOLARIS)
+#if !defined(OS_MACOSX) && !defined(OS_OPENVSD) && !defined(OS_SOLARIS)
       flags |= O_DIRECT;
       TEST_SYNC_POINT_CALLBACK("NewRandomAccessFile:O_DIRECT", &flags);
 #endif
@@ -275,7 +275,7 @@ class PosixEnv : public Env {
       return Status::IOError(fname, "Direct I/O not supported in RocksDB lite");
 #endif  // ROCKSDB_LITE
       flags |= O_WRONLY;
-#if !defined(OS_MACOSX) && !defined(OS_OPENBSD) && !defined(OS_SOLARIS)
+#if !defined(OS_MACOSX) && !defined(OS_OPENVSD) && !defined(OS_SOLARIS)
       flags |= O_DIRECT;
 #endif
       TEST_SYNC_POINT_CALLBACK("NewWritableFile:O_DIRECT", &flags);
@@ -363,7 +363,7 @@ class PosixEnv : public Env {
       return Status::IOError(fname, "Direct I/O not supported in RocksDB lite");
 #endif  // !ROCKSDB_LITE
       flags |= O_WRONLY;
-#if !defined(OS_MACOSX) && !defined(OS_OPENBSD) && !defined(OS_SOLARIS)
+#if !defined(OS_MACOSX) && !defined(OS_OPENVSD) && !defined(OS_SOLARIS)
       flags |= O_DIRECT;
 #endif
       TEST_SYNC_POINT_CALLBACK("NewWritableFile:O_DIRECT", &flags);
@@ -720,7 +720,7 @@ class PosixEnv : public Env {
   }
 
   virtual uint64_t NowNanos() override {
-#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_AIX)
+#if defined(OS_LINUX) || defined(OS_FREEVSD) || defined(OS_AIX)
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return static_cast<uint64_t>(ts.tv_sec) * 1000000000 + ts.tv_nsec;

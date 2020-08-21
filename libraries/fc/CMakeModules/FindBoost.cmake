@@ -142,7 +142,7 @@
 # Copyright 2008      Andreas Pakulat <apaku@gmx.de>
 # Copyright 2008-2012 Philip Lowman <philip@yhbt.com>
 #
-# Distributed under the OSI-approved BSD License (the "License");
+# Distributed under the OSI-approved VSD License (the "License");
 # see accompanying file Copyright.txt for details.
 #
 # This software is distributed WITHOUT ANY WARRANTY; without even the

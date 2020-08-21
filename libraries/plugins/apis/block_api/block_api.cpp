@@ -1,11 +1,11 @@
 #include <appbase/application.hpp>
 
-#include <bears/plugins/block_api/block_api.hpp>
-#include <bears/plugins/block_api/block_api_plugin.hpp>
+#include <voilk/plugins/block_api/block_api.hpp>
+#include <voilk/plugins/block_api/block_api_plugin.hpp>
 
-#include <bears/protocol/get_config.hpp>
+#include <voilk/protocol/get_config.hpp>
 
-namespace bears { namespace plugins { namespace block_api {
+namespace voilk { namespace plugins { namespace block_api {
 
 class block_api_impl
 {
@@ -30,13 +30,13 @@ class block_api_impl
 block_api::block_api()
    : my( new block_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_BLOCK_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_BLOCK_API_PLUGIN_NAME );
 }
 
 block_api::~block_api() {}
 
 block_api_impl::block_api_impl()
-   : _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ) {}
+   : _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ) {}
 
 block_api_impl::~block_api_impl() {}
 
@@ -73,4 +73,4 @@ DEFINE_READ_APIS( block_api,
    (get_block)
 )
 
-} } } // bears::plugins::block_api
+} } } // voilk::plugins::block_api

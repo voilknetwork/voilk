@@ -1,16 +1,16 @@
-#include <bears/plugins/block_log_info/block_log_info_plugin.hpp>
-#include <bears/plugins/block_log_info/block_log_info_objects.hpp>
+#include <voilk/plugins/block_log_info/block_log_info_plugin.hpp>
+#include <voilk/plugins/block_log_info/block_log_info_objects.hpp>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/database.hpp>
-#include <bears/chain/global_property_object.hpp>
-#include <bears/chain/index.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/global_property_object.hpp>
+#include <voilk/chain/index.hpp>
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-namespace bears { namespace plugins { namespace block_log_info {
+namespace voilk { namespace plugins { namespace block_log_info {
 
 namespace detail {
 
@@ -18,7 +18,7 @@ class block_log_info_plugin_impl
 {
    public:
       block_log_info_plugin_impl( block_log_info_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
 
       void on_post_apply_block( const block_notification& note );
@@ -147,7 +147,7 @@ void block_log_info_plugin::plugin_initialize( const boost::program_options::var
    try
    {
       ilog( "Initializing block_log_info plugin" );
-      chain::database& db = appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db();
+      chain::database& db = appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db();
 
       my->_post_apply_block_conn = db.add_post_apply_block_handler(
          [&]( const block_notification& note ){ my->on_post_apply_block( note ); }, *this );
@@ -174,4 +174,4 @@ void block_log_info_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_block_conn );
 }
 
-} } } // bears::plugins::block_log_info
+} } } // voilk::plugins::block_log_info

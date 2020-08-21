@@ -1,21 +1,21 @@
-#include <bears/plugins/condenser_api/condenser_api.hpp>
-#include <bears/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <voilk/plugins/condenser_api/condenser_api.hpp>
+#include <voilk/plugins/condenser_api/condenser_api_plugin.hpp>
 
-#include <bears/plugins/database_api/database_api_plugin.hpp>
-#include <bears/plugins/block_api/block_api_plugin.hpp>
-#include <bears/plugins/account_history_api/account_history_api_plugin.hpp>
-#include <bears/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <bears/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
-#include <bears/plugins/tags_api/tags_api_plugin.hpp>
-#include <bears/plugins/follow_api/follow_api_plugin.hpp>
-#include <bears/plugins/reputation_api/reputation_api_plugin.hpp>
-#include <bears/plugins/market_history_api/market_history_api_plugin.hpp>
-#include <bears/plugins/witness_api/witness_api_plugin.hpp>
+#include <voilk/plugins/database_api/database_api_plugin.hpp>
+#include <voilk/plugins/block_api/block_api_plugin.hpp>
+#include <voilk/plugins/account_history_api/account_history_api_plugin.hpp>
+#include <voilk/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <voilk/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
+#include <voilk/plugins/tags_api/tags_api_plugin.hpp>
+#include <voilk/plugins/follow_api/follow_api_plugin.hpp>
+#include <voilk/plugins/reputation_api/reputation_api_plugin.hpp>
+#include <voilk/plugins/market_history_api/market_history_api_plugin.hpp>
+#include <voilk/plugins/witness_api/witness_api_plugin.hpp>
 
-#include <bears/utilities/git_revision.hpp>
+#include <voilk/utilities/git_revision.hpp>
 
-#include <bears/chain/util/reward.hpp>
-#include <bears/chain/util/uint256.hpp>
+#include <voilk/chain/util/reward.hpp>
+#include <voilk/chain/util/uint256.hpp>
 
 #include <fc/git_revision.hpp>
 
@@ -28,7 +28,7 @@
 #define CHECK_ARG_SIZE( s ) \
    FC_ASSERT( args.size() == s, "Expected #s argument(s), was ${n}", ("n", args.size()) );
 
-namespace bears { namespace plugins { namespace condenser_api {
+namespace voilk { namespace plugins { namespace condenser_api {
 
 namespace detail
 {
@@ -38,12 +38,12 @@ namespace detail
    {
       public:
          condenser_api_impl() :
-            _chain( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >() ),
+            _chain( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >() ),
             _db( _chain.db() )
          {
             _on_post_apply_block_conn = _db.add_post_apply_block_handler(
                [&]( const block_notification& note ){ on_post_apply_block( note.block ); },
-               appbase::app().get_plugin< bears::plugins::condenser_api::condenser_api_plugin >(),
+               appbase::app().get_plugin< voilk::plugins::condenser_api::condenser_api_plugin >(),
                0 );
          }
 
@@ -141,7 +141,7 @@ namespace detail
 
          void on_post_apply_block( const signed_block& b );
 
-         bears::plugins::chain::chain_plugin&                              _chain;
+         voilk::plugins::chain::chain_plugin&                              _chain;
 
          chain::database&                                                  _db;
 
@@ -169,8 +169,8 @@ namespace detail
       CHECK_ARG_SIZE( 0 )
       return get_version_return
       (
-         fc::string( BEARS_BLOCKCHAIN_VERSION ),
-         fc::string( bears::utilities::git_revision_sha ),
+         fc::string( VOILK_BLOCKCHAIN_VERSION ),
+         fc::string( voilk::utilities::git_revision_sha ),
          fc::string( fc::git_revision_sha )
       );
    }
@@ -914,7 +914,7 @@ namespace detail
 
    DEFINE_API_IMPL( condenser_api_impl, get_account_references )
    {
-      FC_ASSERT( false, "condenser_api::get_account_references --- Needs to be refactored for Bears." );
+      FC_ASSERT( false, "condenser_api::get_account_references --- Needs to be refactored for Voilk." );
    }
 
    DEFINE_API_IMPL( condenser_api_impl, lookup_account_names )
@@ -1143,7 +1143,7 @@ namespace detail
    DEFINE_API_IMPL( condenser_api_impl, get_conversion_requests )
    {
       CHECK_ARG_SIZE( 1 )
-      auto requests = _database_api->find_bsd_conversion_requests(
+      auto requests = _database_api->find_vsd_conversion_requests(
          {
             args[0].as< account_name_type >()
          }).requests;
@@ -1244,7 +1244,7 @@ namespace detail
       {
          result.push_back( *itr );
 
-         // if( itr->sell_price.base.symbol == BEARS_SYMBOL )
+         // if( itr->sell_price.base.symbol == VOILK_SYMBOL )
          //    result.back().real_price = (~result.back().sell_price).to_real();
          // else
          //    result.back().real_price = (result.back().sell_price).to_real();
@@ -1991,7 +1991,7 @@ namespace detail
          auto itr = cidx.lower_bound( d.id );
          if( itr != cidx.end() && itr->comment == d.id )
          {
-            d.promoted = legacy_asset::from_asset( asset( itr->promoted_balance, BSD_SYMBOL ) );
+            d.promoted = legacy_asset::from_asset( asset( itr->promoted_balance, VSD_SYMBOL ) );
          }
       }
 
@@ -1999,15 +1999,15 @@ namespace detail
       const auto& hist  = _db.get_feed_history();
 
       asset pot;
-      if( _db.has_hardfork( BEARS_HARDFORK_0_17__774 ) )
+      if( _db.has_hardfork( VOILK_HARDFORK_0_17__774 ) )
          pot = _db.get_reward_fund( _db.get_comment( d.author, d.permlink ) ).reward_balance;
       else
-         pot = props.total_reward_fund_bears;
+         pot = props.total_reward_fund_voilk;
 
       if( !hist.current_median_history.is_null() ) pot = pot * hist.current_median_history;
 
       u256 total_r2 = 0;
-      if( _db.has_hardfork( BEARS_HARDFORK_0_17__774 ) )
+      if( _db.has_hardfork( VOILK_HARDFORK_0_17__774 ) )
          total_r2 = chain::util::to256( _db.get_reward_fund( _db.get_comment( d.author, d.permlink ) ).recent_claims );
       else
          total_r2 = chain::util::to256( props.total_reward_shares2 );
@@ -2015,7 +2015,7 @@ namespace detail
       if( total_r2 > 0 )
       {
          uint128_t vshares;
-         if( _db.has_hardfork( BEARS_HARDFORK_0_17__774 ) )
+         if( _db.has_hardfork( VOILK_HARDFORK_0_17__774 ) )
          {
             const auto& rf = _db.get_reward_fund( _db.get_comment( d.author, d.permlink ) );
             vshares = d.net_rshares.value > 0 ? chain::util::evaluate_reward_curve( d.net_rshares.value, rf.author_reward_curve, rf.content_constant ) : 0;
@@ -2039,7 +2039,7 @@ namespace detail
          }
       }
 
-      if( d.parent_author != BEARS_ROOT_POST_PARENT )
+      if( d.parent_author != VOILK_ROOT_POST_PARENT )
          d.cashout_time = _db.calculate_discussion_payout_time( _db.get< chain::comment_object >( d.id ) );
 
       if( d.body.size() > 1024*128 )
@@ -2100,7 +2100,7 @@ namespace detail
 
 uint16_t api_account_object::_compute_voting_power( const database_api::api_account_object& a )
 {
-   if( a.voting_manabar.last_update_time < BEARS_HARDFORK_0_20_TIME )
+   if( a.voting_manabar.last_update_time < VOILK_HARDFORK_0_20_TIME )
       return (uint16_t) a.voting_manabar.current_mana;
 
    auto coins = chain::util::get_effective_coining_shares( a );
@@ -2109,24 +2109,24 @@ uint16_t api_account_object::_compute_voting_power( const database_api::api_acco
 
    //
    // Let t1 = last_vote_time, t2 = last_update_time
-   // vp_t2 = BEARS_100_PERCENT * current_mana / coins
-   // vp_t1 = vp_t2 - BEARS_100_PERCENT * (t2 - t1) / BEARS_VOTING_MANA_REGENERATION_SECONDS
+   // vp_t2 = VOILK_100_PERCENT * current_mana / coins
+   // vp_t1 = vp_t2 - VOILK_100_PERCENT * (t2 - t1) / VOILK_VOTING_MANA_REGENERATION_SECONDS
    //
 
    uint32_t t1 = a.last_vote_time.sec_since_epoch();
    uint32_t t2 = a.voting_manabar.last_update_time;
    uint64_t dt = (t2 > t1) ? (t2 - t1) : 0;
-   uint64_t vp_dt = BEARS_100_PERCENT * dt / BEARS_VOTING_MANA_REGENERATION_SECONDS;
+   uint64_t vp_dt = VOILK_100_PERCENT * dt / VOILK_VOTING_MANA_REGENERATION_SECONDS;
 
-   uint128_t vp_t2 = BEARS_100_PERCENT;
+   uint128_t vp_t2 = VOILK_100_PERCENT;
    vp_t2 *= a.voting_manabar.current_mana;
    vp_t2 /= coins;
 
    uint64_t vp_t2u = vp_t2.to_uint64();
-   if( vp_t2u >= BEARS_100_PERCENT )
+   if( vp_t2u >= VOILK_100_PERCENT )
    {
-      wlog( "Truncated vp_t2u to BEARS_100_PERCENT for account ${a}", ("a", a.name) );
-      vp_t2u = BEARS_100_PERCENT;
+      wlog( "Truncated vp_t2u to VOILK_100_PERCENT for account ${a}", ("a", a.name) );
+      vp_t2u = VOILK_100_PERCENT;
    }
    uint16_t vp_t1 = uint16_t( vp_t2u ) - uint16_t( std::min( vp_t2u, vp_dt ) );
 
@@ -2136,7 +2136,7 @@ uint16_t api_account_object::_compute_voting_power( const database_api::api_acco
 condenser_api::condenser_api()
    : my( new detail::condenser_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_CONDENSER_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_CONDENSER_API_PLUGIN_NAME );
 }
 
 condenser_api::~condenser_api() {}
@@ -2301,4 +2301,4 @@ DEFINE_READ_APIS( condenser_api,
    (get_market_history)
 )
 
-} } } // bears::plugins::condenser_api
+} } } // voilk::plugins::condenser_api

@@ -1,13 +1,13 @@
 list( APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/libraries/fc/GitVersionGen" )
 include( GetGitRevisionDescription )
-get_git_head_revision(GIT_REFSPEC BEARS_GIT_REVISION_SHA)
-get_git_unix_timestamp(BEARS_GIT_REVISION_UNIX_TIMESTAMP)
-git_describe(BEARS_GIT_REVISION_DESCRIPTION --tags)
-if(NOT BEARS_GIT_REVISION_DESCRIPTION)
-    set(BEARS_GIT_REVISION_DESCRIPTION "unknown")
-endif(NOT BEARS_GIT_REVISION_DESCRIPTION)
+get_git_head_revision(GIT_REFSPEC VOILK_GIT_REVISION_SHA)
+get_git_unix_timestamp(VOILK_GIT_REVISION_UNIX_TIMESTAMP)
+git_describe(VOILK_GIT_REVISION_DESCRIPTION --tags)
+if(NOT VOILK_GIT_REVISION_DESCRIPTION)
+    set(VOILK_GIT_REVISION_DESCRIPTION "unknown")
+endif(NOT VOILK_GIT_REVISION_DESCRIPTION)
 
-file(GLOB HEADERS "include/bears/utilities/*.hpp")
+file(GLOB HEADERS "include/voilk/utilities/*.hpp")
 
 set(sources
    benchmark_dumper.cpp
@@ -21,29 +21,29 @@ set(sources
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/git_revision.cpp.in" "${CMAKE_CURRENT_BINARY_DIR}/git_revision.cpp" @ONLY)
 list(APPEND sources "${CMAKE_CURRENT_BINARY_DIR}/git_revision.cpp")
 
-add_library( bears_utilities
+add_library( voilk_utilities
              ${sources}
              ${HEADERS} )
-target_link_libraries( bears_utilities fc )
-target_include_directories( bears_utilities
+target_link_libraries( voilk_utilities fc )
+target_include_directories( voilk_utilities
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 if (USE_PCH)
-  set_target_properties(bears_utilities PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-  cotire(bears_utilities)
+  set_target_properties(voilk_utilities PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+  cotire(voilk_utilities)
 endif(USE_PCH)
 
 if( CLANG_TIDY_EXE )
    set_target_properties(
-      bears_utilities PROPERTIES
+      voilk_utilities PROPERTIES
       CXX_CLANG_TIDY "${DO_CLANG_TIDY}"
    )
 endif( CLANG_TIDY_EXE )
 
 install( TARGETS
-   bears_utilities
+   voilk_utilities
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-install( FILES ${HEADERS} DESTINATION "include/bears/utilities" )
+install( FILES ${HEADERS} DESTINATION "include/voilk/utilities" )

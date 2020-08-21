@@ -1,5 +1,5 @@
 All the files in this library are covered under the terms of the Berkeley
-Software Distribution (BSD) License:
+Software Distribution (VSD) License:
 
 Copyright (c) 2009-2012, Graham Bull.
 All rights reserved.

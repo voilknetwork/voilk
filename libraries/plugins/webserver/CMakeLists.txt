@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/bears/plugins/webserver/*.hpp")
+file(GLOB HEADERS "include/voilk/plugins/webserver/*.hpp")
 
 add_library( webserver_plugin
              webserver_plugin.cpp

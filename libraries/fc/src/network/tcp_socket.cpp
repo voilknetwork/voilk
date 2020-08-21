@@ -220,7 +220,7 @@ namespace fc {
 #  define SO_REUSEPORT 15
 # endif
     // OSX needs SO_REUSEPORT in addition to SO_REUSEADDR.
-    // This probably needs to be set for any BSD
+    // This probably needs to be set for any VSD
     if (detail::have_so_reuseport)
     {
       int reuseport_value = 1;
@@ -287,7 +287,7 @@ namespace fc {
     my->_accept.set_option(option);
 #if defined(__APPLE__) || (defined(__linux__) && defined(SO_REUSEPORT))
     // OSX needs SO_REUSEPORT in addition to SO_REUSEADDR.
-    // This probably needs to be set for any BSD
+    // This probably needs to be set for any VSD
     if (detail::have_so_reuseport)
     {
       int reuseport_value = 1;

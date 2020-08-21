@@ -26,7 +26,7 @@
                     "vote",
                     {
                         "author": "blocktrades",
-                        "permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "voilk-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
                         "voter": "dilzeem",
                         "weight": 10000
                     }
@@ -47,10 +47,10 @@
                     {
                         "author": "mikegold10",
                         "body": "Just use the market on this site and forget about OpenLedger and its fees.",
-                        "json_metadata": "{\"tags\":[\"bears\"]}",
+                        "json_metadata": "{\"tags\":[\"voilk\"]}",
                         "parent_author": "blocktrades",
-                        "parent_permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
-                        "permlink": "re-blocktrades-bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading-20160715t165115443z",
+                        "parent_permlink": "voilk-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "re-blocktrades-voilk-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading-20160715t165115443z",
                         "title": ""
                     }
                 ],
@@ -123,7 +123,7 @@
                     "vote",
                     {
                         "author": "blocktrades",
-                        "permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "voilk-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
                         "voter": "rufai",
                         "weight": 10000
                     }
@@ -179,7 +179,7 @@
                     "vote",
                     {
                         "author": "blocktrades",
-                        "permlink": "bears-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
+                        "permlink": "voilk-deposits-withdrawals-re-enabled-on-openledger-for-decentralized-trading",
                         "voter": "george-goya",
                         "weight": 10000
                     }

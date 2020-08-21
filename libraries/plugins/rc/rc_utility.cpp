@@ -1,10 +1,10 @@
 
-#include <bears/plugins/rc/rc_utility.hpp>
+#include <voilk/plugins/rc/rc_utility.hpp>
 
 #include <fc/reflect/variant.hpp>
 #include <fc/uint128.hpp>
 
-namespace bears { namespace plugins { namespace rc {
+namespace voilk { namespace plugins { namespace rc {
 
 using fc::uint128_t;
 

@@ -1,8 +1,8 @@
-#include <bears/plugins/follow/follow_operations.hpp>
+#include <voilk/plugins/follow/follow_operations.hpp>
 
-#include <bears/protocol/operation_util_impl.hpp>
+#include <voilk/protocol/operation_util_impl.hpp>
 
-namespace bears { namespace plugins{ namespace follow {
+namespace voilk { namespace plugins{ namespace follow {
 
 void follow_operation::validate()const
 {
@@ -14,6 +14,6 @@ void reblog_operation::validate()const
    FC_ASSERT( account != author, "You cannot reblog your own content" );
 }
 
-} } } //bears::plugins::follow
+} } } //voilk::plugins::follow
 
-BEARS_DEFINE_OPERATION_TYPE( bears::plugins::follow::follow_plugin_operation )
+VOILK_DEFINE_OPERATION_TYPE( voilk::plugins::follow::follow_plugin_operation )

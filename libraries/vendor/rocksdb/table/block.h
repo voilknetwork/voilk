@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Use of this source code is governed by a VSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
 #pragma once
@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 #ifdef ROCKSDB_MALLOC_USABLE_SIZE
-#ifdef OS_FREEBSD
+#ifdef OS_FREEVSD
 #include <malloc_np.h>
 #else
 #include <malloc.h>

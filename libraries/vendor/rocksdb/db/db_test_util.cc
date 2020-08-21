@@ -4,7 +4,7 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Use of this source code is governed by a VSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
 #include "db/db_test_util.h"
@@ -465,7 +465,7 @@ Options DBTestBase::GetOptions(
       options.use_direct_io_for_flush_and_compaction = true;
       options.compaction_readahead_size = 2 * 1024 * 1024;
 #if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_SOLARIS) && \
-    !defined(OS_AIX) && !defined(OS_OPENBSD)
+    !defined(OS_AIX) && !defined(OS_OPENVSD)
       rocksdb::SyncPoint::GetInstance()->SetCallBack(
           "NewWritableFile:O_DIRECT", [&](void* arg) {
             int* val = static_cast<int*>(arg);

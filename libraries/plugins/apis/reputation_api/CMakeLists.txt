@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/bears/plugins/reputation_api/*.hpp")
+file(GLOB HEADERS "include/voilk/plugins/reputation_api/*.hpp")
 add_library( reputation_api_plugin
              reputation_api_plugin.cpp
              reputation_api.cpp

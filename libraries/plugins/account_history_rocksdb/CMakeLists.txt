@@ -1,11 +1,11 @@
-file(GLOB HEADERS "include/bears/plugins/account_history_rocksdb/*.hpp")
+file(GLOB HEADERS "include/voilk/plugins/account_history_rocksdb/*.hpp")
 
 add_library( account_history_rocksdb_plugin
              account_history_rocksdb_plugin.cpp
            )
 
 target_link_libraries( account_history_rocksdb_plugin
-   chain_plugin bears_chain bears_protocol json_rpc_plugin rocksdb
+   chain_plugin voilk_chain voilk_protocol json_rpc_plugin rocksdb
    )
 
 target_include_directories( account_history_rocksdb_plugin

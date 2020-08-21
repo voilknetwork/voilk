@@ -1,11 +1,11 @@
-#include <bears/account_statistics/account_statistics_api.hpp>
+#include <voilk/account_statistics/account_statistics_api.hpp>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/comment_object.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/comment_object.hpp>
 
-#include <bears/chain/database.hpp>
+#include <voilk/chain/database.hpp>
 
-namespace bears { namespace account_statistics {
+namespace voilk { namespace account_statistics {
 
 namespace detail
 {
@@ -105,6 +105,6 @@ const flat_set< std::string >& account_statistics_plugin::get_tracked_accounts()
    return _my->_tracked_accounts;
 }
 
-} } // bears::account_statistics
+} } // voilk::account_statistics
 
-BEARS_DEFINE_PLUGIN( account_statistics, bears::account_statistics::account_statistics_plugin );
+VOILK_DEFINE_PLUGIN( account_statistics, voilk::account_statistics::account_statistics_plugin );

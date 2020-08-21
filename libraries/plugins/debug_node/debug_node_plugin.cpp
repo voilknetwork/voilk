@@ -1,6 +1,6 @@
-#include <bears/plugins/debug_node/debug_node_plugin.hpp>
+#include <voilk/plugins/debug_node/debug_node_plugin.hpp>
 
-#include <bears/chain/witness_objects.hpp>
+#include <voilk/chain/witness_objects.hpp>
 
 #include <fc/io/buffered_iostream.hpp>
 #include <fc/io/fstream.hpp>
@@ -10,12 +10,12 @@
 #include <fc/thread/mutex.hpp>
 #include <fc/thread/scoped_lock.hpp>
 
-#include <bears/utilities/key_conversion.hpp>
+#include <voilk/utilities/key_conversion.hpp>
 
 #include <sstream>
 #include <string>
 
-namespace bears { namespace plugins { namespace debug_node {
+namespace voilk { namespace plugins { namespace debug_node {
 
 namespace detail {
 class debug_node_plugin_impl
@@ -205,7 +205,7 @@ void debug_node_plugin::debug_generate_blocks(
    chain::public_key_type debug_public_key;
    if( args.debug_key != "" )
    {
-      debug_private_key = bears::utilities::wif_to_key( args.debug_key );
+      debug_private_key = voilk::utilities::wif_to_key( args.debug_key );
       FC_ASSERT( debug_private_key.valid() );
       debug_public_key = debug_private_key->get_public_key();
    }
@@ -360,4 +360,4 @@ void debug_node_plugin::plugin_shutdown()
    return;
 }
 
-} } } // bears::plugins::debug_node
+} } } // voilk::plugins::debug_node

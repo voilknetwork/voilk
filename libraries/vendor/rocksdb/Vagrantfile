@@ -14,10 +14,10 @@ Vagrant.configure("2") do |config|
     box.vm.box = "chef/centos-6.5"
   end
 
-  config.vm.define "FreeBSD10" do |box|
-    box.vm.guest = :freebsd
-    box.vm.box = "robin/freebsd-10"
-    # FreeBSD does not support 'mount_virtualbox_shared_folder', use NFS
+  config.vm.define "FreeVSD10" do |box|
+    box.vm.guest = :freevsd
+    box.vm.box = "robin/freevsd-10"
+    # FreeVSD does not support 'mount_virtualbox_shared_folder', use NFS
     box.vm.synced_folder ".", "/vagrant", :nfs => true, id: "vagrant-root"
     box.vm.network "private_network", ip: "10.0.1.10"
 

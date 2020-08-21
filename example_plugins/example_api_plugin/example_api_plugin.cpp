@@ -1,11 +1,11 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <bears/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <voilk/plugins/json_rpc/json_rpc_plugin.hpp>
 
-#define BEARS_EXAMPLE_API_PLUGIN_NAME "example_api"
+#define VOILK_EXAMPLE_API_PLUGIN_NAME "example_api"
 
-namespace bears { namespace example_api_plugin {
+namespace voilk { namespace example_api_plugin {
 
    using namespace appbase;
 
@@ -42,7 +42,7 @@ namespace bears { namespace example_api_plugin {
          APPBASE_PLUGIN_REQUIRES( (plugins::json_rpc::json_rpc_plugin) );
 
          // This static method is a required by the appbase::plugin template
-         static const std::string& name() { static std::string name = BEARS_EXAMPLE_API_PLUGIN_NAME; return name; }
+         static const std::string& name() { static std::string name = VOILK_EXAMPLE_API_PLUGIN_NAME; return name; }
 
          // Specify any config options here
          virtual void set_program_options( options_description&, options_description& ) override {}
@@ -82,9 +82,9 @@ namespace bears { namespace example_api_plugin {
       return echo_return{ args.call };
    }
 
-} } // bears::example_api_plugin
+} } // voilk::example_api_plugin
 
 // Args and return types need to be reflected. hello_world_args does not because it is a typedef of a reflected type
-FC_REFLECT( bears::example_api_plugin::hello_world_return, (message) )
-FC_REFLECT( bears::example_api_plugin::echo_args, (call) )
-FC_REFLECT( bears::example_api_plugin::echo_return, (response) )
+FC_REFLECT( voilk::example_api_plugin::hello_world_return, (message) )
+FC_REFLECT( voilk::example_api_plugin::echo_args, (call) )
+FC_REFLECT( voilk::example_api_plugin::echo_return, (response) )

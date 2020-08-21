@@ -1,11 +1,11 @@
 
-#include <bears/plugins/rc/resource_user.hpp>
+#include <voilk/plugins/rc/resource_user.hpp>
 
-#include <bears/protocol/transaction.hpp>
+#include <voilk/protocol/transaction.hpp>
 
-namespace bears { namespace plugins { namespace rc {
+namespace voilk { namespace plugins { namespace rc {
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 
 account_name_type get_resource_user( const signed_transaction& tx )
 {
@@ -27,4 +27,4 @@ account_name_type get_resource_user( const signed_transaction& tx )
    return account_name_type();
 }
 
-} } } // bears::plugins::rc
+} } } // voilk::plugins::rc

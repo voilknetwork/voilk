@@ -1,20 +1,20 @@
 # Witness Parameters
 
-The role of a witness in the Bears Blockchain is verify incoming transactions, produce blocks when scheduled, and partake in the Bears governance model by voting on several parameters.
+The role of a witness in the Voilk Blockchain is verify incoming transactions, produce blocks when scheduled, and partake in the Voilk governance model by voting on several parameters.
 
-These parameters control various aspects of the operation of the blockchain that are not easily defined in code at compile time. One example is the BEARS price feed that defines the conversion rate between BEARS and BSD.
+These parameters control various aspects of the operation of the blockchain that are not easily defined in code at compile time. One example is the VOILK price feed that defines the conversion rate between VOILK and VSD.
 
 Witnesses are able to use the `witness_set_properties_operation` to change witness specific properties and vote on paramters.
 
 Unless otherwise noted, the median of the top 20 elected witnesses is used for all calculations needing the parameter.
 
-This operation was added in Bears v0.20.0 to replace the `witness_update_operation` which was not easily extendable. While it is recommended to use `witness_set_properties_operation`, `witness_update_operation` will continue to work.
+This operation was added in Voilk v0.20.0 to replace the `witness_update_operation` which was not easily extendable. While it is recommended to use `witness_set_properties_operation`, `witness_update_operation` will continue to work.
 
 ## Properties
 
 ### account_creation_fee
 
-This is the fee in BEARS that must be paid to create an account. This field must be non-negative.
+This is the fee in VOILK that must be paid to create an account. This field must be non-negative.
 
 ### account_subsidy_budget
 
@@ -47,13 +47,13 @@ A more detailed explanation of resource dynamics can be found [here](./devs/2018
 
 The maximum size of a single block in bytes. The value must be not less than `65536`.
 
-### bsd_interest_rate
+### vsd_interest_rate
 
-The annual interest rate paid to BSD holders. BSD interest is compounded on balance changes, no more than once every 30 days.
+The annual interest rate paid to VSD holders. VSD interest is compounded on balance changes, no more than once every 30 days.
 
-### bsd_exchange_rate
+### vsd_exchange_rate
 
-The exchange rate for BEARS/SDB to be used for printing BSD as rewards as well as BSD->BEARS conversions.
+The exchange rate for VOILK/SDB to be used for printing VSD as rewards as well as VSD->VOILK conversions.
 The actual price feed is the median of medians. Every round (21 blocks) the median exchange rate is pushed to a queue and the oldest is removed. The median value of the queue is used for any calculations.
 
 ### url

@@ -1,21 +1,21 @@
-#include <bears/plugins/market_history/market_history_plugin.hpp>
+#include <voilk/plugins/market_history/market_history_plugin.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/chain/index.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/index.hpp>
 
 #include <fc/io/json.hpp>
 
-namespace bears { namespace plugins { namespace market_history {
+namespace voilk { namespace plugins { namespace market_history {
 
 namespace detail {
 
-using bears::protocol::fill_order_operation;
+using voilk::protocol::fill_order_operation;
 
 class market_history_plugin_impl
 {
    public:
       market_history_plugin_impl() :
-         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ) {}
+         _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ) {}
       virtual ~market_history_plugin_impl() {}
 
       /**
@@ -62,62 +62,62 @@ void market_history_plugin_impl::on_post_apply_operation( const operation_notifi
                b.open = open;
                b.seconds = bucket;
 
-               b.bears.fill( ( op.open_pays.symbol == BEARS_SYMBOL ) ? op.open_pays.amount : op.current_pays.amount );
-#ifdef BEARS_ENABLE_SMT
-                  b.symbol = ( op.open_pays.symbol == BEARS_SYMBOL ) ? op.current_pays.symbol : op.open_pays.symbol;
+               b.voilk.fill( ( op.open_pays.symbol == VOILK_SYMBOL ) ? op.open_pays.amount : op.current_pays.amount );
+#ifdef VOILK_ENABLE_SMT
+                  b.symbol = ( op.open_pays.symbol == VOILK_SYMBOL ) ? op.current_pays.symbol : op.open_pays.symbol;
 #endif
-                  b.non_bears.fill( ( op.open_pays.symbol == BEARS_SYMBOL ) ? op.current_pays.amount : op.open_pays.amount );
+                  b.non_voilk.fill( ( op.open_pays.symbol == VOILK_SYMBOL ) ? op.current_pays.amount : op.open_pays.amount );
             });
          }
          else
          {
             _db.modify( *itr, [&]( bucket_object& b )
             {
-#ifdef BEARS_ENABLE_SMT
-               b.symbol = ( op.open_pays.symbol == BEARS_SYMBOL ) ? op.current_pays.symbol : op.open_pays.symbol;
+#ifdef VOILK_ENABLE_SMT
+               b.symbol = ( op.open_pays.symbol == VOILK_SYMBOL ) ? op.current_pays.symbol : op.open_pays.symbol;
 #endif
-               if( op.open_pays.symbol == BEARS_SYMBOL )
+               if( op.open_pays.symbol == VOILK_SYMBOL )
                {
-                  b.bears.volume += op.open_pays.amount;
-                  b.bears.close = op.open_pays.amount;
+                  b.voilk.volume += op.open_pays.amount;
+                  b.voilk.close = op.open_pays.amount;
 
-                  b.non_bears.volume += op.current_pays.amount;
-                  b.non_bears.close = op.current_pays.amount;
+                  b.non_voilk.volume += op.current_pays.amount;
+                  b.non_voilk.close = op.current_pays.amount;
 
                   if( b.high() < price( op.current_pays, op.open_pays ) )
                   {
-                     b.bears.high = op.open_pays.amount;
+                     b.voilk.high = op.open_pays.amount;
 
-                     b.non_bears.high = op.current_pays.amount;
+                     b.non_voilk.high = op.current_pays.amount;
                   }
 
                   if( b.low() > price( op.current_pays, op.open_pays ) )
                   {
-                     b.bears.low = op.open_pays.amount;
+                     b.voilk.low = op.open_pays.amount;
 
-                     b.non_bears.low = op.current_pays.amount;
+                     b.non_voilk.low = op.current_pays.amount;
                   }
                }
                else
                {
-                  b.bears.volume += op.current_pays.amount;
-                  b.bears.close = op.current_pays.amount;
+                  b.voilk.volume += op.current_pays.amount;
+                  b.voilk.close = op.current_pays.amount;
 
-                  b.non_bears.volume += op.open_pays.amount;
-                  b.non_bears.close = op.open_pays.amount;
+                  b.non_voilk.volume += op.open_pays.amount;
+                  b.non_voilk.close = op.open_pays.amount;
 
                   if( b.high() < price( op.open_pays, op.current_pays ) )
                   {
-                     b.bears.high = op.current_pays.amount;
+                     b.voilk.high = op.current_pays.amount;
 
-                     b.non_bears.high = op.open_pays.amount;
+                     b.non_voilk.high = op.open_pays.amount;
                   }
 
                   if( b.low() > price( op.open_pays, op.current_pays ) )
                   {
-                     b.bears.low = op.current_pays.amount;
+                     b.voilk.low = op.current_pays.amount;
 
-                     b.non_bears.low = op.open_pays.amount;
+                     b.non_voilk.low = op.open_pays.amount;
                   }
                }
             });
@@ -200,4 +200,4 @@ uint32_t market_history_plugin::get_max_history_per_bucket() const
    return my->_maximum_history_per_bucket_size;
 }
 
-} } } // bears::plugins::market_history
+} } } // voilk::plugins::market_history

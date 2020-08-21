@@ -1,14 +1,14 @@
 #include <stdint.h>
-#include <bears/utilities/git_revision.hpp>
+#include <voilk/utilities/git_revision.hpp>
 
-#define BEARS_GIT_REVISION_SHA "@BEARS_GIT_REVISION_SHA@"
-#define BEARS_GIT_REVISION_UNIX_TIMESTAMP @BEARS_GIT_REVISION_UNIX_TIMESTAMP@
-#define BEARS_GIT_REVISION_DESCRIPTION "@BEARS_GIT_REVISION_DESCRIPTION@"
+#define VOILK_GIT_REVISION_SHA "@VOILK_GIT_REVISION_SHA@"
+#define VOILK_GIT_REVISION_UNIX_TIMESTAMP @VOILK_GIT_REVISION_UNIX_TIMESTAMP@
+#define VOILK_GIT_REVISION_DESCRIPTION "@VOILK_GIT_REVISION_DESCRIPTION@"
 
-namespace bears { namespace utilities {
+namespace voilk { namespace utilities {
 
-const char* const git_revision_sha = BEARS_GIT_REVISION_SHA;
-const uint32_t git_revision_unix_timestamp = BEARS_GIT_REVISION_UNIX_TIMESTAMP;
-const char* const git_revision_description = BEARS_GIT_REVISION_DESCRIPTION;
+const char* const git_revision_sha = VOILK_GIT_REVISION_SHA;
+const uint32_t git_revision_unix_timestamp = VOILK_GIT_REVISION_UNIX_TIMESTAMP;
+const char* const git_revision_description = VOILK_GIT_REVISION_DESCRIPTION;
 
-} } // end namespace bears::utilities
+} } // end namespace voilk::utilities

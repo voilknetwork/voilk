@@ -1,13 +1,13 @@
-#include <bears/chain/database.hpp>
-#include <bears/protocol/block.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/protocol/block.hpp>
 #include <fc/io/raw.hpp>
 
 int main( int argc, char** argv, char** envp )
 {
    try
    {
-      //bears::chain::database db;
-      bears::chain::block_log log;
+      //voilk::chain::database db;
+      voilk::chain::block_log log;
 
       fc::temp_directory temp_dir( "." );
 
@@ -16,9 +16,9 @@ int main( int argc, char** argv, char** envp )
 
       idump( (log.head() ) );
 
-      bears::protocol::signed_block b1;
+      voilk::protocol::signed_block b1;
       b1.witness = "alice";
-      b1.previous = bears::protocol::block_id_type();
+      b1.previous = voilk::protocol::block_id_type();
 
       log.append( b1 );
       log.flush();
@@ -26,7 +26,7 @@ int main( int argc, char** argv, char** envp )
       idump( ( log.head() ) );
       idump( (fc::raw::pack_size(b1)) );
 
-      bears::protocol::signed_block b2;
+      voilk::protocol::signed_block b2;
       b2.witness = "bob";
       b2.previous = b1.id();
 

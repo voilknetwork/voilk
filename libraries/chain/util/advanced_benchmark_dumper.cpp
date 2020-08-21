@@ -1,8 +1,8 @@
 
-#include <bears/chain/util/advanced_benchmark_dumper.hpp>
+#include <voilk/chain/util/advanced_benchmark_dumper.hpp>
 #include <chrono>
 
-namespace bears { namespace chain { namespace util {
+namespace voilk { namespace chain { namespace util {
 
    uint32_t advanced_benchmark_dumper::cnt = 0;
    std::string advanced_benchmark_dumper::virtual_operation_name = "virtual_operation";
@@ -79,4 +79,4 @@ namespace bears { namespace chain { namespace util {
       dump_impl( rinfo, "r_" + file_name );
    }
 
-} } } // bears::chain::util
+} } } // voilk::chain::util

@@ -1,12 +1,12 @@
-#include <bears/plugins/follow/follow_plugin.hpp>
-#include <bears/plugins/follow/follow_operations.hpp>
-#include <bears/plugins/follow/follow_objects.hpp>
-#include <bears/plugins/follow/inc_performance.hpp>
+#include <voilk/plugins/follow/follow_plugin.hpp>
+#include <voilk/plugins/follow/follow_operations.hpp>
+#include <voilk/plugins/follow/follow_objects.hpp>
+#include <voilk/plugins/follow/inc_performance.hpp>
 
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/comment_object.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/comment_object.hpp>
 
-namespace bears { namespace plugins { namespace follow {
+namespace voilk { namespace plugins { namespace follow {
 
 void follow_evaluator::do_apply( const follow_operation& o )
 {
@@ -216,4 +216,4 @@ void reblog_evaluator::do_apply( const reblog_operation& o )
    FC_CAPTURE_AND_RETHROW( (o) )
 }
 
-} } } // bears::follow
+} } } // voilk::follow

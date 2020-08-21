@@ -1,8 +1,8 @@
-#include <bears/plugins/tags_api/tags_api_plugin.hpp>
-#include <bears/plugins/tags_api/tags_api.hpp>
+#include <voilk/plugins/tags_api/tags_api_plugin.hpp>
+#include <voilk/plugins/tags_api/tags_api.hpp>
 
 
-namespace bears { namespace plugins { namespace tags {
+namespace voilk { namespace plugins { namespace tags {
 
 tags_api_plugin::tags_api_plugin() {}
 tags_api_plugin::~tags_api_plugin() {}
@@ -17,4 +17,4 @@ void tags_api_plugin::plugin_initialize( const variables_map& options )
 void tags_api_plugin::plugin_startup() { api->api_startup(); }
 void tags_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::tags
+} } } // voilk::plugins::tags

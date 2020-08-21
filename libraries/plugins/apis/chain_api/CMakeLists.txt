@@ -1,4 +1,4 @@
-file( GLOB HEADERS "include/bears/plugins/chain_api/*.hpp" )
+file( GLOB HEADERS "include/voilk/plugins/chain_api/*.hpp" )
 set( SOURCES chain_api.cpp chain_api_plugin.cpp )
 
 add_library( chain_api_plugin ${SOURCES} ${HEADERS} )

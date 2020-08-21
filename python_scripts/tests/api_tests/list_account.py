@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Create list of all bears accounts in file.
+Create list of all voilk accounts in file.
 Usage: create_account_list.py <server_address> [<output_filename>]
 """
 import sys
 import json
 from jsonsocket import JSONSocket
-from jsonsocket import bearsd_call
+from jsonsocket import voilkd_call
 
 def list_accounts(url):
   """
@@ -25,7 +25,7 @@ def list_accounts(url):
       "params": { "start": last_account, "limit": 1000, "order": "by_name" }
       } ), "utf-8" ) + b"\r\n"
 
-    status, response = bearsd_call(url, data=request)
+    status, response = voilkd_call(url, data=request)
     
     if status == False:
       print( "rpc failed for last_account: " + last_account )

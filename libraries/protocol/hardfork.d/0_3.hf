@@ -1,6 +1,6 @@
-#ifndef BEARS_HARDFORK_0_3
-#define BEARS_HARDFORK_0_3 3
+#ifndef VOILK_HARDFORK_0_3
+#define VOILK_HARDFORK_0_3 3
 // 4/27/2016 13:00:00 GMT
-#define BEARS_HARDFORK_0_3_TIME 1539593400
-#define BEARS_HARDFORK_0_3_VERSION hardfork_version( 0, 3 )
+#define VOILK_HARDFORK_0_3_TIME 1539593400
+#define VOILK_HARDFORK_0_3_VERSION hardfork_version( 0, 3 )
 #endif

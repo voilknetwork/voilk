@@ -1,5 +1,5 @@
 - config:
-  - testset: "Basic bearsd API Smoke Test"
+  - testset: "Basic voilkd API Smoke Test"
 
 - test:
   - name: "Test ip address"

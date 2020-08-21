@@ -139,27 +139,27 @@ case "$TARGET_OS" in
         PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -pthread -lpthread -lrt -maix64 -static-libstdc++ -static-libgcc"
         # PORT_FILES=port/aix/aix_specific.cc
         ;;
-    FreeBSD)
-        PLATFORM=OS_FREEBSD
-        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_FREEBSD"
+    FreeVSD)
+        PLATFORM=OS_FREEVSD
+        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_FREEVSD"
         PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -lpthread"
-        # PORT_FILES=port/freebsd/freebsd_specific.cc
+        # PORT_FILES=port/freevsd/freevsd_specific.cc
         ;;
-    NetBSD)
-        PLATFORM=OS_NETBSD
-        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_NETBSD"
+    NetVSD)
+        PLATFORM=OS_NETVSD
+        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_NETVSD"
         PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -lpthread -lgcc_s"
-        # PORT_FILES=port/netbsd/netbsd_specific.cc
+        # PORT_FILES=port/netvsd/netvsd_specific.cc
         ;;
-    OpenBSD)
-        PLATFORM=OS_OPENBSD
-        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_OPENBSD"
+    OpenVSD)
+        PLATFORM=OS_OPENVSD
+        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_OPENVSD"
         PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -pthread"
-        # PORT_FILES=port/openbsd/openbsd_specific.cc
+        # PORT_FILES=port/openvsd/openvsd_specific.cc
         ;;
     DragonFly)
-        PLATFORM=OS_DRAGONFLYBSD
-        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_DRAGONFLYBSD"
+        PLATFORM=OS_DRAGONFLYVSD
+        COMMON_FLAGS="$COMMON_FLAGS -fno-builtin-memcmp -D_REENTRANT -DOS_DRAGONFLYVSD"
         PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -lpthread"
         # PORT_FILES=port/dragonfly/dragonfly_specific.cc
         ;;
@@ -416,9 +416,9 @@ EOF
     fi
 fi
 
-# TODO(tec): Fix -Wshorten-64-to-32 errors on FreeBSD and enable the warning.
-# -Wshorten-64-to-32 breaks compilation on FreeBSD i386
-if ! [ "$TARGET_OS" = FreeBSD -a "$TARGET_ARCHITECTURE" = i386 ]; then
+# TODO(tec): Fix -Wshorten-64-to-32 errors on FreeVSD and enable the warning.
+# -Wshorten-64-to-32 breaks compilation on FreeVSD i386
+if ! [ "$TARGET_OS" = FreeVSD -a "$TARGET_ARCHITECTURE" = i386 ]; then
   # Test whether -Wshorten-64-to-32 is available
   $CXX $CFLAGS -x c++ - -o /dev/null -Wshorten-64-to-32 2>/dev/null  <<EOF
     int main() {}

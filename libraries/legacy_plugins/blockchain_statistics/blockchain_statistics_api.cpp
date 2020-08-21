@@ -1,20 +1,20 @@
-#include <bears/blockchain_statistics/blockchain_statistics_api.hpp>
+#include <voilk/blockchain_statistics/blockchain_statistics_api.hpp>
 
-namespace bears { namespace blockchain_statistics {
+namespace voilk { namespace blockchain_statistics {
 
 namespace detail
 {
    class blockchain_statistics_api_impl
    {
       public:
-         blockchain_statistics_api_impl( bears::app::application& app )
+         blockchain_statistics_api_impl( voilk::app::application& app )
             :_app( app ) {}
 
          statistics get_stats_for_time( fc::time_point_sec open, uint32_t interval )const;
          statistics get_stats_for_interval( fc::time_point_sec start, fc::time_point_sec end )const;
          statistics get_lifetime_stats()const;
 
-         bears::app::application& _app;
+         voilk::app::application& _app;
    };
 
    statistics blockchain_statistics_api_impl::get_stats_for_time( fc::time_point_sec open, uint32_t interval )const
@@ -33,7 +33,7 @@ namespace detail
    {
       statistics result;
       const auto& bucket_itr = _app.chain_database()->get_index< bucket_index >().indices().get< by_bucket >();
-      const auto& sizes = _app.get_plugin< blockchain_statistics_plugin >( BEARS_BLOCKCHAIN_STATISTICS_PLUGIN_NAME )->get_tracked_buckets();
+      const auto& sizes = _app.get_plugin< blockchain_statistics_plugin >( VOILK_BLOCKCHAIN_STATISTICS_PLUGIN_NAME )->get_tracked_buckets();
       auto size_itr = sizes.rbegin();
       auto time = start;
 
@@ -66,7 +66,7 @@ namespace detail
    }
 } // detail
 
-blockchain_statistics_api::blockchain_statistics_api( const bears::app::api_context& ctx )
+blockchain_statistics_api::blockchain_statistics_api( const voilk::app::api_context& ctx )
 {
    my = std::make_shared< detail::blockchain_statistics_api_impl >( ctx.app );
 }
@@ -104,9 +104,9 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->operations                             += b.operations;
    this->transactions                           += b.transactions;
    this->transfers                              += b.transfers;
-   this->bears_transferred                      += b.bears_transferred;
-   this->bsd_transferred                        += b.bsd_transferred;
-   this->bsd_paid_as_interest                   += b.bsd_paid_as_interest;
+   this->voilk_transferred                      += b.voilk_transferred;
+   this->vsd_transferred                        += b.vsd_transferred;
+   this->vsd_paid_as_interest                   += b.vsd_paid_as_interest;
    this->accounts_created                       += b.paid_accounts_created + b.mined_accounts_created;
    this->paid_accounts_created                  += b.paid_accounts_created;
    this->mined_accounts_created                 += b.mined_accounts_created;
@@ -129,12 +129,12 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->new_reply_votes                        += b.new_reply_votes;
    this->changed_reply_votes                    += b.changed_reply_votes;
    this->payouts                                += b.payouts;
-   this->bsd_paid_to_authors                    += b.bsd_paid_to_authors;
+   this->vsd_paid_to_authors                    += b.vsd_paid_to_authors;
    this->coins_paid_to_authors                  += b.coins_paid_to_authors;
    this->coins_paid_to_curators                 += b.coins_paid_to_curators;
    this->liquidity_rewards_paid                 += b.liquidity_rewards_paid;
    this->transfers_to_coining                   += b.transfers_to_coining;
-   this->bears_coined                           += b.bears_coined;
+   this->voilk_coined                           += b.voilk_coined;
    this->new_coining_withdrawal_requests        += b.new_coining_withdrawal_requests;
    this->coining_withdraw_rate_delta            += b.coining_withdraw_rate_delta;
    this->modified_coining_withdrawal_requests   += b.modified_coining_withdrawal_requests;
@@ -142,10 +142,10 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->finished_coining_withdrawals           += b.finished_coining_withdrawals;
    this->coins_withdrawn                        += b.coins_withdrawn;
    this->coins_transferred                      += b.coins_transferred;
-   this->bsd_conversion_requests_created        += b.bsd_conversion_requests_created;
-   this->bsd_to_be_converted                    += b.bsd_to_be_converted;
-   this->bsd_conversion_requests_filled         += b.bsd_conversion_requests_filled;
-   this->bears_converted                        += b.bears_converted;
+   this->vsd_conversion_requests_created        += b.vsd_conversion_requests_created;
+   this->vsd_to_be_converted                    += b.vsd_to_be_converted;
+   this->vsd_conversion_requests_filled         += b.vsd_conversion_requests_filled;
+   this->voilk_converted                        += b.voilk_converted;
    this->limit_orders_created                   += b.limit_orders_created;
    this->limit_orders_filled                    += b.limit_orders_filled;
    this->limit_orders_cancelled                 += b.limit_orders_cancelled;
@@ -155,4 +155,4 @@ statistics& statistics::operator +=( const bucket_object& b )
    return ( *this );
 }
 
-} } // bears::blockchain_statistics
+} } // voilk::blockchain_statistics

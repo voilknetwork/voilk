@@ -1,6 +1,6 @@
 
-#include <bears/protocol/transaction.hpp>
-#include <bears/protocol/transaction_util.hpp>
+#include <voilk/protocol/transaction.hpp>
+#include <voilk/protocol/transaction_util.hpp>
 
 #include <fc/io/raw.hpp>
 #include <fc/bitutil.hpp>
@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-namespace bears { namespace protocol {
+namespace voilk { namespace protocol {
 
 digest_type signed_transaction::merkle_digest()const
 {
@@ -39,7 +39,7 @@ void transaction::validate() const
       operation_validate(op);
 }
 
-bears::protocol::transaction_id_type bears::protocol::transaction::id() const
+voilk::protocol::transaction_id_type voilk::protocol::transaction::id() const
 {
    auto h = digest();
    transaction_id_type result;
@@ -47,14 +47,14 @@ bears::protocol::transaction_id_type bears::protocol::transaction::id() const
    return result;
 }
 
-const signature_type& bears::protocol::signed_transaction::sign( const private_key_type& key, const chain_id_type& chain_id, canonical_signature_type canon_type )
+const signature_type& voilk::protocol::signed_transaction::sign( const private_key_type& key, const chain_id_type& chain_id, canonical_signature_type canon_type )
 {
    digest_type h = sig_digest( chain_id );
    signatures.push_back( key.sign_compact( h, canon_type ) );
    return signatures.back();
 }
 
-signature_type bears::protocol::signed_transaction::sign( const private_key_type& key, const chain_id_type& chain_id, canonical_signature_type canon_type )const
+signature_type voilk::protocol::signed_transaction::sign( const private_key_type& key, const chain_id_type& chain_id, canonical_signature_type canon_type )const
 {
    digest_type::encoder enc;
    fc::raw::pack( enc, chain_id );
@@ -88,7 +88,7 @@ flat_set<public_key_type> signed_transaction::get_signature_keys( const chain_id
    flat_set<public_key_type> result;
    for( const auto&  sig : signatures )
    {
-      BEARS_ASSERT(
+      VOILK_ASSERT(
          result.insert( fc::ecc::public_key( sig, d, canon_type ) ).second,
          tx_duplicate_sig,
          "Duplicate Signature detected" );
@@ -182,7 +182,7 @@ set<public_key_type> signed_transaction::minimize_required_signatures(
       result.erase( k );
       try
       {
-         bears::protocol::verify_authority(
+         voilk::protocol::verify_authority(
             operations,
             result,
             get_active,
@@ -216,7 +216,7 @@ void signed_transaction::verify_authority(
    uint32_t max_account_auths,
    canonical_signature_type canon_type )const
 { try {
-   bears::protocol::verify_authority(
+   voilk::protocol::verify_authority(
       operations,
       get_signature_keys( chain_id, canon_type ),
       get_active,
@@ -231,4 +231,4 @@ void signed_transaction::verify_authority(
       flat_set< account_name_type >() );
 } FC_CAPTURE_AND_RETHROW( (*this) ) }
 
-} } // bears::protocol
+} } // voilk::protocol

@@ -1,31 +1,31 @@
 
-#include <bears/app/api_context.hpp>
-#include <bears/app/application.hpp>
+#include <voilk/app/api_context.hpp>
+#include <voilk/app/application.hpp>
 
-#include <bears/plugins/block_info/block_info_api.hpp>
-#include <bears/plugins/block_info/block_info_plugin.hpp>
+#include <voilk/plugins/block_info/block_info_api.hpp>
+#include <voilk/plugins/block_info/block_info_plugin.hpp>
 
-namespace bears { namespace plugin { namespace block_info {
+namespace voilk { namespace plugin { namespace block_info {
 
 namespace detail {
 
 class block_info_api_impl
 {
    public:
-      block_info_api_impl( bears::app::application& _app );
+      block_info_api_impl( voilk::app::application& _app );
 
-      std::shared_ptr< bears::plugin::block_info::block_info_plugin > get_plugin();
+      std::shared_ptr< voilk::plugin::block_info::block_info_plugin > get_plugin();
 
       void get_block_info( const get_block_info_args& args, std::vector< block_info >& result );
       void get_blocks_with_info( const get_block_info_args& args, std::vector< block_with_info >& result );
 
-      bears::app::application& app;
+      voilk::app::application& app;
 };
 
-block_info_api_impl::block_info_api_impl( bears::app::application& _app ) : app( _app )
+block_info_api_impl::block_info_api_impl( voilk::app::application& _app ) : app( _app )
 {}
 
-std::shared_ptr< bears::plugin::block_info::block_info_plugin > block_info_api_impl::get_plugin()
+std::shared_ptr< voilk::plugin::block_info::block_info_plugin > block_info_api_impl::get_plugin()
 {
    return app.get_plugin< block_info_plugin >( "block_info" );
 }
@@ -66,7 +66,7 @@ void block_info_api_impl::get_blocks_with_info( const get_block_info_args& args,
 
 } // detail
 
-block_info_api::block_info_api( const bears::app::api_context& ctx )
+block_info_api::block_info_api( const voilk::app::api_context& ctx )
 {
    my = std::make_shared< detail::block_info_api_impl >(ctx.app);
 }
@@ -87,4 +87,4 @@ std::vector< block_with_info > block_info_api::get_blocks_with_info( get_block_i
 
 void block_info_api::on_api_startup() { }
 
-} } } // bears::plugin::block_info
+} } } // voilk::plugin::block_info

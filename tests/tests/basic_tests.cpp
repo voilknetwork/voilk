@@ -24,10 +24,10 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <bears/chain/database.hpp>
-#include <bears/protocol/protocol.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/protocol/protocol.hpp>
 
-#include <bears/protocol/bears_operations.hpp>
+#include <voilk/protocol/voilk_operations.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/crypto/hex.hpp>
@@ -36,9 +36,9 @@
 #include <algorithm>
 #include <random>
 
-using namespace bears;
-using namespace bears::chain;
-using namespace bears::protocol;
+using namespace voilk;
+using namespace voilk::chain;
+using namespace voilk::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( basic_tests, clean_database_fixture )
 

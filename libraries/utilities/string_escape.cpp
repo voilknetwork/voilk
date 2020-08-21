@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <bears/utilities/string_escape.hpp>
+#include <voilk/utilities/string_escape.hpp>
 #include <sstream>
 
-namespace bears { namespace utilities {
+namespace voilk { namespace utilities {
 
   std::string escape_string_for_c_source_code(const std::string& input)
   {
@@ -69,5 +69,5 @@ namespace bears { namespace utilities {
     return escaped_string.str();
   }
 
-} } // end namespace bears::utilities
+} } // end namespace voilk::utilities
 

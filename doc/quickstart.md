@@ -1,12 +1,12 @@
 Quickstart
 ----------
 
-### Get current bearsd
+### Get current voilkd
 Use docker:
 ```
 docker run \
-    -d -p 3331:3331 -p 6990:6990 --name bearsd-default \
-    --restart unless-stopped bearshares/bears
+    -d -p 3331:3331 -p 6990:6990 --name voilkd-default \
+    --restart unless-stopped voilknetwork/voilk
 ```
 #### Low memory node?
 Above runs low memory node, which is suitable for:
@@ -18,9 +18,9 @@ For full api node use:
 ```
 docker run \
     --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
-    -d -p 3331:3331 -p 6990:6990 --name bearsd-full \
+    -d -p 3331:3331 -p 6990:6990 --name voilkd-full \
     --restart unless-stopped \
-    bearshares/bears
+    voilknetwork/voilk
 ```
 ### Configure for your use case
 #### Full API node
@@ -42,9 +42,9 @@ This configuration exists in Docker with the following command
 
 ```
 docker run -d --env TRACK_ACCOUNT="yourexchangeid" \
-    --name bearsd \
+    --name voilkd \
     --restart unless-stopped \
-    bearshares/bears
+    voilknetwork/voilk
 ```
 
 ### Resources usage

@@ -1,11 +1,11 @@
 
 
-#include <bears/plugins/raw_block/raw_block_api.hpp>
-#include <bears/plugins/raw_block/raw_block_plugin.hpp>
+#include <voilk/plugins/raw_block/raw_block_api.hpp>
+#include <voilk/plugins/raw_block/raw_block_plugin.hpp>
 
 #include <string>
 
-namespace bears { namespace plugin { namespace raw_block {
+namespace voilk { namespace plugin { namespace raw_block {
 
 raw_block_plugin::raw_block_plugin( application* app ) : plugin( app ) {}
 raw_block_plugin::~raw_block_plugin() {}
@@ -28,6 +28,6 @@ void raw_block_plugin::plugin_shutdown()
 {
 }
 
-} } } // bears::plugin::raw_block
+} } } // voilk::plugin::raw_block
 
-BEARS_DEFINE_PLUGIN( raw_block, bears::plugin::raw_block::raw_block_plugin )
+VOILK_DEFINE_PLUGIN( raw_block, voilk::plugin::raw_block::raw_block_plugin )

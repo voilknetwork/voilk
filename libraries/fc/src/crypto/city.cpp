@@ -94,19 +94,19 @@ static uint32_t UNALIGNED_LOAD32(const char *p) {
 #define bswap_32(x) BSWAP_32(x)
 #define bswap_64(x) BSWAP_64(x)
 
-#elif defined(__FreeBSD__)
+#elif defined(__FreeVSD__)
 
 #include <sys/endian.h>
 #define bswap_32(x) bswap32(x)
 #define bswap_64(x) bswap64(x)
 
-#elif defined(__OpenBSD__)
+#elif defined(__OpenVSD__)
 
 #include <sys/types.h>
 #define bswap_32(x) swap32(x)
 #define bswap_64(x) swap64(x)
 
-#elif defined(__NetBSD__)
+#elif defined(__NetVSD__)
 
 #include <sys/types.h>
 #include <machine/bswap.h>

@@ -1,11 +1,11 @@
 
-#include <bears/protocol/operations.hpp>
+#include <voilk/protocol/operations.hpp>
 
 #include <fc/io/json.hpp>
 
 #include <boost/algorithm/string.hpp>
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 using boost::container::flat_map;
 using std::string;
 using std::vector;
@@ -15,27 +15,27 @@ struct witness_properties
    // Chain properties
    fc::optional< asset >               account_creation_fee;
    fc::optional< uint32_t >            maximum_block_size;
-   fc::optional< uint16_t >            bsd_interest_rate;
+   fc::optional< uint16_t >            vsd_interest_rate;
    fc::optional< int32_t >             account_subsidy_budget;
    fc::optional< uint32_t >            account_subsidy_decay;
 
    // Per-witness fields
    fc::optional< public_key_type >     key;
    fc::optional< public_key_type >     new_signing_key;
-   fc::optional< price >               bsd_exchange_rate;
+   fc::optional< price >               vsd_exchange_rate;
    fc::optional< std::string >         url;
 };
 
 FC_REFLECT( witness_properties,
    (account_creation_fee)
    (maximum_block_size)
-   (bsd_interest_rate)
+   (vsd_interest_rate)
    (account_subsidy_budget)
    (account_subsidy_decay)
 
    (key)
    (new_signing_key)
-   (bsd_exchange_rate)
+   (vsd_exchange_rate)
    (url)
    );
 

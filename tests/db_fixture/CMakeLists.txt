@@ -12,8 +12,8 @@ add_library(db_fixture
             ${HEADERS})
 
 target_link_libraries(db_fixture
-                      bears_chain
-                      bears_protocol
+                      voilk_chain
+                      voilk_protocol
                       account_history_plugin
                       market_history_plugin
                       block_api_plugin

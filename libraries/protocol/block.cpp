@@ -1,9 +1,9 @@
-#include <bears/protocol/block.hpp>
+#include <voilk/protocol/block.hpp>
 #include <fc/io/raw.hpp>
 #include <fc/bitutil.hpp>
 #include <algorithm>
 
-namespace bears { namespace protocol {
+namespace voilk { namespace protocol {
    digest_type block_header::digest()const
    {
       return digest_type::hash(*this);
@@ -66,4 +66,4 @@ namespace bears { namespace protocol {
       return checksum_type::hash( ids[0] );
    }
 
-} } // bears::protocol
+} } // voilk::protocol

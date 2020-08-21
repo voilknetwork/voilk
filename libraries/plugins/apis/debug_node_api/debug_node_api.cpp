@@ -1,18 +1,18 @@
-#include <bears/plugins/debug_node_api/debug_node_api_plugin.hpp>
-#include <bears/plugins/debug_node_api/debug_node_api.hpp>
+#include <voilk/plugins/debug_node_api/debug_node_api_plugin.hpp>
+#include <voilk/plugins/debug_node_api/debug_node_api.hpp>
 
 #include <fc/filesystem.hpp>
 #include <fc/optional.hpp>
 #include <fc/variant_object.hpp>
 
-#include <bears/chain/block_log.hpp>
-#include <bears/chain/account_object.hpp>
-#include <bears/chain/database.hpp>
-#include <bears/chain/witness_objects.hpp>
+#include <voilk/chain/block_log.hpp>
+#include <voilk/chain/account_object.hpp>
+#include <voilk/chain/database.hpp>
+#include <voilk/chain/witness_objects.hpp>
 
-#include <bears/utilities/key_conversion.hpp>
+#include <voilk/utilities/key_conversion.hpp>
 
-namespace bears { namespace plugins { namespace debug_node {
+namespace voilk { namespace plugins { namespace debug_node {
 
 namespace detail {
 
@@ -129,7 +129,7 @@ DEFINE_API_IMPL( debug_node_api_impl, debug_get_hardfork_property_object )
 
 DEFINE_API_IMPL( debug_node_api_impl, debug_set_hardfork )
 {
-   if( args.hardfork_id > BEARS_NUM_HARDFORKS )
+   if( args.hardfork_id > VOILK_NUM_HARDFORKS )
       return {};
 
    _debug_node.debug_update( [=]( chain::database& db )
@@ -154,7 +154,7 @@ DEFINE_API_IMPL( debug_node_api_impl, debug_get_json_schema )
 
 debug_node_api::debug_node_api(): my( new detail::debug_node_api_impl() )
 {
-   JSON_RPC_REGISTER_API( BEARS_DEBUG_NODE_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( VOILK_DEBUG_NODE_API_PLUGIN_NAME );
 }
 
 debug_node_api::~debug_node_api() {}
@@ -171,4 +171,4 @@ DEFINE_LOCKLESS_APIS( debug_node_api,
    (debug_get_json_schema)
 )
 
-} } } // bears::plugins::debug_node
+} } } // voilk::plugins::debug_node

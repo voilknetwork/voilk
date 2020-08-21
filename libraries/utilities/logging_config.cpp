@@ -1,4 +1,4 @@
-#include <bears/utilities/logging_config.hpp>
+#include <voilk/utilities/logging_config.hpp>
 
 #include <fc/exception/exception.hpp>
 
@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace bears { namespace utilities {
+namespace voilk { namespace utilities {
 
 using std::string;
 using std::vector;

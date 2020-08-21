@@ -1,8 +1,8 @@
-#include <bears/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <bears/plugins/account_by_key_api/account_by_key_api.hpp>
+#include <voilk/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <voilk/plugins/account_by_key_api/account_by_key_api.hpp>
 
 
-namespace bears { namespace plugins { namespace account_by_key {
+namespace voilk { namespace plugins { namespace account_by_key {
 
 account_by_key_api_plugin::account_by_key_api_plugin() {}
 account_by_key_api_plugin::~account_by_key_api_plugin() {}
@@ -17,4 +17,4 @@ void account_by_key_api_plugin::plugin_initialize( const variables_map& options 
 void account_by_key_api_plugin::plugin_startup() {}
 void account_by_key_api_plugin::plugin_shutdown() {}
 
-} } } // bears::plugins::account_by_key
+} } } // voilk::plugins::account_by_key

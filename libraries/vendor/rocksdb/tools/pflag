@@ -32,7 +32,7 @@ oscheck() {
     Linux)
      VMEM=vsz
      RSS=rss
-     CPU=bsdtime
+     CPU=vsdtime
      ;;
     *)
       die "Unsupported OS ${OS}. Send a bug report with OS you need supported. Thanks."
@@ -84,7 +84,7 @@ Monitor a process for set of violations. Options:
   -x: metric to sense. Currently only VMEM/RSS/CPU are supported. Defaults to VMEM
 
   -l: what is the threshold/limit for the metric that is being sensed.
-    Examples: "-l 100m", "-l 1.5g" (for VMEM/RSS), "-l 5:04" 5:04 in BSDTIME for CPU
+    Examples: "-l 100m", "-l 1.5g" (for VMEM/RSS), "-l 5:04" 5:04 in VSDTIME for CPU
     NOTE: defaults to 1GB
 
   -a: action. Currently {warn|die|kill} are supported. 
@@ -201,7 +201,7 @@ while [ $Done -eq 0 ]; do
     elif [ "$ACTION" = "die" ]; then
       warn "WARNING: dying without killing process ${PID} on ${SERVER}"
       warn "The process details are below: "
-      warn "`ps -p ${PID} -o pid,ppid,bsdtime,rss,vsz,cmd,args`"
+      warn "`ps -p ${PID} -o pid,ppid,vsdtime,rss,vsz,cmd,args`"
       warn ""
 
       #should we send email/notify someone? TODO... for now, bail.

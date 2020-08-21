@@ -1,12 +1,12 @@
-#include <bears/plugins/account_history/account_history_plugin.hpp>
+#include <voilk/plugins/account_history/account_history_plugin.hpp>
 
-#include <bears/chain/util/impacted.hpp>
+#include <voilk/chain/util/impacted.hpp>
 
-#include <bears/protocol/config.hpp>
+#include <voilk/protocol/config.hpp>
 
-#include <bears/chain/history_object.hpp>
+#include <voilk/chain/history_object.hpp>
 
-#include <bears/utilities/plugin_utilities.hpp>
+#include <voilk/utilities/plugin_utilities.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/smart_ref_impl.hpp>
@@ -14,11 +14,11 @@
 #include <boost/algorithm/string.hpp>
 
 
-#define BEARS_NAMESPACE_PREFIX "bears::protocol::"
+#define VOILK_NAMESPACE_PREFIX "voilk::protocol::"
 
-namespace bears { namespace plugins { namespace account_history {
+namespace voilk { namespace plugins { namespace account_history {
 
-using namespace bears::protocol;
+using namespace voilk::protocol;
 
 using chain::database;
 using chain::operation_notification;
@@ -30,7 +30,7 @@ class account_history_plugin_impl
 {
    public:
       account_history_plugin_impl() :
-         _db( appbase::app().get_plugin< bears::plugins::chain::chain_plugin >().db() ) {}
+         _db( appbase::app().get_plugin< voilk::plugins::chain::chain_plugin >().db() ) {}
 
       virtual ~account_history_plugin_impl() {}
 
@@ -223,12 +223,12 @@ void account_history_plugin::plugin_initialize( const boost::program_options::va
       [&]( const operation_notification& note ){ my->on_pre_apply_operation(note); }, *this, 0 );
 
    typedef pair< account_name_type, account_name_type > pairstring;
-   BEARS_LOAD_VALUE_SET(options, "account-history-track-account-range", my->_tracked_accounts, pairstring);
+   VOILK_LOAD_VALUE_SET(options, "account-history-track-account-range", my->_tracked_accounts, pairstring);
 
    if( options.count( "track-account-range" ) )
    {
       wlog( "track-account-range is deprecated in favor of account-history-track-account-range" );
-      BEARS_LOAD_VALUE_SET( options, "track-account-range", my->_tracked_accounts, pairstring );
+      VOILK_LOAD_VALUE_SET( options, "track-account-range", my->_tracked_accounts, pairstring );
    }
 
 
@@ -247,7 +247,7 @@ void account_history_plugin::plugin_initialize( const boost::program_options::va
             for( const string& op : ops )
             {
                if( op.size() )
-                  my->_op_list.insert( BEARS_NAMESPACE_PREFIX + op );
+                  my->_op_list.insert( VOILK_NAMESPACE_PREFIX + op );
             }
          }
       }
@@ -264,7 +264,7 @@ void account_history_plugin::plugin_initialize( const boost::program_options::va
             for( const string& op : ops )
             {
                if( op.size() )
-                  my->_op_list.insert( BEARS_NAMESPACE_PREFIX + op );
+                  my->_op_list.insert( VOILK_NAMESPACE_PREFIX + op );
             }
          }
       }
@@ -286,7 +286,7 @@ void account_history_plugin::plugin_initialize( const boost::program_options::va
             for( const string& op : ops )
             {
                if( op.size() )
-                  my->_op_list.insert( BEARS_NAMESPACE_PREFIX + op );
+                  my->_op_list.insert( VOILK_NAMESPACE_PREFIX + op );
             }
          }
       }
@@ -303,7 +303,7 @@ void account_history_plugin::plugin_initialize( const boost::program_options::va
             for( const string& op : ops )
             {
                if( op.size() )
-                  my->_op_list.insert( BEARS_NAMESPACE_PREFIX + op );
+                  my->_op_list.insert( VOILK_NAMESPACE_PREFIX + op );
             }
          }
       }
@@ -329,4 +329,4 @@ flat_map< account_name_type, account_name_type > account_history_plugin::tracked
    return my->_tracked_accounts;
 }
 
-} } } // bears::plugins::account_history
+} } } // voilk::plugins::account_history
