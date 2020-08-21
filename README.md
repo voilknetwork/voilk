@@ -5,9 +5,8 @@ Bears is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" soci
   - Currency symbol BEARS.
   - 111 M Premine, 50% BEARS, 50% BSD
   - 1.033 BEARS block reward which narrows down to 0.100 BEARS over 20 years
-  - 75% of inflation to "Proof of Brain" social consensus algorithm.
-  - 15% of inflation to stake holders.
-  - 10% of inflation to block producers.
+  - 85% of inflation to "Proof of Brain" social consensus algorithm.
+  - 15% of inflation to block producers.
 
 # Public Announcement & Discussion
 
