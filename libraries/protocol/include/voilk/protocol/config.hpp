@@ -92,6 +92,8 @@
 #define VOILK_FIRST_BLOCK_TIME                (1598041858)
 
 #define VOILK_MAX_WITNESSES                   21
+#define VOILK_TIMESHARE_WEIGHT                5
+#define VOILK_WITNESS_PAY_NORMALIZATION       25
 
 #define VOILK_MAX_VOTED_WITNESSES_HF0         19
 #define VOILK_MAX_MINER_WITNESSES_HF0         1
