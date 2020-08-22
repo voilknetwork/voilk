@@ -194,9 +194,9 @@ namespace voilk { namespace chain {
          fc::array< account_name_type, VOILK_MAX_WITNESSES >             current_shuffled_witnesses;
          uint8_t                                                           num_scheduled_witnesses = 1;
          uint8_t                                                           elected_weight = 1;
-         uint8_t                                                           timeshare_weight = 5;
+         uint8_t                                                           timeshare_weight = VOILK_TIMESHARE_WEIGHT;
          uint8_t                                                           miner_weight = 1;
-         uint32_t                                                          witness_pay_normalization_factor = 25;
+         uint32_t                                                          witness_pay_normalization_factor = VOILK_WITNESS_PAY_NORMALIZATION;
          chain_properties                                                  median_props;
          version                                                           majority_version;
 
