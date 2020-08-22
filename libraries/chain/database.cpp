@@ -2202,18 +2202,18 @@ void database::process_funds()
       elog( "New coins: ${n} content_reward : ${c} witness reward: ${w} Vesting reward: ${v}" , ("n", new_voilk)("c", content_reward)("w", witness_reward)("v", coining_reward) );
 
       const auto& cwit = get_witness( props.current_witness );
-      witness_reward *= VOILK_MAX_WITNESSES;
+      // witness_reward *= VOILK_MAX_WITNESSES;
 
-      if( cwit.schedule == witness_object::timeshare )
-         witness_reward *= wso.timeshare_weight;
-      else if( cwit.schedule == witness_object::miner )
-         witness_reward *= wso.miner_weight;
-      else if( cwit.schedule == witness_object::elected )
-         witness_reward *= wso.elected_weight;
-      else
-         wlog( "Encountered unknown witness type for witness: ${w}", ("w", cwit.owner) );
+      // if( cwit.schedule == witness_object::timeshare )
+      //    witness_reward *= wso.timeshare_weight;
+      // else if( cwit.schedule == witness_object::miner )
+      //    witness_reward *= wso.miner_weight;
+      // else if( cwit.schedule == witness_object::elected )
+      //    witness_reward *= wso.elected_weight;
+      // else
+      //    wlog( "Encountered unknown witness type for witness: ${w}", ("w", cwit.owner) );
 
-      witness_reward /= wso.witness_pay_normalization_factor;
+      // witness_reward /= wso.witness_pay_normalization_factor;
 
       new_voilk = content_reward + coining_reward + witness_reward;
       elog( "New coins: ${n} content_reward : ${c} witness reward: ${w} Vesting reward: ${v}" , ("n", new_voilk)("c", content_reward)("w", witness_reward)("v", coining_reward) );
