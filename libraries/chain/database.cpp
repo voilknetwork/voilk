@@ -2199,6 +2199,7 @@ void database::process_funds()
          content_reward = pay_reward_funds( content_reward ); /// 75% to content creator
       auto coining_reward = ( new_voilk * VOILK_COINING_FUND_PERCENT ) / VOILK_100_PERCENT; /// 15% to coining fund
       auto witness_reward = new_voilk - content_reward - coining_reward; /// Remaining 10% to witness pay
+      elog( "New coins: ${n} content_reward : ${c} witness reward: ${w} Vesting reward: ${v}" , ("n", new_voilk)("c", content_reward)("w", witness_reward)("v", coining_reward) );
 
       const auto& cwit = get_witness( props.current_witness );
       witness_reward *= VOILK_MAX_WITNESSES;
@@ -2215,9 +2216,7 @@ void database::process_funds()
       witness_reward /= wso.witness_pay_normalization_factor;
 
       new_voilk = content_reward + coining_reward + witness_reward;
-      elog( "New coins: ${n}" , ("n", new_voilk) );
-      elog( "content_reward : ${n}" , ("n", content_reward) );
-      elog( "witness reward: ${n}" , ("n", witness_reward) );
+      elog( "New coins: ${n} content_reward : ${c} witness reward: ${w} Vesting reward: ${v}" , ("n", new_voilk)("c", content_reward)("w", witness_reward)("v", coining_reward) );
 
       modify( props, [&]( dynamic_global_property_object& p )
       {
