@@ -2178,7 +2178,7 @@ void database::process_comment_cashout()
 void database::process_funds()
 {
    const auto& props = get_dynamic_global_properties();
-   const auto& wso = get_witness_schedule_object();
+   //const auto& wso = get_witness_schedule_object();
 
    if( has_hardfork( VOILK_HARDFORK_0_16__551) )
    {
