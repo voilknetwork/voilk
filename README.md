@@ -4,15 +4,12 @@ Voilk is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" soci
 
   - Currency symbol VOILK.
   - 111 M Premine, 50% VOILK, 50% VSD
-  - 1.033 VOILK block reward which narrows down to 0.100 VOILK over 20 years
-  - 85% of inflation to "Proof of Brain" social consensus algorithm.
-  - 15% of inflation to block producers.
+  - 1.032 VOILK block reward which narrows down to 0.100 VOILK over 20 years
+  - 85% of the reward goes to "Proof of Brain" social consensus algorithm.
+    - 25% to curators (people who choose with their likes/upvotes which content is good)
+    - 75% to content creators (people who create the content)
+  - 15% of the reward goes to the block producers. (called witnesses)
 
-# Public Announcement & Discussion
-
-Voilk was announced on the
-[Bitcointalk forum](https://bitcointalk.org/index.php?topic=1410943.new) prior to
-the start of any mining.
 
 # No Support & No Warranty
 
@@ -24,9 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 
-# Whitepaper
-
-You can read the Voilk Whitepaper at [Voilk.io/VoilkWhitePaper.pdf](https://voilk.io/VoilkWhitePaper.pdf).
 
 # Quickstart
 
@@ -34,31 +28,10 @@ Just want to get up and running quickly? We have pre-built docker images for you
 
 # Building
 
-We strongly recommend using one of our pre-built Docker images or using Docker to build Voilk. Both of these processes are described in the [quickstart guide](https://github.com/voilknetwork/voilk/blob/master/doc/exchangequickstart.md).
+We strongly recommend using the latest binaries that we release, the latest ones 
 
-If you would still like to build from source, we do have [build instructions](https://github.com/voilknetwork/voilk/blob/master/doc/building.md) for Linux (Ubuntu LTS) and macOS.
+However if you would still like to build from the source, we do have [build instructions](https://github.com/voilknetwork/voilk/blob/master/doc/building.md) for Linux (Ubuntu LTS) and macOS.
 
-## Dockerized p2p Node
-
-To run a p2p node (ca. 2GB of memory is required at the moment):
-
-    docker run \
-        -d -p 3331:3331 -p 6990:6990 --name voilkd-default \
-        voilknetwork/voilk
-
-    docker logs -f voilkd-default  # follow along
-
-## Dockerized Full Node
-
-To run a node with *all* the data (e.g. for supporting a content website)
-that uses ca. 14GB of memory and growing:
-
-    docker run \
-        --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
-        -d -p 3331:3331 -p 6990:6990 --name voilkd-full \
-        voilknetwork/voilk
-
-    docker logs -f voilkd-full
 
 # Environment variables
 
@@ -84,8 +57,9 @@ Run `voilkd` once to generate a data directory and config file. The default loca
 
 # Seed Nodes
 
-A list of some seed nodes to get you started can be found in
-[doc/seednodes.txt](doc/seednodes.txt).
+With latest build, we actually added the seed nodes in the config file,  but if you still need to add for some reason
+
+`seed.voilk.com:3331`
 
 This same file is baked into the docker images and can be overridden by
 setting `VOILKD_SEED_NODES` in the container environment at `docker run`
@@ -107,7 +81,9 @@ on how to use lcov to check code test coverage.
 
 # System Requirements
 
-For a full web node, you need at least 110GB of disk space available. Voilkd uses a memory mapped file which currently holds 56GB of data and by default is set to use up to 80GB. The block log of the blockchain itself is a little over 27GB. It's highly recommended to run voilkd on a fast disk such as an SSD or by placing the shared memory files in a ramdisk and using the `--shared-file-dir=/path` command line option to specify where. At least 16GB of memory is required for a full web node. Seed nodes (p2p mode) can run with as little as 4GB of memory with a 24 GB state file. Any CPU with decent single core performance should be sufficient. Voilkd is constantly growing. As of August 2017, these numbers were accurate, but you may find you need more disk space to run a full node. We are also constantly working on optimizing Voilk's use of disk space.
+  - Linux Ubuntu 16.04
+  - 10 GB Ram
+  - 20 GB Disk Storage
 
 On Linux use the following Virtual Memory configuration for the initial sync and subsequent replays. It is not needed for normal operation.
 
