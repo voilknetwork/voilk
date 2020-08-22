@@ -2215,6 +2215,9 @@ void database::process_funds()
       witness_reward /= wso.witness_pay_normalization_factor;
 
       new_voilk = content_reward + coining_reward + witness_reward;
+      elog( "New coins: ${n}" , ("n", new_voilk) );
+      elog( "content_reward : ${n}" , ("n", content_reward) );
+      elog( "witness reward: ${n}" , ("n", witness_reward) );
 
       modify( props, [&]( dynamic_global_property_object& p )
       {
