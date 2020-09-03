@@ -7,7 +7,7 @@ PAT_FILE=$TEST_DIR/get_ops_in_block.json.pat
 
 function print_help_and_quit {
    echo "Usage: last_block_number [--pre-appbase] 1st_node_address [--pre-appbase] 2nd_node_address"
-   echo "Example: 10000 --pre-appbase https://voilkd.voilknetwork.com http://127.0.0.1:6990"
+   echo "Example: 10000 --pre-appbase https://voilkd.voilk.com http://127.0.0.1:6990"
    exit $EXIT_CODE
 }
 

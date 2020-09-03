@@ -8,7 +8,7 @@ If there is an existing feature that is not working correctly, or a glitch in th
 
 ## Enhancement Suggestions
 
-Do **not** use the issue tracker to suggest enhancements or improvements to the platform. The best place for these discussions is on Voilknetwork.com. If there is a well vetted idea that has the support of the community that you feel should be considered by the development team, please email it to [sneak@voilknetwork.com](mailto:sneak@voilknetwork.com) for review.
+Do **not** use the issue tracker to suggest enhancements or improvements to the platform. The best place for these discussions is on voilk.com. If there is a well vetted idea that has the support of the community that you feel should be considered by the development team, please email it to [support@voilk.com](mailto:support@voilk.com) for review.
 
 ## Implementation Discussion
 
@@ -22,9 +22,9 @@ This is not the place to make suggestions for product improvement (please see th
 
 Please do a keyword search to see if there is already an existing issue before opening a new one.
 
-## Voilknetwork.com vs. Voilk Blockchain
+## voilk.com vs. Voilk Blockchain
 
-This issue tracker is only intended to track issues for the Voilk blockchain. If the issue is with the Voilknetwork.com website, please open an issue in the [Voilknetwork.com Repository](https://github.com/voilknetwork/voilknetwork.com/).
+This issue tracker is only intended to track issues for the Voilk blockchain. If the issue is with the voilk.com website, please open an issue in the [voilk.com Repository](https://github.com/voilknetwork/voilk.com/).
 
 ## Pull Requests
 

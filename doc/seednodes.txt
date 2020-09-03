@@ -1,2 +1,2 @@
-seed.voilknetwork.com:3331          # voilknetwork
+seed.voilk.com:3331          # voilknetwork
 
