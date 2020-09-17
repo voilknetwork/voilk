@@ -55,11 +55,6 @@ struct get_impacted_account_visitor
       _impacted.insert( op.from );
       _impacted.insert( op.to );
    }
-   void operator()( const issue_vsd_operation& op )
-   {
-      _impacted.insert( op.from );
-      _impacted.insert( op.to );
-   }
    void operator()( const escrow_transfer_operation& op )
    {
       _impacted.insert( op.from );

@@ -92,7 +92,6 @@ namespace voilk { namespace chain {
    FC_DECLARE_DERIVED_EXCEPTION( pop_empty_chain,                   voilk::chain::undo_database_exception, 4070001, "there are no blocks to pop" )
 
    VOILK_DECLARE_OP_BASE_EXCEPTIONS( transfer );
-   VOILK_DECLARE_OP_BASE_EXCEPTIONS( issue_vsd );
 
 //   VOILK_DECLARE_OP_EVALUATE_EXCEPTION( from_account_not_whitelisted, transfer, 1, "owner mismatch" )
 

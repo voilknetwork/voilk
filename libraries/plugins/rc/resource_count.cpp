@@ -168,12 +168,6 @@ struct count_operation_visitor
       execution_time_count += _e.transfer_operation_exec_time;
       market_op_count++;
    }
-   void operator()( const issue_vsd_operation& )const
-   {
-      FC_TODO( "Change RC state bytes computation to take SMT's into account" )
-      execution_time_count += _e.issue_vsd_operation_exec_time;
-      market_op_count++;
-   }
    void operator()( const transfer_to_coining_operation& )const
    {
       FC_TODO( "Change RC state bytes computation to take SMT's into account" )
