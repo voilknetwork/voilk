@@ -260,32 +260,6 @@ namespace voilk { namespace plugins { namespace condenser_api {
       string            memo;
    };
 
-   struct legacy_issue_vsd_operation
-   {
-      legacy_issue_vsd_operation() {}
-      legacy_issue_vsd_operation( const issue_vsd_operation& op ) :
-         from( op.from ),
-         to( op.to ),
-         amount( legacy_asset::from_asset( op.amount ) ),
-         memo( op.memo )
-      {}
-
-      operator issue_vsd_operation()const
-      {
-         issue_vsd_operation op;
-         op.from = from;
-         op.to = to;
-         op.amount = amount;
-         op.memo = memo;
-         return op;
-      }
-
-      account_name_type from;
-      account_name_type to;
-      legacy_asset      amount;
-      string            memo;
-   };
-
    struct legacy_escrow_transfer_operation
    {
       legacy_escrow_transfer_operation() {}
@@ -1019,7 +993,6 @@ namespace voilk { namespace plugins { namespace condenser_api {
             legacy_vote_operation,
             legacy_comment_operation,
             legacy_transfer_operation,
-            legacy_issue_vsd_operation,
             legacy_transfer_to_coining_operation,
             legacy_withdraw_coining_operation,
             legacy_limit_order_create_operation,
@@ -1116,11 +1089,6 @@ namespace voilk { namespace plugins { namespace condenser_api {
       bool operator()( const transfer_operation& op )const
       {
          l_op = legacy_transfer_operation( op );
-         return true;
-      }
-      bool operator()( const issue_vsd_operation& op )const
-      {
-         l_op = legacy_issue_vsd_operation( op );
          return true;
       }
       bool operator()( const transfer_to_coining_operation& op )const
@@ -1318,10 +1286,6 @@ struct convert_from_legacy_operation_visitor
    operation operator()( const legacy_transfer_operation& op )const
    {
       return operation( transfer_operation( op ) );
-   }
-   operation operator()( const legacy_issue_vsd_operation& op )const
-   {
-      return operation( issue_vsd_operation( op ) );
    }
    operation operator()( const legacy_transfer_to_coining_operation& op )const
    {
@@ -1571,7 +1535,6 @@ FC_REFLECT( voilk::plugins::condenser_api::legacy_account_create_with_delegation
             (extensions) )
 
 FC_REFLECT( voilk::plugins::condenser_api::legacy_transfer_operation, (from)(to)(amount)(memo) )
-FC_REFLECT( voilk::plugins::condenser_api::legacy_issue_vsd_operation, (from)(to)(amount)(memo) )
 FC_REFLECT( voilk::plugins::condenser_api::legacy_transfer_to_coining_operation, (from)(to)(amount) )
 FC_REFLECT( voilk::plugins::condenser_api::legacy_withdraw_coining_operation, (account)(coining_shares) )
 FC_REFLECT( voilk::plugins::condenser_api::legacy_witness_update_operation, (owner)(url)(block_signing_key)(props)(fee) )

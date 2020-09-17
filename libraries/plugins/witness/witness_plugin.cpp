@@ -236,14 +236,6 @@ namespace detail {
                         _db.get< account_authority_object, chain::by_account >( o.from ) );
       }
 
-      void operator()( const issue_vsd_operation& o )const
-      {
-         if( o.memo.length() > 0 )
-            check_memo( o.memo,
-                        _db.get< chain::account_object, chain::by_name >( o.from ),
-                        _db.get< account_authority_object, chain::by_account >( o.from ) );
-      }
-
       void operator()( const transfer_to_savings_operation& o )const
       {
          if( o.memo.length() > 0 )
