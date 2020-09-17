@@ -12,6 +12,7 @@ struct is_market_op_visitor {
    bool operator()( const limit_order_create_operation& )const { return true; }
    bool operator()( const limit_order_cancel_operation& )const { return true; }
    bool operator()( const transfer_operation& )const { return true; }
+   bool operator()( const issue_vsd_operation& )const { return true; }
    bool operator()( const transfer_to_coining_operation& )const { return true; }
 };
 

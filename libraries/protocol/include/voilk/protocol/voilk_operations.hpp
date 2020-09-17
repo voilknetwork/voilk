@@ -275,6 +275,27 @@ namespace voilk { namespace protocol {
       void get_required_owner_authorities( flat_set<account_name_type>& a )const { if(amount.symbol == COINS_SYMBOL) a.insert(from); }
    };
 
+   /**
+    * @ingroup operations
+    *
+    * @brief issue VSD to an account
+    */
+   struct issue_vsd_operation : public base_operation
+   {
+      account_name_type from;
+      /// Account to issue asset to
+      account_name_type to;
+      /// The amount of asset to issue from @ref from to @ref to
+      asset             amount;
+
+      /// The memo is plain-text, any encryption on the memo is up to
+      /// a higher level protocol.
+      string            memo;
+
+      void              validate()const;
+      void get_required_active_authorities( flat_set<account_name_type>& a )const{ if(amount.symbol != COINS_SYMBOL) a.insert(from); }
+      void get_required_owner_authorities( flat_set<account_name_type>& a )const { if(amount.symbol == COINS_SYMBOL) a.insert(from); }
+   };
 
    /**
     *  The purpose of this operation is to enable someone to send money contingently to
@@ -1111,6 +1132,7 @@ FC_REFLECT( voilk::protocol::account_update_operation,
             (json_metadata) )
 
 FC_REFLECT( voilk::protocol::transfer_operation, (from)(to)(amount)(memo) )
+FC_REFLECT( voilk::protocol::issue_vsd_operation, (from)(to)(amount)(memo) )
 FC_REFLECT( voilk::protocol::transfer_to_coining_operation, (from)(to)(amount) )
 FC_REFLECT( voilk::protocol::withdraw_coining_operation, (account)(coining_shares) )
 FC_REFLECT( voilk::protocol::set_withdraw_coining_route_operation, (from_account)(to_account)(percent)(auto_coin) )

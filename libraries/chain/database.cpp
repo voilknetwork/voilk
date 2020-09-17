@@ -2650,6 +2650,7 @@ void database::initialize_evaluators()
    _my->_evaluator_registry.register_evaluator< comment_options_evaluator                >();
    _my->_evaluator_registry.register_evaluator< delete_comment_evaluator                 >();
    _my->_evaluator_registry.register_evaluator< transfer_evaluator                       >();
+   _my->_evaluator_registry.register_evaluator< issue_vsd_evaluator                       >();
    _my->_evaluator_registry.register_evaluator< transfer_to_coining_evaluator            >();
    _my->_evaluator_registry.register_evaluator< withdraw_coining_evaluator               >();
    _my->_evaluator_registry.register_evaluator< set_withdraw_coining_route_evaluator     >();

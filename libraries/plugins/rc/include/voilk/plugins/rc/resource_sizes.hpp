@@ -117,6 +117,7 @@ struct operation_exec_info
    int64_t set_withdraw_coining_route_operation_exec_time      =  17900;
    int64_t transfer_from_savings_operation_exec_time           =  17500;
    int64_t transfer_operation_exec_time                        =   9600;
+   int64_t issue_vsd_operation_exec_time                       =   9600;
    int64_t transfer_to_savings_operation_exec_time             =   6400;
    int64_t transfer_to_coining_operation_exec_time             =  44400;
    int64_t vote_operation_exec_time                            =  26500;
@@ -197,6 +198,7 @@ FC_REFLECT( voilk::plugins::rc::operation_exec_info,
    ( set_withdraw_coining_route_operation_exec_time )
    ( transfer_from_savings_operation_exec_time )
    ( transfer_operation_exec_time )
+   ( issue_vsd_operation_exec_time )
    ( transfer_to_savings_operation_exec_time )
    ( transfer_to_coining_operation_exec_time )
    ( vote_operation_exec_time )

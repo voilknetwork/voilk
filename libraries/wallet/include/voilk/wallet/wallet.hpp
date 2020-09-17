@@ -649,6 +649,22 @@ class wallet_api
          bool broadcast = false);
 
       /**
+       * Issue new VSD to any account from voilk.
+       *
+       * @param from The account that is issuing VSD
+       * @param to The account the VSD are issued to
+       * @param amount The funds being issued. i.e. "100.000 VSD"
+       * @param memo A memo for the transaction, encrypted with the to account's public memo key
+       * @param broadcast true if you wish to broadcast the transaction
+       */
+      condenser_api::legacy_signed_transaction issue_vsd(
+         string from,
+         string to,
+         condenser_api::legacy_asset amount,
+         string memo,
+         bool broadcast = false);
+
+      /**
        * Transfer funds from one account to another using escrow. VOILK and VSD can be transferred.
        *
        * @param from The account the funds are coming from
@@ -1134,6 +1150,7 @@ FC_API( voilk::wallet::wallet_api,
         (vote_for_witness)
         (follow)
         (transfer)
+        (issue_vsd)
         (escrow_transfer)
         (escrow_approve)
         (escrow_dispute)

@@ -1864,6 +1864,30 @@ condenser_api::legacy_signed_transaction wallet_api::transfer(
    return my->sign_transaction( tx, broadcast );
 } FC_CAPTURE_AND_RETHROW( (from)(to)(amount)(memo)(broadcast) ) }
 
+condenser_api::legacy_signed_transaction wallet_api::issue_vsd(
+   string from,
+   string to,
+   condenser_api::legacy_asset amount,
+   string memo,
+   bool broadcast )
+{ try {
+   FC_ASSERT( !is_locked() );
+    check_memo( memo, get_account( from ) );
+    issue_vsd_operation op;
+    op.from = from;
+    op.to = to;
+    op.amount = amount.to_asset();
+
+    op.memo = get_encrypted_memo( from, to, memo );
+
+    signed_transaction tx;
+    tx.operations.push_back( op );
+    tx.validate();
+
+   return my->sign_transaction( tx, broadcast );
+} FC_CAPTURE_AND_RETHROW( (from)(to)(amount)(memo)(broadcast) ) }
+
+
 condenser_api::legacy_signed_transaction wallet_api::escrow_transfer(
    string from,
    string to,

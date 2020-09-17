@@ -1085,6 +1085,21 @@ void transfer_evaluator::do_apply( const transfer_operation& o )
    _db.adjust_balance( o.to, o.amount );
 }
 
+void issue_vsd_evaluator::do_apply( const issue_vsd_operation& o )
+{
+   FC_ASSERT( o.from == VOILK_INIT_MINER_NAME, " only @voilk can issue new VSDs." );
+
+   // adjust balance 
+   _db.adjust_balance( o.to, o.amount );
+
+   // update global properties
+   _db.modify( _db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
+   {
+      gpo.current_vsd_supply += asset( o.amount, VSD_SYMBOL );
+      gpo.virtual_supply += asset( o.amount, VOILK_SYMBOL );
+   });
+}
+
 void transfer_to_coining_evaluator::do_apply( const transfer_to_coining_operation& o )
 {
    const auto& from_account = _db.get_account(o.from);

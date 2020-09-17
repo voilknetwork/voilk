@@ -17,6 +17,8 @@ namespace voilk { namespace protocol {
             comment_operation,
 
             transfer_operation,
+            issue_vsd_operation,
+
             transfer_to_coining_operation,
             withdraw_coining_operation,
 

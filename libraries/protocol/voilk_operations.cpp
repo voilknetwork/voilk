@@ -189,6 +189,18 @@ namespace voilk { namespace protocol {
       FC_ASSERT( memo.size() < VOILK_MAX_MEMO_SIZE, "Memo is too large" );
       FC_ASSERT( fc::is_utf8( memo ), "Memo is not UTF8" );
    } FC_CAPTURE_AND_RETHROW( (*this) ) }
+   
+   void issue_vsd_operation::validate() const
+   { try {
+      validate_account_name( from );
+      validate_account_name( to );
+      elog("Issuing funds from ${n} to ${m}", ("n", from)("m", to));
+      FC_ASSERT( from == VOILK_INIT_MINER_NAME, "Only voilk can issue vsd funds.");
+      FC_ASSERT( amount.symbol == VSD_SYMBOL, "Only VSD can be issued.." );
+      FC_ASSERT( amount.amount > 0, "Cannot issue a negative amount (aka: stealing)" );
+      FC_ASSERT( memo.size() < VOILK_MAX_MEMO_SIZE, "Memo is too large" );
+      FC_ASSERT( fc::is_utf8( memo ), "Memo is not UTF8" );
+   } FC_CAPTURE_AND_RETHROW( (*this) ) }
 
    void transfer_to_coining_operation::validate() const
    {
