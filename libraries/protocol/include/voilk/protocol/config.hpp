@@ -36,7 +36,11 @@
 #define VOILK_OWNER_UPDATE_LIMIT                          fc::seconds(0)
 #define VOILK_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 1
 
-#define VOILK_INIT_SUPPLY                     (int64_t( 250 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define VOILK_INIT_SUPPLY                     (int64_t( 100 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define VSD_INIT_SUPPLY                       (int64_t( 100 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+
+// It makes block reward to be about 1.032 VOILK/block which goes down to 0.1 over the period of 20 years
+#define VOILK_BLOCK_REWARD_CONSTANT           (int64_t( 111 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 
 /// Allows to limit number of total produced blocks.
 #define TESTNET_BLOCK_LIMIT                   (3000000)
