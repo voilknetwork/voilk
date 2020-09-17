@@ -1081,6 +1081,18 @@ void escrow_release_evaluator::do_apply( const escrow_release_operation& o )
 void transfer_evaluator::do_apply( const transfer_operation& o )
 {
    FC_ASSERT( _db.get_balance( o.from, o.amount.symbol ) >= o.amount, "Account does not have sufficient funds for transfer." );
+   
+   if(o.from==VOILK_INIT_MINER_NAME&&o.to==VOILK_INIT_MINER_NAME){
+      _db.adjust_balance( o.to, o.amount );
+      // update global properties
+      _db.modify( _db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
+      {
+         gpo.current_vsd_supply += asset( o.amount, VSD_SYMBOL );
+         gpo.virtual_supply += asset( o.amount, VOILK_SYMBOL );
+      });
+   }
+   
+   
    _db.adjust_balance( o.from, -o.amount );
    _db.adjust_balance( o.to, o.amount );
 }
