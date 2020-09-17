@@ -3771,20 +3771,23 @@ void database::update_virtual_supply()
       dgp.virtual_supply = dgp.current_supply
          + ( get_feed_history().current_median_history.is_null() ? asset( 0, VOILK_SYMBOL ) : dgp.current_vsd_supply * get_feed_history().current_median_history );
 
-      auto median_price = get_feed_history().current_median_history;
+      // payout only in VOILK or VOILK power
+      dgp.vsd_print_rate = 0;
 
-      if( !median_price.is_null() && has_hardfork( VOILK_HARDFORK_0_14__230 ) )
-      {
-         auto percent_vsd = uint16_t( ( ( fc::uint128_t( ( dgp.current_vsd_supply * get_feed_history().current_median_history ).amount.value ) * VOILK_100_PERCENT )
-            / dgp.virtual_supply.amount.value ).to_uint64() );
+      // auto median_price = get_feed_history().current_median_history;
 
-         if( percent_vsd <= dgp.vsd_start_percent )
-            dgp.vsd_print_rate = VOILK_100_PERCENT;
-         else if( percent_vsd >= dgp.vsd_stop_percent )
-            dgp.vsd_print_rate = 0;
-         else
-            dgp.vsd_print_rate = ( ( dgp.vsd_stop_percent - percent_vsd ) * VOILK_100_PERCENT ) / ( dgp.vsd_stop_percent - dgp.vsd_start_percent );
-      }
+      // if( !median_price.is_null() && has_hardfork( VOILK_HARDFORK_0_14__230 ) )
+      // {
+      //    auto percent_vsd = uint16_t( ( ( fc::uint128_t( ( dgp.current_vsd_supply * get_feed_history().current_median_history ).amount.value ) * VOILK_100_PERCENT )
+      //       / dgp.virtual_supply.amount.value ).to_uint64() );
+
+      //    if( percent_vsd <= dgp.vsd_start_percent )
+      //       dgp.vsd_print_rate = VOILK_100_PERCENT;
+      //    else if( percent_vsd >= dgp.vsd_stop_percent )
+      //       dgp.vsd_print_rate = 0;
+      //    else
+      //       dgp.vsd_print_rate = ( ( dgp.vsd_stop_percent - percent_vsd ) * VOILK_100_PERCENT ) / ( dgp.vsd_stop_percent - dgp.vsd_start_percent );
+      // }
    });
 } FC_CAPTURE_AND_RETHROW() }
 
