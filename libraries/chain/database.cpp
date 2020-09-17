@@ -2067,7 +2067,7 @@ void database::process_comment_cashout()
          else
             decay_time = VOILK_RECENT_RSHARES_DECAY_TIME_HF17;
 
-         rfo.recent_claims -= ( rfo.recent_claims * ( head_block_time() - rfo.last_update ).to_seconds() ) / decay_time.to_seconds();
+         rfo.recent_claims -= ( rfo.recent_claims * VOILK_BLOCK_INTERVAL ) / decay_time.to_seconds();
          rfo.last_update = head_block_time();
       });
 
