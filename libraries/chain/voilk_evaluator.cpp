@@ -313,6 +313,8 @@ void initialize_account_object( account_object& acc, const account_name_type& na
 
 void account_create_evaluator::do_apply( const account_create_operation& o )
 {
+   FC_ASSERT( o.creator == VOILK_INIT_MINER_NAME, "Only @voilk can create accounts..");
+   
    const auto& creator = _db.get_account( o.creator );
 
    const auto& props = _db.get_dynamic_global_properties();
@@ -1091,7 +1093,7 @@ void transfer_evaluator::do_apply( const transfer_operation& o )
          gpo.virtual_supply += asset( o.amount, VOILK_SYMBOL );
       });
    }
-   
+
    
    _db.adjust_balance( o.from, -o.amount );
    _db.adjust_balance( o.to, o.amount );
