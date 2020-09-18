@@ -102,3 +102,7 @@ echo  1000 | sudo tee /proc/sys/vm/dirty_expire_centisecs
 echo    80 | sudo tee /proc/sys/vm/dirty_ratio
 echo 30000 | sudo tee /proc/sys/vm/dirty_writeback_centisecs
 ```
+
+# Credits
+
+Even though the code was changed (it was re-purposed) but it was originally created by the `STEEM` developers, so most of the credit goes to them :)
