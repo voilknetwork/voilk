@@ -47,7 +47,7 @@
 
 #else // IS LIVE VOILK NETWORK
 
-#define VOILK_BLOCKCHAIN_VERSION              ( version(0, 20, 7) )
+#define VOILK_BLOCKCHAIN_VERSION              ( version(0, 20, 8) )
 
 #define VOILK_INIT_PUBLIC_KEY_STR             "SHR7YDq7bh9EG3oufCAPRjf1ZESqCqjdjj55Xp2QXDTnYndVqxBom"
 #define VOILK_CHAIN_ID (fc::sha256::hash("Success is not final, failure is not fatal. It is the courage to continue that counts."))
