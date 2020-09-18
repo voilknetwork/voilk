@@ -2298,24 +2298,27 @@ void feed_publish_evaluator::do_apply( const feed_publish_operation& o )
 
 void convert_evaluator::do_apply( const convert_operation& o )
 {
-  FC_ASSERT( _db.get_balance( o.owner, o.amount.symbol ) >= o.amount, "Account does not have sufficient balance for conversion." );
 
-  _db.adjust_balance( o.owner, -o.amount );
+  FC_ASSERT(VOILK_DISABLE_VSD_TO_VOILK_CONVERTION != 1, "Vsd to Voilk converstion is no longer available.");
 
-  const auto& fhistory = _db.get_feed_history();
-  FC_ASSERT( !fhistory.current_median_history.is_null(), "Cannot convert VSD because there is no price feed." );
+   //   FC_ASSERT( _db.get_balance( o.owner, o.amount.symbol ) >= o.amount, "Account does not have sufficient balance for conversion." );
 
-  auto voilk_conversion_delay = VOILK_CONVERSION_DELAY_PRE_HF_16;
-  if( _db.has_hardfork( VOILK_HARDFORK_0_16__551) )
-     voilk_conversion_delay = VOILK_CONVERSION_DELAY;
+   //   _db.adjust_balance( o.owner, -o.amount );
 
-  _db.create<convert_request_object>( [&]( convert_request_object& obj )
-  {
-      obj.owner           = o.owner;
-      obj.requestid       = o.requestid;
-      obj.amount          = o.amount;
-      obj.conversion_date = _db.head_block_time() + voilk_conversion_delay;
-  });
+   //   const auto& fhistory = _db.get_feed_history();
+   //   FC_ASSERT( !fhistory.current_median_history.is_null(), "Cannot convert VSD because there is no price feed." );
+
+   //   auto voilk_conversion_delay = VOILK_CONVERSION_DELAY_PRE_HF_16;
+   //   if( _db.has_hardfork( VOILK_HARDFORK_0_16__551) )
+   //      voilk_conversion_delay = VOILK_CONVERSION_DELAY;
+
+   //   _db.create<convert_request_object>( [&]( convert_request_object& obj )
+   //   {
+   //       obj.owner           = o.owner;
+   //       obj.requestid       = o.requestid;
+   //       obj.amount          = o.amount;
+   //       obj.conversion_date = _db.head_block_time() + voilk_conversion_delay;
+   //   });
 
 }
 

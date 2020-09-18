@@ -139,6 +139,7 @@
 #define VOILK_100_PERCENT                     10000
 #define VOILK_1_PERCENT                       (VOILK_100_PERCENT/100)
 #define VOILK_DEFAULT_VSD_INTEREST_RATE       (5*VOILK_1_PERCENT) ///< 5% APR
+#define VOILK_DISABLE_VSD_TO_VOILK_CONVERTION (1) // true
 
 #define VOILK_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
 #define VOILK_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
