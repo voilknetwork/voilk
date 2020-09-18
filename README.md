@@ -2,14 +2,20 @@
 
 Voilk is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" social consensus algorithm for token allocation.
 
-  - Currency symbol VOILK.
-  - 111 M Premine, 50% VOILK, 50% VSD
+  - Currency symbol VOILK and VSD.
+  - Create VSD on demand, allows the company to peg VSD with USD, and manage it
+  - VOILK is however, created via the social consensus algorithm and users are free to trade their stable VSD currency with it via the `internal market` also participate in mining/minting process of it.
   - 1.032 VOILK block reward which narrows down to 0.100 VOILK over 20 years
   - 85% of the reward goes to "Proof of Brain" social consensus algorithm.
     - 25% to curators (people who choose with their likes/upvotes which content is good)
     - 75% to content creators (people who create the content)
   - 15% of the reward goes to the block producers. (called witnesses)
-
+  - Author rewards linear
+  - Curation rewards quadratic
+  
+Premine option available
+  - 10 Million VOILK premine
+  - Premine of VSD does not matter, since it always will be pegged with the USD, you can get 1 USD against your 1 VSD and vice versa.
 
 # No Support & No Warranty
 
@@ -28,7 +34,7 @@ Just want to get up and running quickly? We have pre-built docker images for you
 
 # Building
 
-We strongly recommend using the latest binaries that we release, the latest ones 
+We strongly recommend using the latest binaries that we release, the latest ones, You can find them on the releases tab/section. 
 
 However if you would still like to build from the source, we do have [build instructions](https://github.com/voilknetwork/voilk/blob/master/doc/building.md) for Linux (Ubuntu LTS) and macOS.
 
@@ -53,7 +59,7 @@ Voilkd now supports a PaaS mode (platform as a service) that currently works wit
 
 # Config File
 
-Run `voilkd` once to generate a data directory and config file. The default location is `witness_node_data_dir`. Kill `voilkd`. It won't do anything without seed nodes. If you want to modify the config to your liking, we have two example configs used in the docker images. ( [consensus node](contrib/config-for-docker.ini), [full node](contrib/fullnode.config.ini) ) All options will be present in the default config file and there may be more options needing to be changed from the docker configs (some of the options actually used in images are configured via command line).
+Run `voilkd` once to generate a data directory and config file. The default location is `.voilkd`. Kill `voilkd`. It won't do anything without seed nodes. If you want to modify the config to your liking, we have two example configs used in the docker images. [full node](contrib/fullnode.config.ini) ) All options will be present in the default config file and there may be more options needing to be changed from the docker configs (some of the options actually used in images are configured via command line).
 
 # Seed Nodes
 
