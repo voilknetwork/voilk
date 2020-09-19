@@ -2012,6 +2012,11 @@ namespace detail
       else
          total_r2 = chain::util::to256( props.total_reward_shares2 );
 
+      // if recent claims are zero, make total r
+      if(total_r2==0){
+         total_r2 = 1;
+      }
+
       if( total_r2 > 0 )
       {
          uint128_t vshares;
