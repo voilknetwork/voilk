@@ -2011,7 +2011,7 @@ namespace detail
       /// correctly calculate total_r2 value
       /// recent claims get added, to reward fund, only when it is cashout time
 
-      const auto& cidx        = get_index< comment_index >().indices().get< by_cashout_time >();
+      const auto& cidx        = _db.get_index< comment_index, by_cashout_time >();
 
       auto current = cidx.begin();
       auto recent_claims_cache = 0;
