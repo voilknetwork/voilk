@@ -2014,7 +2014,7 @@ namespace detail
       const auto& cidx        = _db.get_index< comment_index >().indices().get< by_cashout_time >();
 
       auto current = cidx.begin();
-      auto recent_claims_cache = 0;
+      uint128_t recent_claims_cache;
       //  add all rshares about to be cashed out to the reward funds. This ensures equal satoshi per rshare payment
       if( _db.has_hardfork( VOILK_HARDFORK_0_17__771 ) )
       {
