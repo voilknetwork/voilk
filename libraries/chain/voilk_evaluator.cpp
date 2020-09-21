@@ -2293,7 +2293,6 @@ void feed_publish_evaluator::do_apply( const feed_publish_operation& o )
    price exchange_rate_fixed;
    exchange_rate_fixed.base = asset(int64_t( 1000 ), VSD_SYMBOL);
    exchange_rate_fixed.quote = asset(int64_t( 1000 ), VOILK_SYMBOL);
-
    // Instead just use the fixed prive of 1.000 VSD : 1:000 VOILK
 
    const auto& witness = _db.get_witness( o.publisher );
