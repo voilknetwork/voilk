@@ -554,14 +554,14 @@ namespace voilk
                /// correctly calculate total_r2 value
                /// recent claims get added, to reward fund, only when it is cashout time
 
-               const auto &cidx = _db.get_index<comment_index>().indices().get<by_cashout_time>();
+               const auto &cedx = _db.get_index<comment_index>().indices().get<by_cashout_time>();
 
-               auto current = cidx.begin();
+               auto current = cedx.begin();
                uint128_t recent_claims_cache;
                //  add all rshares about to be cashed out to the reward funds. This ensures equal satoshi per rshare payment
                if (_db.has_hardfork(VOILK_HARDFORK_0_17__771))
                {
-                  while (current != cidx.end() && current->cashout_time < fc::time_point_sec::maximum())
+                  while (current != cedx.end() && current->cashout_time < fc::time_point_sec::maximum())
                   {
                      if (current->net_rshares > 0)
                      {
