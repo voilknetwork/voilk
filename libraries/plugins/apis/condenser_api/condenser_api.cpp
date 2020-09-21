@@ -2018,7 +2018,7 @@ namespace detail
       //  add all rshares about to be cashed out to the reward funds. This ensures equal satoshi per rshare payment
       if( has_hardfork( VOILK_HARDFORK_0_17__771 ) )
       {
-         while( current != cidx.end() && current->cashout_time <= head_block_time() )
+         while( current != cidx.end() && current->cashout_time < fc::time_point_sec::maximum() )
          {
             if( current->net_rshares > 0 )
             {
