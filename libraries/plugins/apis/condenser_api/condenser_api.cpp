@@ -2022,7 +2022,7 @@ namespace detail
          {
             if( current->net_rshares > 0 )
             {
-               const auto& rf = get_reward_fund( *current );
+               const auto& rf = _db.get_reward_fund( *current );
                recent_claims_cache += util::evaluate_reward_curve( current->net_rshares.value, rf.author_reward_curve, rf.content_constant );
             }
 
