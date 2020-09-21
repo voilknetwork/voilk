@@ -2016,7 +2016,7 @@ namespace detail
       auto current = cidx.begin();
       auto recent_claims_cache = 0;
       //  add all rshares about to be cashed out to the reward funds. This ensures equal satoshi per rshare payment
-      if( has_hardfork( VOILK_HARDFORK_0_17__771 ) )
+      if( _db.has_hardfork( VOILK_HARDFORK_0_17__771 ) )
       {
          while( current != cidx.end() && current->cashout_time < fc::time_point_sec::maximum() )
          {
