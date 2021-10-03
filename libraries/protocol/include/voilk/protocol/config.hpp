@@ -72,11 +72,11 @@
 #define VOILK_OWNER_UPDATE_LIMIT                          fc::minutes(60)
 #define VOILK_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 0
 
-#define VOILK_INIT_SUPPLY                     (int64_t( 10 ) * int64_t( 1000000 ) * int64_t( 1000 ))
-#define VSD_INIT_SUPPLY                       (int64_t( 10 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define VOILK_INIT_SUPPLY                     (int64_t( 40 ) * int64_t( 1000 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define VSD_INIT_SUPPLY                       (int64_t( 40 ) * int64_t( 1000 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 
-// It makes block reward to be about 1.032 VOILK/block which goes down to 0.1 over the period of 20 years
-#define VOILK_BLOCK_REWARD_CONSTANT           (int64_t( 111 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+// It makes block reward to be about 0.501 ETHER/block which goes down to 0.05 over the period of 20 years
+#define VOILK_BLOCK_REWARD_CONSTANT           (int64_t( 54 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 
 #endif
 
@@ -116,7 +116,7 @@
 #define VOILK_MAX_MEMO_SIZE                   2048
 #define VOILK_MAX_PROXY_RECURSION_DEPTH       4
 #define VOILK_COINING_WITHDRAW_INTERVALS_PRE_HF_16 104
-#define VOILK_COINING_WITHDRAW_INTERVALS      365
+#define VOILK_COINING_WITHDRAW_INTERVALS      90
 #define VOILK_COINING_WITHDRAW_INTERVAL_SECONDS (60*60*24) /// 1 day per interval
 #define VOILK_MAX_WITHDRAW_ROUTES             10
 #define VOILK_SAVINGS_WITHDRAW_TIME        	(fc::days(3))
