@@ -3,12 +3,12 @@
 Voilk is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" social consensus algorithm for token allocation.
 
   - Currency symbol VOILK and VSD.
-  - VOILK is created via the social consensus algorithm and users are free to trade their stable VSD currency with it via the `internal market` also participate in mining/minting process of it.
-  - Create VSD on demand, allows the company to peg VSD with USD, and manage it (only @voilk can create VSD)
+  - VOILK is created via the social consensus algorithm, so everyone can participate in mining/minting process of it.
+  - VSD is created on demand pegged with USD 1:1 (only @voilk can create VSD)
   - Create accounts only via the @voilk, no other account can create accounts.
   - VOILK is however, created via the social consensus algorithm and users are free to trade their stable VSD currency with it via the `internal market` also participate in mining/minting process of it.
-  - 1.032 VOILK block reward which narrows down to 0.100 VOILK over 20 years
-  - 85% of the reward goes to "Proof of Brain" social consensus algorithm.
+  - 0.501 VOILK block reward which narrows down to 0.05 VOILK over 20 years, changes every 6 months
+  - 85% of the block reward goes to the Community's Reward Pool.
     - 25% to curators (people who choose with their likes/upvotes which content is good)
     - 75% to content creators (people who create the content)
   - 15% of the reward goes to the block producers. (called witnesses)
@@ -16,9 +16,7 @@ Voilk is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" soci
   - Curation rewards quadratic
   
 Premine option available
-  - 10 Million VOILK premine
-  - 10 Million VSD premine (the amount does not matter here, since it can be produced on demand)
-  - Premine of VSD does not matter, since it always will be pegged with the USD, you can get 1 USD against your 1 VSD and vice versa from the company/person/organization who runs the project.
+  - 15 Million VOILK premine, which is distributed in a Free and Fair Distribution program.
 
 # No Support & No Warranty
 
